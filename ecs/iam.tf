@@ -12,11 +12,10 @@ resource "aws_iam_role" "task_role" {
                     Action = [
                         "ecr:*",
                         "logs:*",
-                        "s3:*",
-                        "ssm:*"
+                        "s3:*"
                     ]
                     Effect  = "Allow"
-                    Resource = "*"
+                    Resource = "arn:aws:s3:::ecr-viewer-files"
                 }
             ]
         })

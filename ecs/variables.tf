@@ -13,7 +13,7 @@ variable "launch_type" {
         memory      = number
     })
     default= {
-        type    = "Fargate"
+        type    = "FARGATE"
         cpu     = 256
         memory  = 512
     }
@@ -38,11 +38,10 @@ variable "tags" {
   default     = null
 }
 
-variable "ecr_image_tag" {
-  description = "ECR image tag"
-  type        = map(string)
-  default     = null
-}
+#variable "ecr_image_tag" {
+#  description = "ECR image tag"
+#  type        = map(string)
+#}
 
 variable "region" {
   description = "AWS region"
@@ -64,4 +63,10 @@ variable "service_name" {
   description   = "ECS Service Name"
   type          = string
   default       ="dibbs-ecs-service"
+}
+
+variable "repository_name" {
+  description   = "ECR Repository Name"
+  type          = string
+  default       = "dibbs-ecs-repository"
 }

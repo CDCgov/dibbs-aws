@@ -12,14 +12,14 @@ resource "aws_ecs_service" "ecs_service"{
     }
 
     # TODO: This may not be necessary if our client is handling networking
-    dynamic "network_configuration" {
-        for_each = var.network_mode == "awsvpc" ? [1] : []
-        content {
-            subnets             = data.aws_subnets.subnets.ids
-            security_groups     = [aws_security_group.securitygrp.id]
-            
-            #Allows network calls inside and outside of AWS
-            assign_public_ip    = true
-        }
-    }
+    #dynamic "network_configuration" {
+    #    for_each = var.network_mode == "awsvpc" ? [1] : []
+    #    content {
+    #        subnets             = data.aws_subnets.subnets.ids
+    #        security_groups     = [aws_security_group.securitygrp.id]
+    #        
+    #        #Allows network calls inside and outside of AWS
+    #        assign_public_ip    = true
+    #    }
+    #}
 }

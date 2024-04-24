@@ -9,7 +9,8 @@ resource "aws_ecs_task_definition" "dibbs_task" {
 
   container_definitions = jsonencode([{
     name      = "${var.env}-patient-impact"
-    image     = "${data.aws_ecr_repository.default.repository_url}:${var.ecr_image_tag}"
+    #image     = "${data.aws_ecr_repository.default.repository_url}:${var.ecr_image_tag}"
+    image     = "${data.aws_ecr_repository.default.repository_url}"
     cpu       = var.launch_type.cpu
     memory    = var.launch_type.memory
     essential = true
