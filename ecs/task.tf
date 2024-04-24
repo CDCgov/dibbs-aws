@@ -1,11 +1,11 @@
 resource "aws_ecs_task_definition" "dibbs_task" {
-  family                   = "${var.env}-disaster-tracking-tasks"
+  family                   = "${var.env}-${var.task_name}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   memory                   = var.launch_type.memory
   cpu                      = var.launch_type.cpu
-  #execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  #task_role_arn            = aws_iam_role.ecs_task_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.task_role.arn
 
   container_definitions = jsonencode([{
     name      = "${var.env}-patient-impact"

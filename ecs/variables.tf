@@ -1,10 +1,25 @@
-variable "network_mode" {
-    type        = string
-    description = "ECS network mode"
-    default     = "awsvpc"
+variable "create" {
+  description = "Determines whether resources will be created (affects all resources)"
+  type        = bool
+  default     = true
 }
 
-#TODO: Double check with Emma to make sure the launch type is Fargate vs EC2
+variable "db_endpoint" {}
+
+variable "db_name" {}
+
+#variable "ecr_image_tag" {
+#  description = "ECR image tag"
+#  type        = map(string)
+#}
+
+variable "env" {
+  description = "ECS development environment"
+  type        = string
+  default     = "dev"
+}
+
+# Note: The launch type can either be FARGATE or EC2
 variable "launch_type" {
     description = "ECS launch type"
     type        = object ({
@@ -19,9 +34,10 @@ variable "launch_type" {
     }
 }
 
-variable "task_family" {
+variable "network_mode" {
     type        = string
-    description = "ECS task family"
+    description = "ECS network mode"
+    default     = "awsvpc"
 }
 
 # Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
@@ -32,32 +48,34 @@ variable "retention_in_days" {
     description         = 30
 }
 
-variable "tags" {
-  description = "tags to be added to sub resources"
-  type        = map(string)
-  default     = null
-}
-
-#variable "ecr_image_tag" {
-#  description = "ECR image tag"
-#  type        = map(string)
-#}
-
 variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-east-1"
 }
 
-variable "env" {
-  description = "ECS development environment"
-  type        = string
-  default     = "dev"
+variable "repository_name" {
+  description   = "ECR Repository Name"
+  type          = string
+  default       = "dibbs-ecs-repository"
 }
 
-variable "db_endpoint" {}
+variable "tags" {
+  description = "tags to be added to sub resources"
+  type        = map(string)
+  default     = null
+}
 
-variable "db_name" {}
+#variable "task_family" {
+#    type        = string
+#    description = "ECS task family"
+#}
+
+variable "task_name" {
+  type        = string
+  description = "ECS task name"
+  default     = "dibbs-ecs-task"
+}
 
 variable "service_name" {
   description   = "ECS Service Name"
@@ -65,8 +83,18 @@ variable "service_name" {
   default       ="dibbs-ecs-service"
 }
 
-variable "repository_name" {
-  description   = "ECR Repository Name"
-  type          = string
-  default       = "dibbs-ecs-repository"
+################################################################################
+# Registry Replication Configuration
+################################################################################
+
+variable "create_registry_replication_configuration" {
+  description = "Determines whether a registry replication configuration will be created"
+  type        = bool
+  default     = false
+}
+
+variable "registry_replication_rules" {
+  description = "The replication rules for a replication configuration. A maximum of 10 are allowed"
+  type        = any
+  default     = []
 }
