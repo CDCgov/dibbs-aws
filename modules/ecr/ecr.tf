@@ -1,6 +1,7 @@
 resource "aws_ecr_repository" "repo" {
   name                  = var.ecr_repo_name 
   image_tag_mutability  = var.repository_image_tag_mutability
+  tags                  = merge(local.tags, var.tags)
   
   # Optionally, you can add more configurations like image scanning
   image_scanning_configuration {
@@ -41,4 +42,17 @@ resource "aws_ecr_replication_configuration" "dibbs_ecr_replication_config" {
       }
     }
   }
+}
+
+resource "aws_ecr_lifecycle_policy" "main" {
+  repository = aws_ecr_repository.repo.name
+  policy     = local.policy
+}
+
+# Only create the resource if policy is specified. By Default AWS does not
+# attach a ECR policy to a repository.
+resource "aws_ecr_repository_policy" "main" {
+  repository = aws_ecr_repository.repo.name
+  policy     = var.ecr_policy
+  count      = length(var.ecr_policy) > 0 ? 1 : 0
 }

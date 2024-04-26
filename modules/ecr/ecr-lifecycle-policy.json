@@ -1,0 +1,30 @@
+{
+    "rules": [
+      {
+        "action": {
+          "type": "expire"
+        },
+        "description": "Expire untagged images older than 14 days",
+        "rulePriority": 1,
+        "selection": {
+          "countNumber": 14,
+          "countType": "sinceImagePushed",
+          "countUnit": "days",
+          "tagStatus": "untagged"
+        }
+      },
+      {
+        "action": {
+          "type": "expire"
+        },
+        "description": "Keep only one tagged image, expire all others",
+        "rulePriority": 2,
+        "selection": {
+          "countNumber": 1,
+          "countType": "imageCountMoreThan",
+          "tagStatus": "tagged",
+          "tagPatternList": ["dev", "stage", "prod"]
+        }
+      }
+    ]
+  }

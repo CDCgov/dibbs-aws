@@ -1,7 +1,3 @@
-variable "db_endpoint" {}
-
-variable "db_name" {}
-
 variable "ecs_cluster_name" {
   type          = string
   description   = "ECS Cluster Name"
@@ -19,6 +15,11 @@ variable "env" {
   description = "ECS development environment"
   default     = "dev"
 }
+
+
+variable "db_endpoint" {}
+
+variable "db_name" {}
 
 # Note: The launch type can either be FARGATE or EC2
 variable "launch_type" {
@@ -78,3 +79,4 @@ variable "service_name" {
   description   = "ECS Service Name"
   default       ="dibbs-ecs-service"
 }
+

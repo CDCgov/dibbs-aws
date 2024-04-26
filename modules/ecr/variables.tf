@@ -4,10 +4,22 @@ variable "create" {
   default     = true
 }
 
+variable "ecr_policy" {
+  type        = string
+  description = "ECR IAM permission policy for external access."
+  default     = ""
+}
+
 variable "ecr_repo_name" {
     type        = string
     description = "ECR Repository Name"
     #default     = "dibbs-ecr-repository"
+}
+
+variable "lifecycle_policy" {
+  type        = string
+  description = "ECR repository lifecycle policy document. Used to override the default policy."
+  default     = ""
 }
 
 ################################################################################
@@ -30,4 +42,10 @@ variable "repository_image_tag_mutability" {
   description = "The tag mutability setting for the repository. Must be one of: `MUTABLE` or `IMMUTABLE`."
   type        = string
   default     = "MUTABLE"
+}
+
+variable "tags" {
+  type        = map(any)
+  description = "Additional tags to apply."
+  default     = {}
 }
