@@ -6,8 +6,8 @@ variable "application_load_balancer_name" {
 
 variable "container_port" {
   type        = string
-  description = ""
-  default     = ""
+  description = "ECS Container Port"
+  default     = "80"
 }
 
 variable "desired_count" {
@@ -34,9 +34,6 @@ variable "env" {
   default     = "dev"
 }
 
-
-
-
 # Note: The launch type can either be FARGATE or EC2
 variable "launch_type" {
     description = "ECS launch type"
@@ -50,12 +47,6 @@ variable "launch_type" {
         cpu     = 256
         memory  = 512
     }
-}
-
-variable "network_mode" {
-    type        = string
-    description = "ECS network mode"
-    default     = "awsvpc"
 }
 
 # Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
@@ -74,8 +65,14 @@ variable "region" {
 
 variable "repository_name" {
   type          = string
-  description   = "ECR Repository Name"
+  description   = "DIBBS ECR Repository Name"
   default       = "dibbs-ecs-repository"
+}
+
+variable "service_name" {
+  type          = string
+  description   = "ECS Service Name"
+  default       ="dibbs-ecs-service"
 }
 
 variable "tags" {
@@ -86,8 +83,8 @@ variable "tags" {
 
 variable "target_grp_name" {
   type        = string
-  description = ""
-  default     = ""
+  description = "DIBBS ECS Target Group Name"
+  default     = "ecs-target-group"
 }
 
 variable "task_name" {
@@ -96,9 +93,27 @@ variable "task_name" {
   default     = "dibbs-ecs-task"
 }
 
-variable "service_name" {
-  type          = string
-  description   = "ECS Service Name"
-  default       ="dibbs-ecs-service"
+################################################################################
+# Network Configuration
+################################################################################
+
+variable "network_mode" {
+    type        = string
+    description = "ECS network mode"
+    default     = "awsvpc"
 }
 
+variable "vpc_id" {
+  type        = string
+  description = "ID of the VPC"
+}
+
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "List of public subnet IDs"
+}
+
+variable "private_subnet_ids" {
+  type        = list(string)
+  description = "List of private subnet IDs"
+}

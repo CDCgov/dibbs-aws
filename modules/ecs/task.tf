@@ -1,5 +1,5 @@
 resource "aws_ecs_task_definition" "default" {
-  family                   = "${var.env}-${var.task_name}"
+  family                   = "${var.task_name}-${var.env}"
   network_mode             = "awsvpc"
   #requires_compatibilities = [var.launch_type.type]
   requires_compatibilities = ["FARGATE"]

@@ -45,20 +45,30 @@ resource "aws_security_group" "service_security_group" {
     }
 }
 
-resource "aws_lb_target_group" "aws_lb_target_grp" {
+resource "aws_lb_target_group" "alb_target_grp" {
     name        = var.target_grp_name
     port        = var.container_port
     protocol    = "HTTP"
-    target_type = "ip"
-    #vpc_id      = aws_default_vpc.default_vpc.id
+    #target_type = "ip"
+    vpc_id      = var.vpc_id
+
+    health_check {
+        path                = "/"
+        protocol            = "HTTP"
+        timeout             = 5
+        interval            = 30
+        healthy_threshold   = 2
+        unhealthy_threshold = 2
+    }
 }
 
 resource "aws_alb_listener" "listener" {
-    load_balancer_arn       = aws_lb.alb.arn
-    port                = "80"
+    load_balancer_arn   = aws_lb.alb.arn
+    port                = var.container_port
     protocol            = "HTTP"
+ 
     default_action {
-        target_type     = "forward"
-        target_grp_arn  = aws_lb_target_group.aws_lb_target_grp.arn
+        type               = "forward"
+        target_group_arn   = aws_lb_target_group.alb_target_grp.arn
     }
 }
