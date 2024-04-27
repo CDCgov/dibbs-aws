@@ -1,3 +1,21 @@
+variable "application_load_balancer_name" {
+  type        = string
+  description = ""
+  default     = ""
+}
+
+variable "container_port" {
+  type        = string
+  description = ""
+  default     = ""
+}
+
+variable "desired_count" {
+  type        = string
+  description = "The desired number of tasks to start with. Set this to 0 if using DAEMON Service type. (FARGATE does not support DAEMON Service type)"
+  default     = "1"
+}
+
 variable "ecs_cluster_name" {
   type          = string
   description   = "ECS Cluster Name"
@@ -17,9 +35,7 @@ variable "env" {
 }
 
 
-variable "db_endpoint" {}
 
-variable "db_name" {}
 
 # Note: The launch type can either be FARGATE or EC2
 variable "launch_type" {
@@ -29,7 +45,7 @@ variable "launch_type" {
         cpu         = number
         memory      = number
     })
-    default= {
+    default = {
         type    = "FARGATE"
         cpu     = 256
         memory  = 512
@@ -66,6 +82,12 @@ variable "tags" {
   type        = map(string)
   description = "tags to be added to sub resources"
   default     = null
+}
+
+variable "target_grp_name" {
+  type        = string
+  description = ""
+  default     = ""
 }
 
 variable "task_name" {

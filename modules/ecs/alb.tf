@@ -7,7 +7,8 @@ resource "aws_lb" "alb" {
     
     ]   
 
-    security_groups     = [aws_security_groups.alb_sg.id]
+    #security_groups     = [aws_security_groups.alb_sg.id]
+    security_groups     = []
 }
 
 resource "aws_security_group" "alb_sg" {
@@ -28,7 +29,7 @@ resource "aws_security_group" "alb_sg" {
     }
 }
 
-resources "aws_security_group" "service_security_group" {
+resource "aws_security_group" "service_security_group" {
     ingress {
         from_port       = 0
         to_port         = 0
@@ -49,11 +50,11 @@ resource "aws_lb_target_group" "aws_lb_target_grp" {
     port        = var.container_port
     protocol    = "HTTP"
     target_type = "ip"
-    vpc_id      = aws_default_vpc.default_vpc.id
+    #vpc_id      = aws_default_vpc.default_vpc.id
 }
 
-resources "aws_lb_listener" "listener" {
-    load_balancer_arn       = aws_lb.alb.load_balancer_arn
+resource "aws_alb_listener" "listener" {
+    load_balancer_arn       = aws_lb.alb.arn
     port                = "80"
     protocol            = "HTTP"
     default_action {
