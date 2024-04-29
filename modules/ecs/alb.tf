@@ -1,21 +1,17 @@
 resource "aws_lb" "alb" {
     name                = var.application_load_balancer_name
-    load_balancer_type  = "application"
-    subnets = [
-        #"{aws_default_subnet.}
-        #TODO: Look at the Network from our services and see if we can use that here
-    
-    ]   
+    load_balancer_type  = "application"  
 
     #security_groups     = [aws_security_groups.alb_sg.id]
-    security_groups     = []
+
+    subnets             = ["${var.public_subnet_ids[0]}", "${var.public_subnet_ids[1]}"] 
 }
 
 resource "aws_security_group" "alb_sg" {
     ingress {
         from_port   = 80
         to_port     = 80
-        protocol    = "tcp"
+        protocol    = "0"
         cidr_blocks = ["0.0.0.0/0"]
     }
 
@@ -24,7 +20,7 @@ resource "aws_security_group" "alb_sg" {
     egress {
         from_port   = 80
         to_port     = 80
-        protocol    = "-1"
+        protocol    = "0"
         cidr_blocks = ["0.0.0.0/0"]
     }
 }

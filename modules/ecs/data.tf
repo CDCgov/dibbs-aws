@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "ecs_task_assume_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["ecs-task.amazonaws.com"]
+      identifiers = ["ecs.amazonaws.com"]
     }
   }
 }

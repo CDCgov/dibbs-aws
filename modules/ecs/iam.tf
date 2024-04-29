@@ -10,7 +10,7 @@ resource "aws_iam_role" "task_role" {
         {
             "Action": "sts:AssumeRole",
             "Principal": {
-                "Service": "ecs.amazonaws.com"
+              "Service": "ecs.amazonaws.com"
             },
             "Effect": "Allow",
             "Sid": ""

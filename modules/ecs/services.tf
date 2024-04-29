@@ -1,6 +1,6 @@
 # Note:  The desired_count and launch_type can be changed
 resource "aws_ecs_service" "default"{
-    name            = "${var.env}-${var.service_name}"
+    name            = "${var.service_name}-${var.env}"
     cluster         = aws_ecs_cluster.ecs_cluster.name  
     #launch_type     = var.launch_type.type
     launch_type     = "FARGATE"
@@ -8,7 +8,7 @@ resource "aws_ecs_service" "default"{
     desired_count   = var.desired_count
 
     load_balancer {
-        container_name      = "${var.env}-${var.service_name}"
+        container_name      = "${var.service_name}-${var.env}"
         container_port      = var.container_port
         target_group_arn    = aws_lb_target_group.alb_target_grp.arn
     }
