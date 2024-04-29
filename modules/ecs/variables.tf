@@ -11,9 +11,9 @@ variable "container_port" {
 }
 
 variable "desired_count" {
-  type        = string
+  type        = number
   description = "The desired number of tasks to start with. Set this to 0 if using DAEMON Service type. (FARGATE does not support DAEMON Service type)"
-  default     = "1"
+  default     = 2
 }
 
 variable "ecs_cluster_name" {

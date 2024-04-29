@@ -2,8 +2,8 @@
 resource "aws_ecs_service" "default"{
     name            = "${var.env}-${var.service_name}"
     cluster         = aws_ecs_cluster.ecs_cluster.name  
-    launch_type     = var.launch_type.type
-    #launch_type     = "FARGATE"
+    #launch_type     = var.launch_type.type
+    launch_type     = "FARGATE"
     task_definition = aws_ecs_task_definition.default.arn
     desired_count   = var.desired_count
 
