@@ -4,26 +4,21 @@ resource "aws_ecs_service" "default"{
     cluster         = aws_ecs_cluster.ecs_cluster.name  
     #launch_type     = var.launch_type.type
     launch_type     = "FARGATE"
-    task_definition = aws_ecs_task_definition.default.arn
+    task_definition = aws_ecs_task_definition.default_app_task.arn
     desired_count   = var.desired_count
 
     load_balancer {
-        container_name      = "${var.service_name}-${var.env}"
+        container_name      = aws_ecs_task_definition.default_app_task.family
         container_port      = var.container_port
         target_group_arn    = aws_lb_target_group.alb_target_grp.arn
     }
 
-    depends_on = [aws_lb_target_group.alb_target_grp, aws_alb_listener.listener, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+    #depends_on = [aws_lb_target_group.alb_target_grp, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 
     # TODO: This may not be necessary if our client is handling networking
-    #dynamic "network_configuration" {
-    #    for_each = var.network_mode == "awsvpc" ? [1] : []
-    #    content {
-    #        subnets             = data.aws_subnets.subnets.ids
-    #        security_groups     = [aws_security_group.security_group.id]
-    #        
-    #        #Allows network calls inside and outside of AWS
-    #        assign_public_ip    = true
-    #    }
-    #}
+    network_configuration {
+        subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
+        assign_public_ip = true
+        security_groups  = ["${aws_security_group.service_sg.id}"]
+    }
 }

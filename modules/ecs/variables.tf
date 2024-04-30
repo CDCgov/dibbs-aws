@@ -1,3 +1,13 @@
+variable "app_task_family" {
+  description = "ECS Task Family"
+  type        = string
+}
+
+variable "app_task_name" {
+  description = "ECS Task Name"
+  type        = string
+}
+
 variable "application_load_balancer_name" {
   type        = string
   description = ""
@@ -5,9 +15,8 @@ variable "application_load_balancer_name" {
 }
 
 variable "container_port" {
-  type        = string
+  type        = number
   description = "ECS Container Port"
-  default     = "80"
 }
 
 variable "desired_count" {
@@ -26,6 +35,11 @@ variable "ecs_task_execution_role_name" {
   type          = string
   description   = "ECS TaskExecutionRole Name"
   default       = "dibbs-tracking-ecsTaskExecutionRole"
+}
+
+variable "ecr_repo_url" {
+  description = "ECR Repo URL"
+  type        = string
 }
 
 variable "env" {
@@ -96,6 +110,11 @@ variable "task_name" {
 ################################################################################
 # Network Configuration
 ################################################################################
+
+variable "availability_zones" {
+  description = "us-east-1 AZs"
+  type        = list(string)
+}
 
 variable "network_mode" {
     type        = string
