@@ -1,3 +1,8 @@
+variable "alb_sg" {
+  description = "ECS Application Load Balancer Security Group"
+  type        = string
+}
+
 variable "app_task_family" {
   description = "ECS Task Family"
   type        = string
@@ -12,6 +17,11 @@ variable "application_load_balancer_name" {
   type        = string
   description = ""
   default     = ""
+}
+
+variable "az_count" {
+  description = "Number of AZs to cover in a given region"
+  default = "2"
 }
 
 variable "container_port" {
