@@ -19,6 +19,6 @@ resource "aws_ecs_service" "default"{
     network_configuration {
         subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
         assign_public_ip = true
-        security_groups  = ["${aws_security_group.service_sg.id}"]
+        security_groups  = ["${aws_security_group.ecs_task_sg.id}"]
     }
 }
