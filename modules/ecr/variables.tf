@@ -11,10 +11,20 @@ variable "ecr_policy" {
 }
 
 variable "ecr_repo_name" {
-    type        = string
-    description = "ECR Repository Name"
-    #default     = "dibbs-ecr-repository"
+  type        = string
+  description = "ECR Repository Name"
+  #default     = "dibbs-ecr-repository"
 }
+
+variable "ecs_task_execution_role" {
+  type        = string
+  description = "ECS Task Execution Role"
+}
+
+/*variable "ecs_task_execution_role_name" {
+    type        = string
+    description = "ECS Task Execution Role Name"
+}*/
 
 variable "lifecycle_policy" {
   type        = string

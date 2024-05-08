@@ -1,21 +1,21 @@
 ################################################################################
-#### FHIR-CONVERTER SERVICE
+#### ingress SERVICE
 ################################################################################
 
-resource "aws_ecs_task_definition" "fhir" {
-    family                   = "fhir-app-task"
+resource "aws_ecs_task_definition" "ingress" {
+    family                   = "ingress-app-task"
     execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
     network_mode             = "awsvpc"
     requires_compatibilities = ["FARGATE"]
     cpu                      = var.fargate_cpu
     memory                   = var.fargate_memory
-    container_definitions    = data.template_file.fhir_converter_app.rendered
+    container_definitions    = data.template_file.ingress_app.rendered
 }
 
-resource "aws_ecs_service" "fhir" {
-    name            = "fhir-service"
+resource "aws_ecs_service" "ingress" {
+    name            = "ingress-service"
     cluster         = aws_ecs_cluster.main.id
-    task_definition = aws_ecs_task_definition.fhir.arn
+    task_definition = aws_ecs_task_definition.ingress.arn
     desired_count   = var.app_count
     launch_type     = "FARGATE"
     
@@ -23,7 +23,7 @@ resource "aws_ecs_service" "fhir" {
 
     # 50 percent must be healthy during deploys
     deployment_minimum_healthy_percent = 50
-    deployment_maximum_percent         = 200
+    deployment_maximum_percent         = 100
 
     network_configuration {
         security_groups  = [aws_security_group.ecs_tasks.id]
@@ -33,7 +33,7 @@ resource "aws_ecs_service" "fhir" {
 
     load_balancer {
         target_group_arn = aws_alb_target_group.main.id
-        container_name   = "fhir-converter-app"
+        container_name   = "ingress-app"
         container_port   = var.app_port
     }
 

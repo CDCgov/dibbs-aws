@@ -24,7 +24,7 @@
       logDriver = "awslogs",
       options = {
         "awslogs-region"        = var.region,
-        #"awslogs-group"         = aws_cloudwatch_log_group.ecs_logs.name,
+        #"awslogs-group"         = "{{ aws_cloudwatch_log_group.ecs_logs.name }}",
         "awslogs-stream-prefix" = "disaster-tracking",
       }
     }

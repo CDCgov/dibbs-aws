@@ -18,14 +18,13 @@ variable "aws_region" {
     description = "The AWS region things are created in"
 }
 
+variable "aws_cloudwatch_log_group" {
+    description = "AWS Cloudwatch Log Group for ECS"
+}
+
 variable "az_count" {
     description = "Number of AZs to cover in a given region"
     default = "2"
-}
-
-variable "ec2_task_execution_role_name" {
-    description = "ECS task execution role name"
-    default = "myEcsTaskExecutionRole"
 }
 
 variable "ecs_auto_scale_role_name" {
@@ -39,10 +38,15 @@ variable "ecs_cluster_name" {
   default       = "dibbs-ecs-cluster"
 }
 
-variable "ecs_task_execution_role_name" {
+variable "ecs_task_execution_role" {
   type          = string
   description   = "ECS TaskExecutionRole Name"
   default       = "dibbs-tracking-ecsTaskExecutionRole"
+}
+
+variable "ecs_task_execution_role_name" {
+    description = "ECS task execution role name"
+    default = "myEcsTaskExecutionRole"
 }
 
 variable "env" {
@@ -63,4 +67,12 @@ variable "fargate_cpu" {
 variable "fargate_memory" {
     description = "Fargate instance memory to provision (in MiB)"
     default = "2048"
+}
+
+# Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
+# See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
+# In addition, if you want to delete log groups set "skip_destroy" to false
+variable "retention_in_days" {
+    type                = number
+    description         = 30
 }

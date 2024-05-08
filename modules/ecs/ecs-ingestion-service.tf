@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "ingestion" {
     cpu                      = var.fargate_cpu
     memory                   = var.fargate_memory
     container_definitions    = data.template_file.ingestion_app.rendered
+    task_role_arn            =
 }
 
 resource "aws_ecs_service" "ingestion" {
