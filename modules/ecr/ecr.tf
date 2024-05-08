@@ -9,9 +9,9 @@ resource "aws_ecr_repository" "repo" {
   }
 }
 
-data "aws_caller_identity" "current" {}
+#data "aws_caller_identity" "current" {}
 
-data "aws_regions" "regions" {}
+#data "aws_regions" "regions" {}
 
 resource "aws_ecr_replication_configuration" "dibbs_ecr_replication_config" {
     count = var.create && var.create_registry_replication_configuration ? 1 : 0
@@ -56,3 +56,19 @@ resource "aws_ecr_repository_policy" "main" {
   policy     = var.ecr_policy
   count      = length(var.ecr_policy) > 0 ? 1 : 0
 }
+
+/*resource "null_resource" "build_and_push_image" {
+  provisioner "local-exec" {
+    command = <<EOF
+      # Build Docker image
+      docker build -t my-ecr-repo-image:latest .
+
+      # Login to Amazon ECR using AWS CLI
+      #aws ecr get-login-password --region ${var.aws_region} | docker login --username AWS --password-stdin ${aws_ecr_repository.my_repository.repository_url}
+
+      # Tag and push Docker image to Amazon ECR
+      docker tag my-ecr-repo-image:latest ${aws_ecr_repository.my_repository.repository_url}:latest
+      docker push ${aws_ecr_repository.my_repository.repository_url}:latest
+    EOF
+  }
+}*/

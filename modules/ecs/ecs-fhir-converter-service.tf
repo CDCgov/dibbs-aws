@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "fhir" {
     cpu                      = var.fargate_cpu
     memory                   = var.fargate_memory
     container_definitions    = data.template_file.fhir_converter_app.rendered
+    task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 }
 
 resource "aws_ecs_service" "fhir" {

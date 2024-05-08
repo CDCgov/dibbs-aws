@@ -10,6 +10,7 @@ resource "aws_ecs_task_definition" "message_parser" {
     cpu                      = var.fargate_cpu
     memory                   = var.fargate_memory
     container_definitions    = data.template_file.message_parser_app.rendered
+    task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 }
 
 resource "aws_ecs_service" "message-parser" {
