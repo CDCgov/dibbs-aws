@@ -1,22 +1,33 @@
-resource "aws_ecr_repository" "repo" {
-  name                  = var.ecr_repo_name 
-  image_tag_mutability  = var.repository_image_tag_mutability
-  tags                  = merge(local.tags, var.tags)
-  
+resource "aws_ecr_repository" "${local.repo_name}" {
+# TODO: Uncomment after reinstalling VSC.  For some reason it deletes code with the $$.  
+#resource "aws_ecr_repository""$${local.repo_name}" {
+  for_each             = local.images
+  name                 = "${local.repo_name}/${local.images}"
+  image_tag_mutability = var.repository_image_tag_mutability
+  tags                 = merge(local.tags, var.tags)
+
   # Optionally, you can add more configurations like image scanning
   image_scanning_configuration {
     scan_on_push = true
   }
 }
 
-#data "aws_caller_identity" "current" {}
+/*resource "aws_ecr_repository" "message_parser_repo" {
+  for_each             = local.images
+  name                 = "message_parser/ghcr.io/cdcgov/phdi/message-parser:v1.2.11"
+  image_tag_mutability = var.repository_image_tag_mutability
+  tags                 = merge(local.tags, var.tags)
 
-#data "aws_regions" "regions" {}
+  # Optionally, you can add more configurations like image scanning
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}*/
 
 resource "aws_ecr_replication_configuration" "dibbs_ecr_replication_config" {
-    count = var.create && var.create_registry_replication_configuration ? 1 : 0
+  count = var.create && var.create_registry_replication_configuration ? 1 : 0
 
-    replication_configuration {
+  replication_configuration {
 
     dynamic "rule" {
       for_each = var.registry_replication_rules

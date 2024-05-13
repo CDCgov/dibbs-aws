@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "ecs_task_assume_role_policy" {
 ##########################
 
 data "template_file" "fhir_converter_app" {
-    template = file("./templates/ecs/fhir_converter_app.json.tpl")
+    template = file("./modules/templates/ecs/fhir_converter_app.json.tpl")
 
     vars = {
         app_image      = var.app_image
@@ -51,7 +51,7 @@ data "template_file" "fhir_converter_app" {
 }
 
 data "template_file" "ingestion_app" {
-    template = file("./templates/ecs/ingestion_app.json.tpl")
+    template = file("./modules/templates/ecs/ingestion_app.json.tpl")
 
     vars = {
         app_image      = var.app_image
@@ -63,7 +63,7 @@ data "template_file" "ingestion_app" {
 }
 
 data "template_file" "ingress_app" {
-    template = file("./templates/ecs/ingress_app.json.tpl")
+    template = file("./modules/templates/ecs/ingress_app.json.tpl")
 
     vars = {
         app_image      = var.app_image
@@ -75,7 +75,7 @@ data "template_file" "ingress_app" {
 }
 
 data "template_file" "message_parser_app" {
-    template = file("./templates/ecs/message_parser_app.json.tpl")
+    template = file("./modules/templates/ecs/message_parser_app.json.tpl")
 
     vars = {
         app_image      = var.app_image
@@ -86,7 +86,7 @@ data "template_file" "message_parser_app" {
 }
 
 data "template_file" "orchestration_app" {
-    template = file("./templates/ecs/orchestration_app.json.tpl")
+    template = file("./modules/templates/ecs/orchestration_app.json.tpl")
 
     vars = {
         app_image      = var.app_image

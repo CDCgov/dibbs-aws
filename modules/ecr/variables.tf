@@ -11,20 +11,15 @@ variable "ecr_policy" {
 }
 
 variable "ecr_repo_name" {
-  type        = string
+  type        = list(string)
   description = "ECR Repository Name"
-  #default     = "dibbs-ecr-repository"
+  default     = ["fhir-converter", "ingestion", "message-parser", "orchestration"]
 }
 
 variable "ecs_task_execution_role" {
   type        = string
   description = "ECS Task Execution Role"
 }
-
-/*variable "ecs_task_execution_role_name" {
-    type        = string
-    description = "ECS Task Execution Role Name"
-}*/
 
 variable "lifecycle_policy" {
   type        = string
@@ -58,4 +53,28 @@ variable "tags" {
   type        = map(any)
   description = "Additional tags to apply."
   default     = {}
+}
+
+######################
+### DOCKER PROVIDER ##
+######################
+
+variable "ecr_address" {
+  type        = string
+  description = "Elastic Container Registry Address"
+  default     = "https://339712971032.dkr.ecr.us-east-1.amazonaws.com"
+}
+
+######################
+###### GHCR INFO #####
+######################
+
+variable "ghcr_username" {
+  type        = string
+  description = "GitHub Container Registry username."
+}
+
+variable "ghcr_token" {
+  type        = string
+  description = "GitHub Container Registry token."
 }
