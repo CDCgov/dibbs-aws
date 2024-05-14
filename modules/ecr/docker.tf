@@ -1,22 +1,14 @@
 # Pull images from GitHub Container Registry and push to Azure Container Registry
 locals {
-  images = toset([
-    "fhir-converter",
-    "ingestion",
-    "message-parser",
-    "orchestration",
-  ])
 
-  # NOTE: The version may need to be changed with updates
-  phdi_version = "v1.1.7"
 }
 
 resource "time_static" "now" {}
 
 resource "docker_registry_image" "my_docker_image" {
   for_each      = local.images
-  name          = "${aws_ecr_repository.repo.repository_url}/phdi/${each.key}:${local.phdi_version}"
-  depends_on    = [docker_tag.tag_for_aws]
+  name          = "${aws_ecr_repository.repo[each.key].repository_url}/phdi/${each.key}:${local.phdi_version}"
+  depends_on    = [docker_tag.tag_for_aws, aws_ecr_repository.repo]
   keep_remotely = true
 
   triggers = {
@@ -35,7 +27,7 @@ resource "docker_image" "ghcr_image" {
 resource "docker_tag" "tag_for_aws" {
   for_each     = local.images
   source_image = docker_image.ghcr_image[each.key].name
-  target_image = "${aws_ecr_repository.repo.repository_url}/phdi/${each.key}:${local.phdi_version}"
+  target_image = "${aws_ecr_repository.repo[each.key].repository_url}/phdi/${each.key}:${local.phdi_version}"
 }
 
 

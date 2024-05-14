@@ -1,8 +1,6 @@
-data "aws_ecr_repository" "default" {
-  name = var.ecr_repo_name
-}
-
 data "aws_iam_policy_document" "ecr_policy" {
+
+  for_each = var.ecr_repo_name
   statement {
     actions = [
       "ecr:GetAuthorizationToken",
@@ -10,7 +8,8 @@ data "aws_iam_policy_document" "ecr_policy" {
       "ecr:GetDownloadUrlForLayer",
       "ecr:BatchGetImage",
     ]
-    resources = ["arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster"]
+
+    resources = ["arn:aws:ecs:us-east-1:339712971032:cluster/${each.value}}"]
   }
 }
 

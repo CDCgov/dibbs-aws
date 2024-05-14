@@ -1,8 +1,9 @@
-resource "aws_ecr_repository" "${local.repo_name}" {
+#resource "aws_ecr_repository" "${local.repo_name}" {
 # TODO: Uncomment after reinstalling VSC.  For some reason it deletes code with the $$.  
-#resource "aws_ecr_repository""$${local.repo_name}" {
-  for_each             = local.images
-  name                 = "${local.repo_name}/${local.images}"
+#resource "aws_ecr_repository" "$${local.repo_name}"{
+resource "aws_ecr_repository" "repo" {
+  for_each             = var.ecr_repo_name
+  name                 = each.key
   image_tag_mutability = var.repository_image_tag_mutability
   tags                 = merge(local.tags, var.tags)
 
@@ -56,16 +57,27 @@ resource "aws_ecr_replication_configuration" "dibbs_ecr_replication_config" {
 }
 
 resource "aws_ecr_lifecycle_policy" "main" {
-  repository = aws_ecr_repository.repo.name
+  for_each   = var.ecr_repo_name
+  repository = aws_ecr_repository.repo[each.key].name
   policy     = local.policy
 }
 
 # Only create the resource if policy is specified. By Default AWS does not
 # attach a ECR policy to a repository.
 resource "aws_ecr_repository_policy" "main" {
-  repository = aws_ecr_repository.repo.name
-  policy     = var.ecr_policy
-  count      = length(var.ecr_policy) > 0 ? 1 : 0
+  for_each   = var.ecr_repo_name
+  repository = "${aws_ecr_repository.repo[each.key].name}-repo"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid       = "AllowPullAccess"
+        Effect    = "Allow",
+        Principal = "*",
+        Action    = "ecr:Get*",
+      },
+    ]
+  })
 }
 
 /*resource "null_resource" "build_and_push_image" {

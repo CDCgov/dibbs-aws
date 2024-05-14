@@ -1,7 +1,11 @@
 module "ecrRepo" {
   source = "./modules/ecr"
 
-  ecr_repo_name           = local.ecr_repo_name
+  ecr_repo_name = {
+    for key, value in local.ecr_repo_name :
+    key => "${value}-repo"
+  }
+
   ecs_task_execution_role = module.ecs.ecs_task_execution_role
 
   ghcr_token    = local.ghcr_token

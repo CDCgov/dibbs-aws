@@ -4,21 +4,33 @@ variable "create" {
   default     = true
 }
 
-variable "ecr_policy" {
+/*variable "ecr_policy" {
   type        = string
   description = "ECR IAM permission policy for external access."
   default     = ""
-}
+}*/
 
 variable "ecr_repo_name" {
-  type        = list(string)
   description = "ECR Repository Name"
-  default     = ["fhir-converter", "ingestion", "message-parser", "orchestration"]
+
 }
+
 
 variable "ecs_task_execution_role" {
   type        = string
   description = "ECS Task Execution Role"
+}
+
+variable "images" {
+  type        = set(string)
+  description = "ECR image for DIBBS applications"
+  default     = []
+  /*default = {
+    image1 = "fhir-converter"
+    image2 = "ingestion",
+    image3 = "message-parser"
+    image4 = "orchestration"
+  }*/
 }
 
 variable "lifecycle_policy" {
