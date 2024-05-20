@@ -22,15 +22,14 @@ variable "ecs_task_execution_role" {
 }
 
 variable "images" {
-  type        = set(string)
   description = "ECR image for DIBBS applications"
-  default     = []
-  /*default = {
-    image1 = "fhir-converter"
-    image2 = "ingestion",
-    image3 = "message-parser"
-    image4 = "orchestration"
-  }*/
+  type        = set(string)
+  default = [
+    "fhir-converter",
+    "ingestion",
+    "message-parser",
+    "orchestration"
+  ]
 }
 
 variable "lifecycle_policy" {

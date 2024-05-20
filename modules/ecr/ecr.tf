@@ -13,18 +13,6 @@ resource "aws_ecr_repository" "repo" {
   }
 }
 
-/*resource "aws_ecr_repository" "message_parser_repo" {
-  for_each             = local.images
-  name                 = "message_parser/ghcr.io/cdcgov/phdi/message-parser:v1.2.11"
-  image_tag_mutability = var.repository_image_tag_mutability
-  tags                 = merge(local.tags, var.tags)
-
-  # Optionally, you can add more configurations like image scanning
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-}*/
-
 resource "aws_ecr_replication_configuration" "dibbs_ecr_replication_config" {
   count = var.create && var.create_registry_replication_configuration ? 1 : 0
 
@@ -64,7 +52,7 @@ resource "aws_ecr_lifecycle_policy" "main" {
 
 # Only create the resource if policy is specified. By Default AWS does not
 # attach a ECR policy to a repository.
-resource "aws_ecr_repository_policy" "main" {
+/*resource "aws_ecr_repository_policy" "main" {
   for_each   = var.ecr_repo_name
   repository = "${aws_ecr_repository.repo[each.key].name}-repo"
   policy = jsonencode({
@@ -74,11 +62,14 @@ resource "aws_ecr_repository_policy" "main" {
         Sid       = "AllowPullAccess"
         Effect    = "Allow",
         Principal = "*",
-        Action    = "ecr:Get*",
+        Action    = "ecr:*"
       },
     ]
   })
-}
+}*/
+
+
+
 
 /*resource "null_resource" "build_and_push_image" {
   provisioner "local-exec" {

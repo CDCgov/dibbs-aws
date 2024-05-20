@@ -16,18 +16,13 @@ module "ecrRepo" {
 module "ecs" {
   source = "./modules/ecs"
 
-  /*app_task_family        = local.app_task_family
-  app_task_name            = local.app_task_name
-  availability_zones       = local.availability_zones
-  container_port           = local.container_port
-  ecr_repo_url             = module.ecrRepo.repository_url*/
+  public_subnet_ids  = module.vpc.public_subnets
+  private_subnet_ids = module.vpc.private_subnets
+  retention_in_days  = local.retention_in_days
+  vpc_id             = module.vpc.vpc_id
+  cidr               = module.vpc.vpc_cidr_block
 
-  #public_subnet_ids        = module.vpc.public_subnets
-  #private_subnet_ids       = module.vpc.private_subnets
-  retention_in_days = local.retention_in_days
-  #vpc_id                   = module.vpc.vpc_id
 
-  #alb_sg                   = local.alb_sg
   aws_region               = local.aws_region
   aws_cloudwatch_log_group = local.aws_cloudwatch_log_group
 }

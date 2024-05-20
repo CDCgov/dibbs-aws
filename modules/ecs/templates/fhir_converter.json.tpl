@@ -1,16 +1,16 @@
 [
     {
-    "name": "ingestion-app",
-    "image": "ghcr.io/cdcgov/phdi/ingestion:v1.2.11",
+    "name": "fhir-converter",
+    "image": "ghcr.io/cdcgov/phdi/fhir-converter:v1.2.11",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "ecs/ecs-logs",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ecs"
+          "awslogs-group": "ecs-cloudwatch-logs",
+          "awslogs-region": "${aws_region}",
+          "awslogs-stream-prefix": "ecs-log-stream"
         }
     },
     "portMappings": [

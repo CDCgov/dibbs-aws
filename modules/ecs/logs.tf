@@ -1,5 +1,4 @@
-resource "aws_cloudwatch_log_group" "ecs_logs" {
-  name              = "/ecs/dibbs-ecs-log-group"
+resource "aws_cloudwatch_log_group" "ecs_cloudwatch_logs" {
+  name              = "/ecs-cloudwatch-logs"
   retention_in_days = var.retention_in_days
-  #tags              = var.tags
 }
