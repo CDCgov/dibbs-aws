@@ -1,6 +1,6 @@
 variable "app_count" {
   description = "Number of docker containers to run"
-  default     = 3
+  default     = 2
 }
 
 variable "app_image" {
@@ -10,7 +10,33 @@ variable "app_image" {
 
 variable "app_port" {
   description = "Port exposed by the docker image to redirect traffic to"
+  type        = number
   default     = 8080
+}
+
+variable "app_service_name" {
+  description = "ECS Service Name"
+  type        = string
+}
+
+variable "app_task_name" {
+  description = "ECS Task Name"
+  type        = string
+}
+
+variable "application_load_balancer_name" {
+  description = "ALB Name"
+  type        = string
+}
+
+variable "availability_zones" {
+  description = "us-east-1 AZs"
+  type        = list(string)
+}
+
+variable "container_port" {
+  description = "Container Port"
+  type        = number
 }
 
 variable "aws_region" {
@@ -24,6 +50,11 @@ variable "aws_cloudwatch_log_group" {
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
   default     = "2"
+}
+
+variable "ecs_app_task_family" {
+  description = "ECS Task Family"
+  type        = string
 }
 
 variable "ecs_auto_scale_role_name" {
@@ -54,10 +85,19 @@ variable "env" {
   default     = "dev"
 }
 
+variable "ecr_repo_url" {
+  type        = list(string)
+  description = "ECR repository urls"
+}
+
+variable "ecr_repo_name" {
+  type        = set(string)
+  description = "ECR repository name(s)"
+}
+
 variable "health_check_path" {
   default = "/health_checks"
 }
-
 
 variable "fargate_cpu" {
   description = "Fargate instance CPU units to provision (1 vCPU = 1024 CPU units)"
@@ -69,7 +109,10 @@ variable "fargate_memory" {
   default     = "2048"
 }
 
-
+variable "target_group_name" {
+  description = "ALB Target Group Name"
+  type        = string
+}
 
 # Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
 # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
