@@ -9,8 +9,8 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "ecs-cloudwatch-logs",
-          "awslogs-region": "${aws_region}",
-          "awslogs-stream-prefix": "ecs-log-stream"
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
         }
     },
     "portMappings": [
