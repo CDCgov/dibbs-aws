@@ -1,3 +1,14 @@
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
 ##############################################
 ####### DATA IAM PERMISSIONS FOR ECS TO ######
 ############# INTERACT WITH ECR ##############
@@ -17,8 +28,8 @@ data "aws_iam_policy_document" "ecr_and_ecs_permissions_policy_document" {
       "ecr:SetRepositoryPolicy",
     ]
     resources = [
-      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster",
-      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*"
+      "arn:aws:ecs:us-east-1:339712971032.dkr.ecr.us-east-1.amazonaws.com/fhir-converter",
+      # "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*"
     ]
   }
 }
@@ -41,18 +52,6 @@ data "aws_iam_policy_document" "ecs_task_assume_role_policy" {
 ##########################
 #### DATA TEMPLATES ######
 ##########################
-
-data "template_file" "fhir_converter" {
-  template = file("./modules/ecs/templates/fhir_converter.json.tpl")
-  vars = {
-    app_image                = var.app_image
-    app_port                 = var.app_port
-    fargate_cpu              = var.fargate_cpu
-    fargate_memory           = var.fargate_memory
-    aws_region               = var.aws_region
-    aws_cloudwatch_log_group = var.aws_cloudwatch_log_group
-  }
-}
 
 data "template_file" "fhir_converter_app" {
   template = file("./modules/ecs/templates/fhir_converter_app.json.tpl")

@@ -1,9 +1,9 @@
 resource "aws_alb" "main" {
-  name               = "dibbs-ecs-alb"
+  name               = var.application_load_balancer_name
   internal           = false
   load_balancer_type = "application"
   subnets            = flatten([var.public_subnet_ids])
-  security_groups    = [aws_security_group.alb.id]
+  security_groups    = [aws_security_group.alb_sg.id]
 
   enable_deletion_protection = false
 
@@ -13,7 +13,7 @@ resource "aws_alb" "main" {
 }
 
 resource "aws_alb_target_group" "main" {
-  name        = "dibbs-ecs-target-group"
+  name        = "dibbs-ecs-alb-target-group"
   port        = var.app_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -31,13 +31,13 @@ resource "aws_alb_target_group" "main" {
 }
 
 # Redirect all traffic from the ALB to the target group
-resource "aws_alb_listener" "front_end" {
-  load_balancer_arn = aws_alb.main.id
+resource "aws_alb_listener" "listener" {
+  load_balancer_arn = aws_alb.main.arn
   port              = var.app_port
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.main.id
+    target_group_arn = aws_alb_target_group.main.arn
     type             = "forward"
   }
 }

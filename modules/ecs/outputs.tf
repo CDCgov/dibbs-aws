@@ -3,13 +3,13 @@ output "alb_hostname" {
 }
 
 output "ecs_task_execution_role" {
-  value = "{aws_iam_role.ecs_task_execution_role}"
+  value = aws_iam_role.ecs_task_execution_role
 }
 
 output "ecs_task_execution_role_name" {
-  value = "{aws_iam_role.ecs_task_execution_role}.name"
+  value = aws_iam_role.ecs_task_execution_role
 }
 
-output "ecr_repo_name" {
-  value = "{aws_ecr_repository.ecr_repo_name}.name"
+output "ecs_cluster_arn" {
+  value = aws_ecs_cluster.dibbs_app_cluster.arn
 }

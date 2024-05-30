@@ -10,10 +10,21 @@ variable "create" {
   default     = ""
 }*/
 
-variable "ecr_repo_name" {
-  description = "ECR Repository Name"
+# variable "ecr_repo_name" {
+#   description = "ECR Repository Name"
+#   type        = set(string)
+# }
 
+variable "ecr_repo_name" {
+  type = set(string)
+  default = [
+    "fhir-converter",
+    "ingestion",
+    "message-parser",
+    "orchestration"
+  ]
 }
+
 
 
 variable "ecs_task_execution_role" {
@@ -23,13 +34,13 @@ variable "ecs_task_execution_role" {
 
 variable "images" {
   description = "ECR image for DIBBS applications"
-  type        = set(string)
-  default = [
-    "fhir-converter",
-    "ingestion",
-    "message-parser",
-    "orchestration"
-  ]
+  type        = map(string)
+  default = {
+    "fhir-converter" = "339712971032.dkr.us-east-1.amazonaws.com/fhir-converter"
+    "ingestion"      = "339712971032.dkr.us-east-1.amazonaws.com/ingestion"
+    "message-parser" = "339712971032.dkr.ecr.us-east-1.amazonaws.com/message-parser"
+    "orchestration"  = "339712971032.dkr.ecr.us-east-1.amazonaws.com/orchestration"
+  }
 }
 
 variable "lifecycle_policy" {

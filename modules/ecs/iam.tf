@@ -1,7 +1,7 @@
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "${var.ecs_task_execution_role_name}-${var.env}"
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
-}
+# resource "aws_iam_role" "ecs_task_execution_role" {
+#   name               = "${var.ecs_task_execution_role_name}-${var.env}"
+#   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
+# }
 
 ##############################################
 ##### IAM PERMISSIONS FOR ECS & ECS AUTH #####
@@ -15,7 +15,21 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attach
 resource "aws_iam_policy" "ecr_policy" {
   name        = "ecr-access-policy"
   description = "Policy for ECS tasks to access ECR"
-  policy      = data.aws_iam_policy_document.ecr_and_ecs_permissions_policy_document.json
+  # policy      = data.aws_iam_policy_document.ecr_and_ecs_permissions_policy_document.json
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+          "ecr:BatchCheckLayerAvailability"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_attachment" {
@@ -43,15 +57,19 @@ data "aws_iam_policy_document" "ecs_task_definition_execution_policy" {
       "ec2:DescribeInstances",
       "ec2:AttachNetworkInterface",
     ]
-    resources = ["*"]
+    resources = [
+      "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev",
+      "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev/*",
+      "*"
+    ]
   }
 }
 
 # Create IAM policy for ECS task execution role
-resource "aws_iam_policy" "ecs_task_definition_execution_policy" {
-  name   = "ecs-task-definition-execution-policy"
-  policy = data.aws_iam_policy_document.ecs_task_definition_execution_policy.json
-}
+# resource "aws_iam_policy" "ecs_task_definition_execution_policy" {
+#   name   = "ecs-task-definition-execution-policy"
+#   policy = data.aws_iam_policy_document.ecs_task_definition_execution_policy.json
+# }
 
 # Create IAM role for ECS task execution
 resource "aws_iam_role" "ecs_task_definition_execution_role" {
@@ -68,7 +86,7 @@ resource "aws_iam_role" "ecs_task_definition_execution_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_task_definition_execution_policy_attachment" {
-  role       = aws_iam_role.ecs_task_definition_execution_role.name
-  policy_arn = aws_iam_policy.ecs_task_definition_execution_policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "ecs_task_definition_execution_policy_attachment" {
+#   role       = aws_iam_role.ecs_task_definition_execution_role.name
+#   policy_arn = aws_iam_policy.ecs_task_definition_execution_policy.arn
+# }
