@@ -2,8 +2,8 @@
 #### FHIR-CONVERTER-APP (FILTER CONTAINER)
 ################################################################################
 
-resource "aws_ecs_task_definition" "fhir_converter_task" {
-  family                   = "fhir-converter-task"
+resource "aws_ecs_task_definition" "fhir_converter" {
+  family                   = "fhir-converter"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -16,7 +16,7 @@ resource "aws_ecs_task_definition" "fhir_converter_task" {
 resource "aws_ecs_service" "fhir_converter" {
   name            = "fhir-converter"
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
-  task_definition = aws_ecs_task_definition.fhir_converter_task.arn
+  task_definition = aws_ecs_task_definition.fhir_converter.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
@@ -34,7 +34,7 @@ resource "aws_ecs_service" "fhir_converter" {
 
   load_balancer {
     target_group_arn = aws_alb_target_group.main.arn
-    container_name   = aws_ecs_task_definition.fhir_converter_task.family
+    container_name   = aws_ecs_task_definition.fhir_converter.family
     container_port   = var.app_port
   }
 
