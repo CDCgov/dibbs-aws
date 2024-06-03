@@ -26,4 +26,6 @@ locals {
   target_group_name   = "dibbs-aws-alb-tg"
   ecs_app_task_family = "dibbs-aws-ecs-task-family"
 
+
+
 }
