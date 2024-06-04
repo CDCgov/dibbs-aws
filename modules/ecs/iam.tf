@@ -1,7 +1,7 @@
-# resource "aws_iam_role" "ecs_task_execution_role" {
-#   name               = "${var.ecs_task_execution_role_name}-${var.env}"
-#   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
-# }
+resource "aws_iam_role" "ecs_task_execution_role" {
+  name               = var.ecs_task_execution_role_name
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
 
 ##############################################
 ##### IAM PERMISSIONS FOR ECS & ECS AUTH #####
@@ -58,18 +58,13 @@ data "aws_iam_policy_document" "ecs_task_definition_execution_policy" {
       "ec2:AttachNetworkInterface",
     ]
     resources = [
+      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs-cloudwatch-logs:*",
       "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev",
       "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev/*",
       "*"
     ]
   }
 }
-
-# Create IAM policy for ECS task execution role
-# resource "aws_iam_policy" "ecs_task_definition_execution_policy" {
-#   name   = "ecs-task-definition-execution-policy"
-#   policy = data.aws_iam_policy_document.ecs_task_definition_execution_policy.json
-# }
 
 # Create IAM role for ECS task execution
 resource "aws_iam_role" "ecs_task_definition_execution_role" {
@@ -85,8 +80,3 @@ resource "aws_iam_role" "ecs_task_definition_execution_role" {
     }]
   })
 }
-
-# resource "aws_iam_role_policy_attachment" "ecs_task_definition_execution_policy_attachment" {
-#   role       = aws_iam_role.ecs_task_definition_execution_role.name
-#   policy_arn = aws_iam_policy.ecs_task_definition_execution_policy.arn
-# }

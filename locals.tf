@@ -23,9 +23,8 @@ locals {
   retention_in_days            = "30"
   aws_cloudwatch_log_group     = "/ecs-cloudwatch-logs"
 
-  target_group_name   = "dibbs-aws-alb-tg"
+  target_group_name   = "dibbs-ecs-alb-target-group" #changed from dibbs-aws-alb-tg
   ecs_app_task_family = "dibbs-aws-ecs-task-family"
-
 
 
 }
