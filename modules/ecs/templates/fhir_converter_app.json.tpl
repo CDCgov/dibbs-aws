@@ -1,7 +1,7 @@
 [
     {
     "name": "fhir-converter",
-    "image": "ghcr.io/cdcgov/phdi/fhir-converter:v1.4.1",
+    "image": "ghcr.io/cdcgov/phdi/fhir-converter:v1.4.4",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",

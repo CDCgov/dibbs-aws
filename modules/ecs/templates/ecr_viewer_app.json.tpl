@@ -1,14 +1,14 @@
 [
-    {
-    "name": "message-parser-app",
-    "image": "ghcr.io/cdcgov/phdi/message-parser:v1.2.11",
+  {
+    "name": "ecr-viewer-app",
+    "image": "ghcr.io/cdcgov/phdi/ecr-viewer:v1.4.4",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "ecs-cloudwatch-logs",
+          "awslogs-group": "/ecs-cloudwatch-logs",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }

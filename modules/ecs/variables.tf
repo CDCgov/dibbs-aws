@@ -1,6 +1,7 @@
 variable "app_count" {
   description = "Number of docker containers to run"
-  default     = 2
+  type        = number
+  default     = 1
 }
 
 variable "app_image" {
@@ -96,7 +97,7 @@ variable "ecr_repo_name" {
 }
 
 variable "health_check_path" {
-  default = "/health_checks"
+  default = "/fhir-converter"
 }
 
 variable "fargate_cpu" {

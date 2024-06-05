@@ -14,28 +14,30 @@ resource "aws_ecs_task_definition" "orchestration" {
 
 resource "aws_ecs_service" "orchestration" {
   name            = "orchestration"
-  cluster         = aws_ecs_cluster.main.id
+  cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = aws_ecs_task_definition.orchestration.arn
   desired_count   = var.app_count
   launch_type     = "FARGATE"
 
-  scheduling_strategy = "REPLICA"
-
   # 50 percent must be healthy during deploys
   deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 100
+  deployment_maximum_percent         = 200
+
+  deployment_circuit_breaker {
+    enable   = true
+    rollback = true
+  }
+
+  deployment_controller {
+    type = "ECS"
+  }
 
   network_configuration {
-    security_groups  = [aws_security_group.ecs_tasks.id]
-    subnets          = flatten([var.private_subnet_ids])
+    security_groups  = ["${aws_security_group.service_security_group.id}"]
+    subnets          = var.public_subnet_ids
     assign_public_ip = true
   }
 
-  load_balancer {
-    target_group_arn = aws_alb_target_group.main.id
-    container_name   = "orchestration-app"
-    container_port   = var.app_port
-  }
-
-  depends_on = [aws_alb_listener.front_end, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+  # aws_alb_listener.listener_80, aws_alb_listener.listener_8080
+  depends_on = [aws_alb_listener.listener_80, aws_alb_listener.listener_8080, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 }

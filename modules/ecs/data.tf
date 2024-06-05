@@ -77,8 +77,8 @@ data "template_file" "ingestion_app" {
   }
 }
 
-data "template_file" "ingress_app" {
-  template = file("./modules/ecs/templates/ingress_app.json.tpl")
+data "template_file" "validation_app" {
+  template = file("./modules/ecs/templates/validation_app.json.tpl")
 
   vars = {
     app_image      = var.app_image
@@ -89,8 +89,8 @@ data "template_file" "ingress_app" {
   }
 }
 
-data "template_file" "message_parser_app" {
-  template = file("./modules/ecs/templates/message_parser_app.json.tpl")
+data "template_file" "orchestration_app" {
+  template = file("./modules/ecs/templates/orchestration_app.json.tpl")
 
   vars = {
     app_image      = var.app_image
@@ -100,8 +100,8 @@ data "template_file" "message_parser_app" {
   }
 }
 
-data "template_file" "orchestration_app" {
-  template = file("./modules/ecs/templates/orchestration_app.json.tpl")
+data "template_file" "ecr_viewer_app" {
+  template = file("./modules/ecs/templates/ecr_viewer_app.json.tpl")
 
   vars = {
     app_image      = var.app_image
