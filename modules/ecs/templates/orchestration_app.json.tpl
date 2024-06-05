@@ -18,6 +18,24 @@
         "containerPort": ${app_port},
         "hostPort": ${app_port}
       }
+    ],
+    "environment": [
+      {
+      "name": "INGESTION_URL",
+      "value": "https://cdcgov.github.io/ingestion"
+      },
+      {
+      "name": "VALIDATION_URL",
+      "value": "https://cdcgov.github.io/validate"
+      },
+      {
+      "name": "MESSAGE_PARSER_URL",
+      "value": "https://cdcgov.github.io/message-parser"
+      },
+      {
+      "name": "FHIR_CONVERTER_URL",
+      "value": "https://cdcgov.github.io/fhir-converter"
+      }
     ]
   }
 ]
