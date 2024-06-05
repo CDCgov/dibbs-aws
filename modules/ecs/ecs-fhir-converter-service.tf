@@ -45,7 +45,7 @@ resource "aws_ecs_service" "fhir_converter" {
 
   network_configuration {
     security_groups  = ["${aws_security_group.service_security_group.id}"]
-    subnets          = flatten([var.public_subnet_ids])
+    subnets          = var.public_subnet_ids
     assign_public_ip = true
   }
 
@@ -53,7 +53,7 @@ resource "aws_ecs_service" "fhir_converter" {
   depends_on = [aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 }
 
-resource "aws_subnet_association" "aws_sub_assoc" {
-  subnet_id = flatten([var.public_subnet_ids])
-  vpc_id    = var.vpc_id.id
-}
+# resource "aws_subnet_association" "aws_sub_assoc" {
+#   subnet_id = var.public_subnet_ids.id
+#   vpc_id    = var.vpc_id.id
+# }

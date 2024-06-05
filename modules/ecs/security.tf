@@ -10,36 +10,18 @@ resource "aws_security_group" "alb_sg" {
     to_port     = var.app_port
     cidr_blocks = ["${var.cidr}"]
   }
+  #matches the load balancer listener rule (without unreachable)
+  ingress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["${var.cidr}"]
+  }
 
   egress {
     protocol    = "tcp"
-    from_port   = 443
-    to_port     = 443
+    from_port   = 8080 #changed from https port 443
+    to_port     = 8080 #changed from https port 443
     cidr_blocks = ["${var.cidr}"]
   }
 }
-
-# Traffic to the ECS cluster should only come from the ALB
-# resource "aws_security_group" "service_security_group" {
-#   name        = "dibbs-aws-ecs-tasks-security-group"
-#   description = "allow inbound access from the ALB only"
-#   vpc_id      = var.vpc_id
-
-#   ingress {
-#     # protocol = "tcp"
-#     # from_port = var.app_port
-#     # to_port   = var.app_port
-#     from_port = 0
-#     to_port   = 0
-#     protocol  = "-1"
-#     # cidr_blocks     = ["${var.cidr}"]
-#     security_groups = [aws_security_group.alb_sg.id]
-#   }
-
-#   egress {
-#     protocol    = "-1"
-#     from_port   = 0
-#     to_port     = 0
-#     cidr_blocks = ["${var.cidr}"]
-#   }
-# }
