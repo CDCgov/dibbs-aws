@@ -3,7 +3,7 @@
 ################################################################################
 
 resource "aws_ecs_task_definition" "orchestration" {
-  family                   = "orchestration-app-task"
+  family                   = "orchestration-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
@@ -39,5 +39,5 @@ resource "aws_ecs_service" "orchestration" {
   }
 
   # aws_alb_listener.listener_80, aws_alb_listener.listener_8080
-  depends_on = [aws_alb_listener.listener_80, aws_alb_listener.listener_8080, aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+  depends_on = [aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
 }

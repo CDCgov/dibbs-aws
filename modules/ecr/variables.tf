@@ -20,7 +20,8 @@ variable "ecr_repo_name" {
   default = [
     "fhir-converter",
     "ingestion",
-    "message-parser",
+    "ecr-viewer",
+    "validation",
     "orchestration"
   ]
 }
