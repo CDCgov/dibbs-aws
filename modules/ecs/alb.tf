@@ -12,32 +12,43 @@ resource "aws_alb" "main" {
   }
 }
 
-# resource "aws_alb_target_group" "main" {
-#   name        = var.target_group_name #removed "dibbs-ecs-alb-target-group"
-#   port        = var.app_port
-#   protocol    = "HTTP"
-#   vpc_id      = var.vpc_id
-#   target_type = "ip"
+resource "aws_alb_target_group" "main" {
+  name        = var.target_group_name #removed "dibbs-ecs-alb-target-group"
+  port        = var.app_port
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
 
-#   health_check {
-#     healthy_threshold   = "3"
-#     interval            = "120"
-#     protocol            = "HTTP"
-#     matcher             = "200"
-#     timeout             = "3"
-#     path                = var.health_check_path
-#     unhealthy_threshold = "2"
-#   }
-# }
+  health_check {
+    healthy_threshold   = "3"
+    interval            = "120"
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = "3"
+    path                = var.health_check_path
+    unhealthy_threshold = "2"
+  }
+}
 
 # Redirect all traffic from the ALB to the target group
-# resource "aws_alb_listener" "listener" {
-#   load_balancer_arn = aws_alb.main.arn
-#   port              = var.app_port
-#   protocol          = "HTTP"
+resource "aws_alb_listener" "listener_8080" {
+  load_balancer_arn = aws_alb.main.arn
+  port              = var.app_port
+  protocol          = "HTTP"
 
-# default_action {
-#   target_group_arn = aws_alb_target_group.main.arn
-#   type             = "forward"
-# }
-# }
+  default_action {
+    target_group_arn = aws_alb_target_group.main.arn
+    type             = "forward"
+  }
+}
+
+resource "aws_alb_listener" "listener_80" {
+  load_balancer_arn = aws_alb.main.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_alb_target_group.main.arn
+    type             = "forward"
+  }
+}
