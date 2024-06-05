@@ -19,4 +19,5 @@
         "hostPort": ${app_port}
       }
     ]
+  }
 ]
