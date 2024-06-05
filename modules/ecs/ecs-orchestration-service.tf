@@ -34,9 +34,12 @@ resource "aws_ecs_service" "orchestration" {
   }
 
   network_configuration {
-    security_groups  = ["${aws_security_group.service_security_group.id}"]
+    security_groups  = ["${aws_security_group.service_security_group.id}", "${aws_security_group.orchestration_sg.id}"]
     subnets          = var.public_subnet_ids
     assign_public_ip = true
+  }
+  service_registries {
+    registry_arn = aws_service_discovery_service.orchestration_service.arn
   }
 
   # aws_alb_listener.listener_80, aws_alb_listener.listener_8080
