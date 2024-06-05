@@ -18,6 +18,12 @@
         "containerPort": ${app_port},
         "hostPort": ${app_port}
       }
+    ],
+    "environment": [
+      {
+      "name": "fhir-converter",
+      "value": "https://cdcgov.github.io/fhir-converter"
+      }
     ]
   }
 ]
