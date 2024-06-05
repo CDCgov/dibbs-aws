@@ -1,7 +1,7 @@
 # Create a Cloud Map or Service Discovery Namespace
 resource "aws_service_discovery_private_dns_namespace" "dibbs_aws_ecs_ns" {
   name = "dibbs-aws-ecs-service-connect-ns"
-  vpc  = var.vpc_id.id
+  vpc  = var.vpc_id
 }
 
 # Register ECS Services with Cloud Map or Service Discovery
