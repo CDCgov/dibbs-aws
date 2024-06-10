@@ -5,6 +5,11 @@
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
+    "command": [
+        "/bin/sh",
+        "-c",
+        "pip install -r /app/requirements.txt && python /app/app.py"
+      ],
     "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
