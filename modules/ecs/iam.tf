@@ -56,15 +56,64 @@ data "aws_iam_policy_document" "ecs_task_definition_execution_policy" {
       "ec2:DeleteNetworkInterface",
       "ec2:DescribeInstances",
       "ec2:AttachNetworkInterface",
+      "servicediscovery:DiscoverInstances"
     ]
     resources = [
       "arn:aws:logs:us-east-1:339712971032:log-group:/ecs-cloudwatch-logs:*",
       "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev",
       "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev/*",
+      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*",
+      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster",
       "*"
     ]
   }
 }
+
+#To Attach to the Orchestration Service
+resource "aws_iam_role" "ecs_cloudwatch_logs_role" {
+  name = "EcsCloudWathLogsRole"
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Service" : "ecs-tasks.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_logs_attachment" {
+  #role       = "myEcsTaskExecutionRole"
+  role       = aws_iam_role.ecs_cloudwatch_logs_role.name
+  policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
+}
+
+resource "aws_iam_policy" "cloudwatch_logs_policy" {
+  name        = "CloudWatchLogsPolicy"
+  description = "Policy for CloudWatch Logs access"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 
 # Create IAM role for ECS task execution
 resource "aws_iam_role" "ecs_task_definition_execution_role" {

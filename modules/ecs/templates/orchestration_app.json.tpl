@@ -27,20 +27,22 @@
     "environment": [
       {
       "name": "INGESTION_URL",
-      "value": "https://cdcgov.github.io/ingestion"
+      "value": "http://ingestion-service:8080"
       },
       {
       "name": "VALIDATION_URL",
-      "value": "https://cdcgov.github.io/validate"
+      "value": "http://validation-service:8080"
       },
       {
       "name": "MESSAGE_PARSER_URL",
-      "value": "https://cdcgov.github.io/message-parser"
+      "value": "http://message-parser-service:8080"
       },
       {
       "name": "FHIR_CONVERTER_URL",
-      "value": "https://cdcgov.github.io/fhir-converter"
-      }
+      "value": "http://fhir-converter-service:8080"
+      },
+      "name": "ECR_VIEWER_URL",
+      "value": "http://ecr-viewer:3000"
     ]
   }
 ]

@@ -1,7 +1,3 @@
-output "alb_hostname" {
-  value = "${aws_alb.main.dns_name}:8080"
-}
-
 output "ecs_task_execution_role" {
   value = aws_iam_role.ecs_task_execution_role
 }
