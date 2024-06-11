@@ -45,7 +45,6 @@ resource "aws_ecs_service" "ecrviewer" {
     registry_arn = aws_service_discovery_service.ecr_viewer_service.arn
   }
 
-  # depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_attachment]
-  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_attachment, aws_iam_role_policy_attachment.ecs_task_execution_role-policy_secondary_attachment, aws_cloudwatch_log_group.ecs_cloudwatch_logs]
+  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role_policy_attachment, aws_iam_role_policy_attachment.ecs_task_execution_role_policy_secondary_attachment, aws_cloudwatch_log_group.ecs_cloudwatch_logs]
 
 }

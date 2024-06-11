@@ -44,6 +44,6 @@ resource "aws_ecs_service" "orchestration" {
 
   # aws_alb_listener.listener_80, aws_alb_listener.listener_8080
   # depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_attachment]
-  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_secondary_attachment]
+  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role_policy_secondary_attachment]
 
 }

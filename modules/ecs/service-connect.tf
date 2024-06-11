@@ -19,7 +19,8 @@ resource "aws_appmesh_virtual_node" "orchestration_service_virtual_node" {
     service_discovery {
       aws_cloud_map {
         service_name   = aws_service_discovery_service.orchestration_service.name
-        namespace_name = "dibbs-aws-service-connect-ns"
+        namespace_name = aws_service_discovery_private_dns_namespace.dibbs_aws_ecs_ns.id
+        # namespace_name = "dibbs-aws-service-connect-ns"
       }
     }
   }
