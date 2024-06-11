@@ -26,10 +26,13 @@ data "aws_iam_policy_document" "ecr_and_ecs_permissions_policy_document" {
       "ecr:GetRepositoryPolicy",
       "ecr:PutImage",
       "ecr:SetRepositoryPolicy",
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
     ]
     resources = [
       "arn:aws:ecs:us-east-1:339712971032.dkr.ecr.us-east-1.amazonaws.com/fhir-converter",
-      # "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*"
+      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*"
     ]
   }
 }
