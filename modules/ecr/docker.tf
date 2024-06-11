@@ -13,7 +13,7 @@ resource "docker_image" "ghcr_image" {
 resource "docker_tag" "tag_for_aws" {
   for_each     = local.images
   source_image = docker_image.ghcr_image[each.key].name
-  target_image = "${aws_ecr_repository.repo[each.key].repository_url}/${each.key}:${local.phdi_version}"
+  target_image = "${aws_ecr_repository.repo[each.key].repository_url}:${local.phdi_version}"
 }
 
 resource "docker_registry_image" "my_docker_image" {
@@ -26,4 +26,3 @@ resource "docker_registry_image" "my_docker_image" {
     sha256_digest = data.docker_registry_image.ghcr_data[each.key].sha256_digest
   }
 }
-
