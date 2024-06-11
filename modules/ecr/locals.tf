@@ -10,7 +10,7 @@ locals {
   }
 
   # NOTE: The version may need to be changed with updates
-  phdi_version = "v1.1.7"
+  phdi_version = "v1.4.4"
 
 
 }

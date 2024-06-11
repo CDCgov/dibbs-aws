@@ -12,8 +12,9 @@ resource "aws_alb" "main" {
   }
 }
 
+# Defines the target gropu associated with the ALB
 resource "aws_alb_target_group" "main" {
-  name        = var.target_group_name #removed "dibbs-ecs-alb-target-group"
+  name        = var.target_group_name
   port        = var.app_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -42,13 +43,13 @@ resource "aws_alb_listener" "listener_8080" {
   }
 }
 
-resource "aws_alb_listener" "listener_80" {
-  load_balancer_arn = aws_alb.main.arn
-  port              = 80
-  protocol          = "HTTP"
+# resource "aws_alb_listener" "listener_80" {
+#   load_balancer_arn = aws_alb.main.arn
+#   port              = 80
+#   protocol          = "HTTP"
 
-  default_action {
-    target_group_arn = aws_alb_target_group.main.arn
-    type             = "forward"
-  }
-}
+#   default_action {
+#     target_group_arn = aws_alb_target_group.main.arn
+#     type             = "forward"
+#   }
+# }

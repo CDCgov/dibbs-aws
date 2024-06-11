@@ -1,5 +1,5 @@
 ################################################################################
-#### ecrviewer SERVICE
+#### ECR-VIEWER SERVICE
 ################################################################################
 
 resource "aws_ecs_task_definition" "ecr_viewer" {
@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "ecr_viewer" {
 }
 
 resource "aws_ecs_service" "ecrviewer" {
-  name            = "ecrviewer"
+  name            = "ecr-viewer"
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = aws_ecs_task_definition.ecr_viewer.arn
   desired_count   = var.app_count
@@ -41,5 +41,11 @@ resource "aws_ecs_service" "ecrviewer" {
     assign_public_ip = true
   }
 
-  depends_on = [aws_iam_role_policy_attachment.ecs-task-execution-role-policy-attachment]
+  service_registries {
+    registry_arn = aws_service_discovery_service.ecr_viewer_service.arn
+  }
+
+  # depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_attachment]
+  depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role-policy_attachment, aws_iam_role_policy_attachment.ecs_task_execution_role-policy_secondary_attachment, aws_cloudwatch_log_group.ecs_cloudwatch_logs]
+
 }
