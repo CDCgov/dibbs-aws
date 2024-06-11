@@ -1,0 +1,36 @@
+name: Deploy to ECR
+
+on:
+  push:
+    branches:
+      #- main
+      - 1611-create-elastic-container-service
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          region: us-east-1
+
+      # - name: Authenticate Docker Registry for ECR
+      #   run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 339712971032.dkr.ecr.us-east-1.amazonaws.com
+
+      - name: Build Docker fhir-converter image
+        run: docker build -t fhir-converter .
+
+      - name: Tag Docker image
+        run: docker tag fhir-converter:latest 339712971032.dkr.ecr.us-east-1.amazonaws.com/fhir-converter:latest
+
+      - name: Push Docker image
+        run: docker push 339712971032.dkr.ecr.us-east-1.amazonaws.com/fhir-converter:latest
