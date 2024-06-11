@@ -43,8 +43,8 @@ resource "aws_service_discovery_service" "validation_service" {
   }
 }
 
-resource "aws_service_discovery_service" "message_parser_service" {
-  name         = "message-parser-service"
+resource "aws_service_discovery_service" "ecr_viewer_service" {
+  name         = "ecr-viewer-service"
   namespace_id = aws_service_discovery_private_dns_namespace.dibbs_aws_ecs_ns.id
   dns_config {
     namespace_id = aws_service_discovery_private_dns_namespace.dibbs_aws_ecs_ns.id

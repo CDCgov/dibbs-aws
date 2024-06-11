@@ -6,7 +6,7 @@
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
     "command": [
-        "/bin/sh",
+        "sh",
         "-c",
         "pip install -r /app/requirements.txt && python /app/app.py"
       ],
@@ -26,6 +26,10 @@
     ],
     "environment": [
       {
+        "name": "APPMESH_VIRTUAL_NODE_NAME",
+        "value": "orchestration-service-virtual-node"
+      },
+      {
       "name": "INGESTION_URL",
       "value": "http://ingestion-service:8080"
       },
@@ -41,8 +45,10 @@
       "name": "FHIR_CONVERTER_URL",
       "value": "http://fhir-converter-service:8080"
       },
+      {
       "name": "ECR_VIEWER_URL",
       "value": "http://ecr-viewer:3000"
+      }
     ]
   }
 ]
