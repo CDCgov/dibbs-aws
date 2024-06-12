@@ -41,7 +41,6 @@ resource "aws_ecs_service" "ingestion" {
     assign_public_ip = true
   }
 
-  # aws_alb_listener.listener_80, aws_alb_listener.listener_8080
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role_policy_attachment]
 }
 
