@@ -2,7 +2,7 @@
 
 resource "time_static" "now" {}
 
-# NOTE: This pulls this down from the docker registry
+# NOTE: This pulls image down from the docker registry
 resource "docker_image" "ghcr_image" {
   for_each      = local.images
   name          = data.docker_registry_image.ghcr_data[each.key].name
