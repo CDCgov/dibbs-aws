@@ -4,10 +4,6 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "3.0.1"
     }
-
-    # aws = {
-    #   version = ">= 5.30.0"
-    # }
   }
 }
 

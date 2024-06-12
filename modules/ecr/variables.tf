@@ -4,17 +4,6 @@ variable "create" {
   default     = true
 }
 
-/*variable "ecr_policy" {
-  type        = string
-  description = "ECR IAM permission policy for external access."
-  default     = ""
-}*/
-
-# variable "ecr_repo_name" {
-#   description = "ECR Repository Name"
-#   type        = set(string)
-# }
-
 variable "ecr_repo_name" {
   type = set(string)
   default = [
@@ -25,8 +14,6 @@ variable "ecr_repo_name" {
     "orchestration"
   ]
 }
-
-
 
 variable "ecs_task_execution_role" {
   type        = string
