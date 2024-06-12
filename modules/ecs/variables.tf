@@ -63,6 +63,10 @@ variable "ecs_auto_scale_role_name" {
   default     = "myEcsAutoScaleRole"
 }
 
+variable "ecs_s3_bucket_name" {
+  description = "The name fo the ECS bucket for ecr-viewer"
+}
+
 variable "ecs_cluster_name" {
   type        = string
   description = "ECS Cluster Name"
