@@ -34,6 +34,8 @@ module "ecs" {
   ecr_repo_name           = local.ecr_repo_name
   ecs_app_task_family     = local.ecs_app_task_family
   target_group_name       = local.target_group_name
+
+  ecs_s3_bucket_name = module.s3.ecs_s3_bucket_name
 }
 
 module "vpc" {
@@ -48,7 +50,7 @@ module "vpc" {
   default_security_group_name = "${local.name}-security-group"
 }
 
-# module "eks-cluster" {
-#   source = "terraform-aws-modules/eks/aws"
-#   # subnets = flatten(module.eks-cluster.control_plane_subnet_ids, module.vpc.private_subnet_ids)
-# }
+module "s3" {
+  source                 = "./modules/s3"
+  ecs_assume_role_policy = module.ecs.ecr_viewer_and_s3_assume_role_policy
+}
