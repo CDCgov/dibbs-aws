@@ -42,14 +42,3 @@ resource "aws_alb_listener" "listener_8080" {
     type             = "forward"
   }
 }
-
-# resource "aws_alb_listener" "listener_80" {
-#   load_balancer_arn = aws_alb.main.arn
-#   port              = 80
-#   protocol          = "HTTP"
-
-#   default_action {
-#     target_group_arn = aws_alb_target_group.main.arn
-#     type             = "forward"
-#   }
-# }
