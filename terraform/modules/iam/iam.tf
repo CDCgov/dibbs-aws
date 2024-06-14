@@ -27,18 +27,18 @@ resource "aws_iam_policy" "ecr_policy" {
           "ecr:BatchGetImage"
         ]
         Resource = [
-          "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*",
-          "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/ecr-viewer/*",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/ecr-viewer",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/orchestration/*",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/orchestration",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/fhir-converter/*",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/fhir-converter",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/ingestion/*",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/ingestion",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/validation/*",
-          "arn:aws:ecs:us-east-1:339712971032:service/dibbs-ecs-cluster/validation",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:cluster/${var.ecs_cluster_name}/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:cluster/${var.ecs_cluster_name}",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/ecr-viewer/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/ecr-viewer",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/orchestration/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/orchestration",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/fhir-converter/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/fhir-converter",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/ingestion/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/ingestion",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/validation/*",
+          "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:service/${var.ecs_cluster_name}/validation",
           #arn:aws:logs:us-east-1:339712971032:log-group:/ecs/orchestration:log-stream:
         ]
       }
@@ -87,10 +87,10 @@ data "aws_iam_policy_document" "ecs_task_definition_execution_policy" {
     resources = [
       # "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/*",
       # "arn:aws:logs:us-east-1:339712971032:log-group:/ecs-cloudwatch-logs:*",
-      "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev",
-      "arn:aws:eks:us-east-1:339712971032:cluster/phdi-playground-dev/*",
-      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/*",
-      "arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster",
+      "arn:aws:eks:${var.region}:${var.aws_caller_identity}:cluster/phdi-playground-dev",
+      "arn:aws:eks:${var.region}:${var.aws_caller_identity}:cluster/phdi-playground-dev/*",
+      "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:cluster/${var.ecs_cluster_name}/*",
+      "arn:aws:ecs:${var.region}:${var.aws_caller_identity}:cluster/${var.ecs_cluster_name}",
       # "*"
     ]
   }
@@ -106,11 +106,11 @@ data "aws_iam_policy_document" "ecs_cloudwatch_logs_policy" {
     ]
     resources = [
       # "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/*",
-      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/ecrviewer:*",
-      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/ingestion:*",
-      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/fhir-converter:*",
-      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/validation:*",
-      "arn:aws:logs:us-east-1:339712971032:log-group:/ecs/orchestration:*"
+      "arn:aws:logs:${var.region}:${var.aws_caller_identity}:log-group:/ecs/ecrviewer:*",
+      "arn:aws:logs:${var.region}:${var.aws_caller_identity}:log-group:/ecs/ingestion:*",
+      "arn:aws:logs:${var.region}:${var.aws_caller_identity}:log-group:/ecs/fhir-converter:*",
+      "arn:aws:logs:${var.region}:${var.aws_caller_identity}:log-group:/ecs/validation:*",
+      "arn:aws:logs:${var.region}:${var.aws_caller_identity}:log-group:/ecs/orchestration:*"
     ]
   }
 }

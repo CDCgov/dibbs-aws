@@ -8,7 +8,7 @@ resource "aws_alb" "main" {
   enable_deletion_protection = false
 
   tags = {
-    Name = "dibbs-ecs-alb"
+    Name = var.alb_name
   }
 }
 

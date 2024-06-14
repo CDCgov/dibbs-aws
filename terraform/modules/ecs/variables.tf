@@ -31,7 +31,7 @@ variable "alb_name" {
 }
 
 variable "availability_zones" {
-  description = "us-east-1 AZs"
+  description = "AZs"
   type        = list(string)
 }
 
@@ -45,7 +45,7 @@ variable "ecs_task_execution_role_arn" {
   type        = string
 }
 
-variable "aws_region" {
+variable "region" {
   description = "The AWS region things are created in"
 }
 

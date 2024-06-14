@@ -26,14 +26,11 @@ provider "docker" {
 
     config_file_content = jsonencode({
       "auths" = {
-        "339712971032.dkr.ecr.us-east-1.amazonaws.com" = {}
+        "${var.aws_caller_identity}.dkr.ecr.${var.region}.amazonaws.com" = {}
       }
       "credHelpers" = {
-        "339712971032.dkr.ecr.us-east-1.amazonaws.com" = "ecr-login"
+        "${var.aws_caller_identity}.dkr.ecr.${var.region}.amazonaws.com" = "ecr-login"
       }
     })
   }
-}
-
-data "aws_ecr_authorization_token" "token" {
 }

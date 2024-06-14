@@ -48,6 +48,11 @@ variable "cw_retention_in_days" {
   type        = number
   default     = 30
 }
+variable "ecs_cluster_name" {
+  description = "The name of the target group"
+  type        = string
+  default     = "ecs-cluster"
+}
 variable "ecs_target_group_name" {
   description = "The name of the target group"
   type        = string
@@ -97,4 +102,19 @@ variable "single_nat_gateway" {
   description = "Single NAT Gateway"
   type        = bool
   default     = true
+}
+variable "s3_viewer_bucket_name" {
+  description = "The name of the viewer bucket"
+  type        = string
+  default     = "dibbs-s3-viewer"
+}
+variable "s3_viewer_bucket_role_name" {
+  description = "The role for the viewer bucket"
+  type        = string
+  default     = "dibbs-s3-viewer-role"
+}
+variable "s3_viewer_bucket_policy_name" {
+  description = "The policy name for the viewer bucket"
+  type        = string
+  default     = "dibbs-s3-viewer-policy"
 }

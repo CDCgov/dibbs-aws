@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "ecr_policy" {
       "ecr:BatchGetImage",
     ]
 
-    resources = ["arn:aws:ecs:us-east-1:339712971032:cluster/dibbs-ecs-cluster/${each.value}}"]
+    resources = ["arn:aws:ecs:${var.region}:${var.aws_caller_identity}:cluster/${var.ecs_cluster_name}/${each.value}"]
   }
 }
 

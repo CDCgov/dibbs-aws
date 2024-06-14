@@ -1,7 +1,7 @@
 [
     {
-    "name": "ingestion-app",
-    "image": "ghcr.io/cdcgov/phdi/ingestion:v1.4.4",
+    "name": "${name}",
+    "image": "${app_image}",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
@@ -9,7 +9,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs-cloudwatch-logs",
-          "awslogs-region": "us-east-1",
+          "awslogs-region": "${region}",
           "awslogs-stream-prefix": "ecs"
         }
     },

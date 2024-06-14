@@ -1,11 +1,19 @@
 variable "region" {
-  type    = string
-  default = "us-east-1"
+  type = string
 }
 
-variable "s3_name" {
+variable "s3_viewer_bucket_name" {
   type    = string
-  default = "ecr-fhir-storage"
+}
+
+variable "s3_viewer_bucket_role_name" {
+  type    = string
+  default = "private"
+}
+
+variable "s3_viewer_bucket_policy_name" {
+  type    = string
+  default = "private"
 }
 
 variable "ecs_assume_role_policy" {

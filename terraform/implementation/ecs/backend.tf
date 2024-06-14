@@ -6,12 +6,13 @@ terraform {
     }
   }
 
-  # backend "s3" {
-  #   key = "remote_tfstate"
-  # dynamodb_table
-  # bucket
-  # region
-  # }
+  backend "s3" {
+    key     = "remote_tfstate"
+    encrypt = true
+    # dynamodb_table
+    # bucket
+    # region
+  }
 }
 
 # Credentials should be provided by using the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.

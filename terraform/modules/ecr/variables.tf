@@ -20,15 +20,9 @@ variable "ecs_task_execution_role" {
   description = "ECS Task Execution Role"
 }
 
-variable "images" {
-  description = "ECR image for DIBBS applications"
-  type        = map(string)
-  default = {
-    "fhir-converter" = "339712971032.dkr.us-east-1.amazonaws.com/fhir-converter"
-    "ingestion"      = "339712971032.dkr.us-east-1.amazonaws.com/ingestion"
-    "message-parser" = "339712971032.dkr.ecr.us-east-1.amazonaws.com/message-parser"
-    "orchestration"  = "339712971032.dkr.ecr.us-east-1.amazonaws.com/orchestration"
-  }
+variable "ecs_cluster_name" {
+  type        = string
+  description = "ECS Cluster Name"
 }
 
 variable "lifecycle_policy" {
@@ -66,16 +60,6 @@ variable "tags" {
 }
 
 ######################
-### DOCKER PROVIDER ##
-######################
-
-variable "ecr_address" {
-  type        = string
-  description = "Elastic Container Registry Address"
-  default     = "https://339712971032.dkr.ecr.us-east-1.amazonaws.com"
-}
-
-######################
 ###### GHCR INFO #####
 ######################
 
@@ -87,4 +71,14 @@ variable "ghcr_username" {
 variable "ghcr_token" {
   type        = string
   description = "GitHub Container Registry token."
+}
+
+variable "aws_caller_identity" {
+  type        = string
+  description = "AWS Caller Identity"
+}
+
+variable "region" {
+  type        = string
+  description = "AWS region"
 }

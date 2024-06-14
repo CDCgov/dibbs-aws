@@ -11,14 +11,20 @@ module "vpc" {
 }
 
 module "iam" {
-  source                  = "../../modules/iam"
+  source                       = "../../modules/iam"
   ecs_task_execution_role_name = local.ecs_task_execution_role_name
+  ecs_cluster_name             = local.ecs_cluster_name
+  aws_caller_identity          = data.aws_caller_identity.current.account_id
+  region                       = var.region
 }
 
-module "ecrRepo" {
+module "ecr" {
   source                  = "../../modules/ecr"
+  aws_caller_identity     = data.aws_caller_identity.current.account_id
   ecs_task_execution_role = module.iam.ecs_task_execution_role.arn
   ecr_repos               = local.ecr_repos
+  ecs_cluster_name        = local.ecs_cluster_name
+  region                  = var.region
   ghcr_token              = local.ghcr_token
   ghcr_username           = local.ghcr_username
 }
@@ -26,6 +32,10 @@ module "ecrRepo" {
 module "s3" {
   source                 = "../../modules/s3"
   ecs_assume_role_policy = module.iam.ecr_viewer_and_s3_assume_role_policy
+  region                 = var.region
+  s3_viewer_bucket_name  = local.s3_viewer_bucket_name
+  s3_viewer_bucket_role_name  = local.s3_viewer_bucket_role_name
+  s3_viewer_bucket_policy_name = local.s3_viewer_bucket_policy_name
 }
 
 module "ecs" {
@@ -36,7 +46,8 @@ module "ecs" {
   cidr                        = module.vpc.vpc_cidr_block
   availability_zones          = module.vpc.azs
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role.arn
-  ecr_repo_url                = module.ecrRepo.repository_url
+  ecr_repo_url                = module.ecr.repository_url
+  ecs_cluster_name            = local.ecs_cluster_name
   ecs_s3_bucket_name          = module.s3.ecs_s3_bucket_name
   app_service_name            = local.ecs_app_service_name
   app_task_name               = local.ecs_app_task_name
@@ -47,5 +58,5 @@ module "ecs" {
   ecs_app_task_family         = local.ecs_app_task_family
   target_group_name           = local.ecs_target_group_name
   retention_in_days           = var.cw_retention_in_days
-  aws_region                  = var.region
+  region                      = var.region
 }
