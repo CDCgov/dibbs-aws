@@ -13,7 +13,7 @@
   - [4.1 Requirements](#41-requirements)
   - [4.2 Clone DIBBS-AWS Repository](#42-clone-dibbs-aws-repository)
   - [4.3 Begin Using Repository](#43-begin-using-repository)
-  - [4.4 Begin Using Terraform]
+  - [4.4 Begin Using Terraform](#44-begin-using-terraform)
 
 # 1. Overview
 
@@ -103,7 +103,7 @@ Please note the final architectural design may change.
 # 4. Getting Started
 This section will assist engineers with executing Infrastructure as Code (IaC) found in the _dibbs-aws_ repository utilizing Terraform.  
 
-+ [Return to Table of Contents](#table-of-contents).
+[Return to Table of Contents](#table-of-contents).
 
 ## 4.1 Requirements
 Engineers will need following tools installed on their local machine:
@@ -112,7 +112,7 @@ Engineers will need following tools installed on their local machine:
 * AWS Profile Access \
 -- <u>Note</u>: Engineers *must* have access and permissions to create AWS resources
 
-+ [Return to Table of Contents](#table-of-contents).
+[Return to Table of Contents](#table-of-contents).
 
 ## 4.2 Clone DIBBS-AWS Repository
 
@@ -123,7 +123,7 @@ Engineers will need following tools installed on their local machine:
 - `git clone git@github.com:CDCgov/dibbs-cloud.git` 
 - `git clone https://github.com/CDCgov/dibbs-cloud.git`
 
-+ [Return to Table of Contents](#table-of-contents).
+[Return to Table of Contents](#table-of-contents).
 
 ## 4.3 Begin Using Repository
 _4.3.1_ Navigate to the `dibbs-aws` repository on your local machine.\
@@ -136,21 +136,23 @@ _4.3.3_ Navigate to _terraform/implementation/ecs/var.tf_.\
 &ensp; `git commit -m "update owner value to [insertValue]"`\
 &ensp; `git push`
 
+[Return to Table of Contents](#table-of-contents).
+
 ## 4.4 Begin Using Terraform
 
 4.4.1 Navigate to terraform/implementation.\
 &ensp; Initialize your local terraform code. `terraform init`\
 4.4.2 Developing in a terraform workspace.\
 &ensp; Check the terraform workspaces. `terraform workspace list`\
-&ensp; _Note_: If you only have a default terraform workspace, you can create a terraform workspace to develop in.  _Skip to 5.3, below_.\
-- Select the terraform workspace to develop in.\
+&ensp; _Note_: If you only have a default terraform workspace, you can create a terraform workspace to develop in.  _Skip to "Create a terraform workspace to develop in," below_.
+- <u>Select the terraform workspace to develop in</u>.\
  &ensp; `terraform workspace select {selectEnvironmentName}`\
  &ensp; For example, `terraform workspace select dev`.\
-- Create a terraform workspace to develop in.\
+- <u>Create a terraform workspace to develop in</u>.\
 &ensp; `terraform workspace new {newEnvironmentName}`.\
 &ensp; For example, `terraform workspace new dev`.
 
 
-+ [Return to Table of Contents](#table-of-contents).
+[Return to Table of Contents](#table-of-contents).
 
 ## 4.4 Run 
