@@ -49,7 +49,7 @@ variable "region" {
   description = "The AWS region things are created in"
 }
 
-variable "aws_cloudwatch_log_group" {
+variable "ecs_cloudwatch_log_group" {
   description = "AWS Cloudwatch Log Group for ECS"
 }
 
@@ -84,7 +84,7 @@ variable "ecr_repo_url" {
   description = "ECR repository urls"
 }
 
-variable "ecr_repos" {
+variable "ecr_repo_names" {
   type        = set(string)
   description = "ECR repository name(s)"
 }
@@ -140,3 +140,8 @@ variable "private_subnet_ids" {
   type        = list(string)
   description = "List of private subnet IDs"
 }
+
+# variable "env_vars" {
+#   type        = map(string)
+#   description = "Environment variables to pass to the container"
+# }

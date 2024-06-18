@@ -1,10 +1,11 @@
 locals {
   ecs_container_port = 8080
-  ecr_repos = [
+  ecr_repo_names = [
+    "ecr-viewer",
     "fhir-converter",
     "ingestion",
-    "message-parser",
-    "orchestration"
+    "orchestration",
+    "validation"
   ]
 
   ecs_alb_sg                   = "${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
@@ -17,13 +18,11 @@ locals {
   ecs_app_task_family          = "${var.ecs_app_task_family}-${var.owner}-${terraform.workspace}"
   ecs_cluster_name             = "${var.ecs_cluster_name}-${var.owner}-${terraform.workspace}"
   s3_viewer_bucket_name        = "${var.s3_viewer_bucket_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_role_name        = "${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_policy_name      = "${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
+  s3_viewer_bucket_role_name   = "${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
+  s3_viewer_bucket_policy_name = "${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
   vpc                          = "${var.vpc}-${var.owner}-${terraform.workspace}"
 
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway
   availability_zones = var.availability_zones
-  ghcr_token         = var.ghcr_token
-  ghcr_username      = var.ghcr_username
 }

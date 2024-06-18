@@ -13,12 +13,6 @@ provider "docker" {
   host = "unix:///var/run/docker.sock"
 
   registry_auth {
-    address  = "ghcr.io"
-    username = var.ghcr_username
-    password = var.ghcr_token
-  }
-
-  registry_auth {
 
     address  = data.aws_ecr_authorization_token.container_registry_token.proxy_endpoint
     username = data.aws_ecr_authorization_token.container_registry_token.user_name

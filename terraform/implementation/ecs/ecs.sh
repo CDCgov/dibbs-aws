@@ -23,12 +23,12 @@ elif [ "$ENVIRONMENT" != "$PRODUCTION" ] && [ "$ENVIRONMENT" != "" ]; then
         -backend-config "bucket=dibbs-aws-tfstate-alis-default" \
         -backend-config "dynamodb_table=dibbs-aws-tfstate-lock-alis-default" \
         -backend-config "region=us-east-1"
-    terraform plan \
-        -var-file="$ENVIRONMENT.tfvars" \
-        -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs
+    # terraform plan \
+    #     -var-file="$ENVIRONMENT.tfvars" \
+    #     -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs
     terraform apply \
         -var-file="$ENVIRONMENT.tfvars" \
-        -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs
+        -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs -target=module.ecs
 else
     echo "Please provide a valid environment: $PRODUCTION or another string"
     exit 1

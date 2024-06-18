@@ -5,6 +5,8 @@
 * The 'owner' variable specifies the owner of the resources that will be provisioned and is included in resource naming and tagging.
 * The 'region' variable specifies the AWS region where the resources will be provisioned.
 * The new file you create will not be tracked in git by default, so make sure you store it in a secure location for later use.
+* required:
+* optional:
 */
 owner = "JurrasicPark"
 region = "us-east-1"

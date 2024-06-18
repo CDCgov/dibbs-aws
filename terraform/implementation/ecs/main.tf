@@ -22,11 +22,11 @@ module "ecr" {
   source                  = "../../modules/ecr"
   aws_caller_identity     = data.aws_caller_identity.current.account_id
   ecs_task_execution_role = module.iam.ecs_task_execution_role.arn
-  ecr_repos               = local.ecr_repos
+  ecr_repo_names               = local.ecr_repo_names
   ecs_cluster_name        = local.ecs_cluster_name
+  tags                    = {}
+  lifecycle_policy        = ""
   region                  = var.region
-  ghcr_token              = local.ghcr_token
-  ghcr_username           = local.ghcr_username
 }
 
 module "s3" {
@@ -52,9 +52,9 @@ module "ecs" {
   app_service_name            = local.ecs_app_service_name
   app_task_name               = local.ecs_app_task_name
   alb_name                    = local.ecs_alb_name
-  aws_cloudwatch_log_group    = local.ecs_cloudwatch_log_group
+  ecs_cloudwatch_log_group    = local.ecs_cloudwatch_log_group
   container_port              = local.ecs_container_port
-  ecr_repos                   = local.ecr_repos
+  ecr_repo_names                   = local.ecr_repo_names
   ecs_app_task_family         = local.ecs_app_task_family
   target_group_name           = local.ecs_target_group_name
   retention_in_days           = var.cw_retention_in_days

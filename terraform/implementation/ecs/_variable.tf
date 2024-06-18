@@ -33,16 +33,6 @@ variable "ecs_alb_sg" {
   type        = string
   default     = "dibbs-ecs-albsg"
 }
-variable "ghcr_token" {
-  description = "The GitHub Container Registry token"
-  type        = string
-  default     = ""
-}
-variable "ghcr_username" {
-  description = "The GitHub Container Registry username"
-  type        = string
-  default     = ""
-}
 variable "cw_retention_in_days" {
   description = "The number of days to retain logs in CloudWatch"
   type        = number
@@ -91,7 +81,7 @@ variable "vpc_cidr" {
 variable "ecs_cloudwatch_log_group" {
   description = "The name of the CloudWatch log group"
   type        = string
-  default     = "dibbs-ecs-cwlg"
+  default     = "/dibbs-ecs-cwlg"
 }
 variable "enable_nat_gateway" {
   description = "Enable NAT Gateway"
@@ -117,4 +107,9 @@ variable "s3_viewer_bucket_policy_name" {
   description = "The policy name for the viewer bucket"
   type        = string
   default     = "dibbs-s3-viewer-policy"
+}
+variable "tags" {
+  description = "Tags to apply to resources"
+  type        = map(string)
+  default     = {}
 }

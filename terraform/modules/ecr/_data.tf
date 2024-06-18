@@ -1,6 +1,6 @@
 data "aws_iam_policy_document" "ecr_policy" {
 
-  for_each = var.ecr_repos
+  for_each = var.ecr_repo_names
   statement {
     actions = [
       "ecr:GetAuthorizationToken",
@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "ecr_policy" {
 }
 
 data "docker_registry_image" "ghcr_data" {
-  for_each = local.images
+  for_each = var.ecr_repo_names
   name     = "ghcr.io/cdcgov/phdi/${each.key}:${local.phdi_version}"
 }
 
