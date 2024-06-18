@@ -1,12 +1,71 @@
 locals {
-  ecs_container_port = 8080
-  ecr_repo_names = [
-    "ecr-viewer",
-    "fhir-converter",
-    "ingestion",
-    "orchestration",
-    "validation"
-  ]
+  service_data = {
+    ecr-viewer = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecr-viewer:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      env_vars       = []
+    },
+    fhir-converter = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/fhir-converter:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      env_vars       = []
+    },
+    ingestion = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ingestion:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      env_vars       = []
+    },
+    validation = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/validation:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      env_vars       = []
+    },
+    orchestration = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/orchestration:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      env_vars = [
+        {
+          name  = "APPMESH_VIRTUAL_NODE_NAME",
+          value = "orchestration"
+        },
+        {
+          name  = "INGESTION_URL",
+          value = "http://ingestion:8080"
+        },
+        {
+          name  = "VALIDATION_URL",
+          value = "http://validation:8080"
+        },
+        {
+          name  = "FHIR_CONVERTER_URL",
+          value = "http://fhir-converter:8080"
+        },
+        {
+          name  = "ECR_VIEWER_URL",
+          value = "http://ecr-viewer:3000"
+        },
+        {
+          name  = "MESSAGE_PARSER_URL",
+          value = "http://message-parser-not-implemented:8080"
+        }
+      ]
+    }
+  }
 
   ecs_alb_sg                   = "${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
   ecs_alb_name                 = "${var.ecs_alb_name}-${var.owner}-${terraform.workspace}"

@@ -22,7 +22,8 @@ module "ecr" {
   source                  = "../../modules/ecr"
   aws_caller_identity     = data.aws_caller_identity.current.account_id
   ecs_task_execution_role = module.iam.ecs_task_execution_role.arn
-  ecr_repo_names               = local.ecr_repo_names
+  service_data            = local.service_data
+  phdi_version            = var.phdi_version
   ecs_cluster_name        = local.ecs_cluster_name
   tags                    = {}
   lifecycle_policy        = ""
@@ -30,11 +31,11 @@ module "ecr" {
 }
 
 module "s3" {
-  source                 = "../../modules/s3"
-  ecs_assume_role_policy = module.iam.ecr_viewer_and_s3_assume_role_policy
-  region                 = var.region
-  s3_viewer_bucket_name  = local.s3_viewer_bucket_name
-  s3_viewer_bucket_role_name  = local.s3_viewer_bucket_role_name
+  source                       = "../../modules/s3"
+  ecs_assume_role_policy       = module.iam.ecr_viewer_and_s3_assume_role_policy
+  region                       = var.region
+  s3_viewer_bucket_name        = local.s3_viewer_bucket_name
+  s3_viewer_bucket_role_name   = local.s3_viewer_bucket_role_name
   s3_viewer_bucket_policy_name = local.s3_viewer_bucket_policy_name
 }
 
@@ -53,8 +54,7 @@ module "ecs" {
   app_task_name               = local.ecs_app_task_name
   alb_name                    = local.ecs_alb_name
   ecs_cloudwatch_log_group    = local.ecs_cloudwatch_log_group
-  container_port              = local.ecs_container_port
-  ecr_repo_names                   = local.ecr_repo_names
+  service_data                = local.service_data
   ecs_app_task_family         = local.ecs_app_task_family
   target_group_name           = local.ecs_target_group_name
   retention_in_days           = var.cw_retention_in_days

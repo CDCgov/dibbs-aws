@@ -1,4 +1,4 @@
 resource "aws_ecr_repository" "repo" {
-  for_each = var.ecr_repo_names
+  for_each = var.service_data
   name     = each.key
 }

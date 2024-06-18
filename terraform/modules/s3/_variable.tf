@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "s3_viewer_bucket_name" {
-  type    = string
+  type = string
 }
 
 variable "s3_viewer_bucket_role_name" {

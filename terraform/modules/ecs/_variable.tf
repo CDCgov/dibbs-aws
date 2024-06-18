@@ -6,7 +6,7 @@ variable "app_count" {
 
 variable "app_image" {
   description = "Docker image to run in the ECS cluster"
-  default     = "bradfordhamilton/crystal_blockchain:latest"
+  default     = "busybox:latest"
 }
 
 variable "app_port" {
@@ -33,11 +33,6 @@ variable "alb_name" {
 variable "availability_zones" {
   description = "AZs"
   type        = list(string)
-}
-
-variable "container_port" {
-  description = "Container Port"
-  type        = number
 }
 
 variable "ecs_task_execution_role_arn" {
@@ -82,11 +77,6 @@ variable "env" {
 variable "ecr_repo_url" {
   type        = list(string)
   description = "ECR repository urls"
-}
-
-variable "ecr_repo_names" {
-  type        = set(string)
-  description = "ECR repository name(s)"
 }
 
 variable "health_check_path" {
@@ -141,7 +131,7 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs"
 }
 
-# variable "env_vars" {
-#   type        = map(string)
-#   description = "Environment variables to pass to the container"
-# }
+variable "service_data" {
+  type        = map(any)
+  description = "Environment variables to pass to the container"
+}

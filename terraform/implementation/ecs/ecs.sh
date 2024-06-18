@@ -28,7 +28,7 @@ elif [ "$ENVIRONMENT" != "$PRODUCTION" ] && [ "$ENVIRONMENT" != "" ]; then
     #     -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs
     terraform apply \
         -var-file="$ENVIRONMENT.tfvars" \
-        -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs -target=module.ecs
+        -target=module.vpc -target=module.iam -target=module.ecr -target=module.s3 -target=module.ecs
 else
     echo "Please provide a valid environment: $PRODUCTION or another string"
     exit 1

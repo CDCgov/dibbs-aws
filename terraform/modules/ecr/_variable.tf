@@ -1,13 +1,4 @@
-variable "ecr_repo_names" {
-  type = set(string)
-  # default = [
-  #   "fhir-converter",
-  #   "ingestion",
-  #   "ecr-viewer",
-  #   "validation",
-  #   "orchestration"
-  # ]
-}
+variable "service_data" {}
 
 variable "ecs_task_execution_role" {
   type        = string
@@ -39,4 +30,9 @@ variable "aws_caller_identity" {
 variable "region" {
   type        = string
   description = "AWS region"
+}
+
+variable "phdi_version" {
+  type        = string
+  description = "PHDI container image version"
 }

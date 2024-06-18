@@ -113,3 +113,10 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+# Manually update to set the version you want to run
+variable "phdi_version" {
+  type        = string
+  description = "PHDI container image version"
+  default     = "v1.4.4"
+}

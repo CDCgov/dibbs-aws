@@ -65,41 +65,41 @@ resource "aws_security_group" "service_security_group" {
 }
 
 resource "aws_ecs_task_definition" "this" {
-    for_each = local.services
-  family                   = "${each.key}"
+  for_each                 = var.service_data
+  family                   = each.key
   execution_role_arn       = var.ecs_task_execution_role_arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = each.value.fargate_cpu
   memory                   = each.value.fargate_memory
-    container_definitions    = jsonencode([
+  container_definitions = jsonencode([
     {
-    name = "${each.key}-app",
-    image = "${each.value.app_image}",
-    networkMode = "awsvpc",
-    logConfiguration = {
+      name        = "${each.key}-app",
+      image       = "${each.value.app_image}",
+      networkMode = "awsvpc",
+      logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group = "${var.ecs_cloudwatch_log_group}",
-          awslogs-region = "${var.region}",
+          awslogs-group         = "${var.ecs_cloudwatch_log_group}",
+          awslogs-region        = "${var.region}",
           awslogs-stream-prefix = "ecs"
         }
-    },
-    portMappings = [
-      {
-        containerPort = each.value.container_port,
-        hostPort = each.value.host_port
-      }
-    ],
-    environment = each.value.env_vars
+      },
+      portMappings = [
+        {
+          containerPort = each.value.container_port,
+          hostPort      = each.value.host_port
+        }
+      ],
+      environment = each.value.env_vars
     }
   ])
-  task_role_arn            = var.ecs_task_execution_role_arn
+  task_role_arn = var.ecs_task_execution_role_arn
 }
 
 resource "aws_ecs_service" "this" {
-    for_each = aws_ecs_task_definition.this
-  name            = "${each.key}"
+  for_each        = aws_ecs_task_definition.this
+  name            = each.key
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = each.value.arn
   desired_count   = var.app_count

@@ -24,7 +24,7 @@ resource "aws_appmesh_mesh" "dibbs_aws_ecs_mesh" {
 
 # Define the AWS App Mesh resources
 resource "aws_appmesh_virtual_node" "this" {
-  for_each = aws_ecs_service.this
+  for_each  = aws_ecs_service.this
   name      = each.key
   mesh_name = aws_appmesh_mesh.dibbs_aws_ecs_mesh.name
 
@@ -48,7 +48,7 @@ resource "aws_appmesh_virtual_node" "this" {
 
 # Define the virtual service
 resource "aws_appmesh_virtual_service" "this" {
-  for_each = aws_appmesh_virtual_node.this
+  for_each  = aws_appmesh_virtual_node.this
   name      = each.key
   mesh_name = aws_appmesh_mesh.dibbs_aws_ecs_mesh.name
 
