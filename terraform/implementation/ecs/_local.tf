@@ -4,8 +4,9 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecr-viewer:${var.phdi_version}",
-      container_port = 8080,
-      host_port      = 8080,
+      container_port = 3000,
+      host_port      = 3000,
+      public         = true
       env_vars       = []
     },
     fhir-converter = {
@@ -14,6 +15,7 @@ locals {
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/fhir-converter:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
+      public         = false
       env_vars       = []
     },
     ingestion = {
@@ -22,6 +24,7 @@ locals {
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ingestion:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
+      public         = false
       env_vars       = []
     },
     validation = {
@@ -30,6 +33,7 @@ locals {
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/validation:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
+      public         = false
       env_vars       = []
     },
     orchestration = {
@@ -38,6 +42,7 @@ locals {
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/orchestration:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
+      public         = true
       env_vars = [
         {
           name  = "APPMESH_VIRTUAL_NODE_NAME",

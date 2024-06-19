@@ -2,68 +2,6 @@ resource "aws_ecs_cluster" "dibbs_app_cluster" {
   name = var.ecs_cluster_name
 }
 
-resource "aws_default_vpc" "default_vpc" {}
-
-resource "aws_default_subnet" "default_subnet_a" {
-  availability_zone = var.availability_zones[0]
-}
-
-resource "aws_default_subnet" "default_subnet_b" {
-  availability_zone = var.availability_zones[1]
-}
-
-resource "aws_security_group" "load_balancer_security_group" {
-  vpc_id = var.vpc_id
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-# resource "aws_lb_target_group" "target_group" {
-#   name        = var.target_group_name
-#   port        = var.container_port
-#   protocol    = "HTTP"
-#   target_type = "ip"
-#   vpc_id      = var.vpc_id
-# }
-
-# resource "aws_lb_listener" "listener" {
-#   load_balancer_arn = aws_alb.main.arn
-#   port              = "80"
-#   protocol          = "HTTP"
-#   default_action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.target_group.arn
-#   }
-# }
-
-resource "aws_security_group" "service_security_group" {
-  vpc_id = var.vpc_id
-  ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = ["${aws_security_group.load_balancer_security_group.id}"]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
 resource "aws_ecs_task_definition" "this" {
   for_each                 = var.service_data
   family                   = each.key
@@ -74,14 +12,14 @@ resource "aws_ecs_task_definition" "this" {
   memory                   = each.value.fargate_memory
   container_definitions = jsonencode([
     {
-      name        = "${each.key}-app",
-      image       = "${each.value.app_image}",
+      name        = each.key,
+      image       = each.value.app_image,
       networkMode = "awsvpc",
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group         = "${var.ecs_cloudwatch_log_group}",
-          awslogs-region        = "${var.region}",
+          awslogs-group         = var.ecs_cloudwatch_log_group,
+          awslogs-region        = var.region,
           awslogs-stream-prefix = "ecs"
         }
       },
@@ -120,10 +58,22 @@ resource "aws_ecs_service" "this" {
     type = "ECS"
   }
 
+  dynamic "load_balancer" {
+    for_each = {
+      for key, value in var.service_data : key => value
+      if(each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
+    }
+    content {
+      target_group_arn = aws_alb_target_group.this.arn
+      container_name   = load_balancer.key
+      container_port   = load_balancer.value.container_port
+    }
+  }
+
   network_configuration {
-    security_groups  = ["${aws_security_group.service_security_group.id}"]
-    subnets          = var.public_subnet_ids
-    assign_public_ip = true
+    security_groups  = [aws_security_group.ecs.id]
+    subnets          = var.private_subnet_ids
+    assign_public_ip = false
   }
 
   service_registries {

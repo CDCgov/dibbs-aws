@@ -80,7 +80,7 @@ variable "ecr_repo_url" {
 }
 
 variable "health_check_path" {
-  default = "/fhir-converter"
+  default = "/"
 }
 
 variable "fargate_cpu" {
