@@ -7,7 +7,16 @@ locals {
       container_port = 3000,
       host_port      = 3000,
       public         = true
-      env_vars       = []
+      env_vars = [
+        {
+          name  = "AWS_REGION",
+          value = var.region
+        },
+        {
+          name  = "ECR_BUCKET_NAME",
+          value = var.s3_viewer_bucket_name
+        }
+      ]
     },
     fhir-converter = {
       fargate_cpu    = 1024,
@@ -31,6 +40,24 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/validation:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      public         = false
+      env_vars       = []
+    },
+    message-parser = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/message-parser:${var.phdi_version}",
+      container_port = 8080,
+      host_port      = 8080,
+      public         = false
+      env_vars       = []
+    },
+    trigger-code-reference = {
+      fargate_cpu    = 1024,
+      fargate_memory = 2048,
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/trigger-code-reference:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
       public         = false
@@ -66,7 +93,11 @@ locals {
         },
         {
           name  = "MESSAGE_PARSER_URL",
-          value = "http://message-parser-not-implemented:8080"
+          value = "http://message-parser:8080"
+        },
+        {
+          name  = "TRIGGER_CODE_REFERENCE_URL",
+          value = "http://trigger-code-reference:8080"
         }
       ]
     }

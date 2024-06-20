@@ -14,9 +14,12 @@ resource "aws_alb" "main" {
 
 # Defines the target gropu associated with the ALB
 resource "aws_alb_target_group" "this" {
-  name = var.target_group_name
-  # port        = key.value.container_port if each.key == orchestration || ecr-viewer else do_nothing
-  port        = 3000
+  for_each = {
+    for key, value in var.service_data : key => value
+    if(key == "orchestration") || (key == "ecr-viewer")
+  }
+  name        = "${each.key}-tg"
+  port        = each.value.container_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -32,15 +35,40 @@ resource "aws_alb_target_group" "this" {
   }
 }
 
+# The aws_alb_listener and aws_alb_listener_rule resources are depended on by other resources so
+# they can be implemented via a loop or hard coded depending ease of maintenance
+# I've chosen the ways that reduce duplicated resource blocks: hard code the listener, loop for listener rule
+
+# We may want to create this resource via a loop through our target groups but at the moment that seemed extra
 resource "aws_alb_listener" "http" {
-  # for_each          = aws_alb_target_group.this
   load_balancer_arn = aws_alb.main.arn
   port              = "80"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
-    target_group_arn = aws_alb_target_group.this.arn
+    target_group_arn = aws_alb_target_group.this["ecr-viewer"].arn
   }
+}
+
+# We may wan to create this resource without the loop if the path_patterns ever break the pattern of being the name of the service
+resource "aws_alb_listener_rule" "this" {
+  for_each = {
+    for key, value in aws_alb_target_group.this : key => value
+    if(key == "orchestration") || (key == "ecr-viewer")
+  }
+  listener_arn = aws_alb_listener.http.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = each.value.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/${each.key}/*"]
+    }
+  }
+
 }
 
 # Security Group for ECS

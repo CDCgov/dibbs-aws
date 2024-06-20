@@ -59,12 +59,17 @@ resource "aws_ecs_service" "this" {
   }
 
   dynamic "load_balancer" {
+    # The conditional for this for_each checks the key for the current interation of aws_ecs_task_definition.this
+    # and var.service_data so that we only create a dynamic load_balancer block for the public services.
+    # It may seem a little weird but it works and I'm happy with it.
+    # We loop through the service_data so that we have access to the container_port
+    # TODO: set a local.public_services list variable that only contains the public services
     for_each = {
       for key, value in var.service_data : key => value
-      if(each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
+      if (each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
     }
     content {
-      target_group_arn = aws_alb_target_group.this.arn
+      target_group_arn = aws_alb_target_group.this[each.key].arn
       container_name   = load_balancer.key
       container_port   = load_balancer.value.container_port
     }
