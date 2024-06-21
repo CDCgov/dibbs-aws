@@ -94,7 +94,7 @@ Please refer to [CDC's Template Repository](https://github.com/CDCgov/template) 
 # 3. Architectural Design
 The current architectural design for dibbs-aws is as follows:
 
-![Current DIBBS Architecture 6-14-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/d6b9066c-a304-403a-bf50-f349b5c2502f)
+![Current DIBBS Architecture 6-14-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/9f995f48-41dc-42f9-848c-1b779afa8285)
 
 The final architectural design encompasses the elements in the following:
 ![Future DIBBS Architecture](https://github.com/CDCgov/dibbs-aws/assets/29112142/4ea4b871-67c3-43cb-9444-4cccbd07338a)
