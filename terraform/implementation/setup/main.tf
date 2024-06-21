@@ -52,3 +52,13 @@ resource "aws_dynamodb_table" "tfstate_lock" {
     type = "S"
   }
 }
+
+resource "local_file" "env" {
+  content  = <<-EOT
+    ENVIRONMENT=${terraform.workspace}
+    BUCKET=dibbs-aws-tfstate-${var.owner}-${terraform.workspace}
+    DYNAMODB_TABLE=dibbs-aws-tfstate-lock-${var.owner}-${terraform.workspace}
+    REGION=${var.region}
+  EOT
+  filename = "../.env"
+}

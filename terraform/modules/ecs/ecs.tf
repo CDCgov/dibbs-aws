@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "this" {
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group         = var.ecs_cloudwatch_log_group,
+          awslogs-group         = var.ecs_cloudwatch_group,
           awslogs-region        = var.region,
           awslogs-stream-prefix = "ecs"
         }
@@ -40,8 +40,9 @@ resource "aws_ecs_service" "this" {
   name            = each.key
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = each.value.arn
-  desired_count   = var.app_count
-  launch_type     = "FARGATE"
+  # TODO: set this using service_data
+  desired_count = var.service_data[each.key].app_count
+  launch_type   = "FARGATE"
 
   scheduling_strategy = "REPLICA"
 
@@ -66,12 +67,12 @@ resource "aws_ecs_service" "this" {
     # TODO: set a local.public_services list variable that only contains the public services
     for_each = {
       for key, value in var.service_data : key => value
-      if (each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
+      if(each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
     }
     content {
       target_group_arn = aws_alb_target_group.this[each.key].arn
-      container_name   = load_balancer.key
-      container_port   = load_balancer.value.container_port
+      container_name   = each.key
+      container_port   = var.service_data[each.key].container_port
     }
   }
 

@@ -1,12 +1,9 @@
 resource "aws_cloudwatch_log_group" "ecs_cloudwatch_logs" {
-  name              = var.ecs_cloudwatch_log_group
+  name              = var.ecs_cloudwatch_group
   retention_in_days = var.retention_in_days
 }
 
 resource "aws_flow_log" "ecs_flow_log" {
-  depends_on = [var.vpc_id] # Ensure the VPC is created before creating flow logs
-
-  # ID of the VPC to associate the flow log with
   vpc_id = var.vpc_id
 
   # ARN of the IAM role that the flow log will assume to publish logs to CloudWatch Logs

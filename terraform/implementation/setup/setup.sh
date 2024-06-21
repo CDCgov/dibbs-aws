@@ -16,7 +16,7 @@ if [ "$ENVIRONMENT" == "$PRODUCTION" ]; then
 elif [ "$ENVIRONMENT" != "$PRODUCTION" ] && [ "$ENVIRONMENT" != "" ]; then
     echo "$ENVIRONMENT"
     terraform init -var-file="$ENVIRONMENT.tfvars"
-    terraform plan -var-file="$ENVIRONMENT.tfvars"
+    terraform apply -var-file="$ENVIRONMENT.tfvars"
 else
     echo "Please provide a valid environment: $PRODUCTION or another string"
     exit 1

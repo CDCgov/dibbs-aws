@@ -1,25 +1,3 @@
-variable "app_count" {
-  description = "Number of docker containers to run"
-  type        = number
-  default     = 1
-}
-
-variable "app_image" {
-  description = "Docker image to run in the ECS cluster"
-  default     = "busybox:latest"
-}
-
-variable "app_port" {
-  description = "Port exposed by the docker image to redirect traffic to"
-  type        = number
-  default     = 8080
-}
-
-variable "app_service_name" {
-  description = "ECS Service Name"
-  type        = string
-}
-
 variable "app_task_name" {
   description = "ECS Task Name"
   type        = string
@@ -44,22 +22,13 @@ variable "region" {
   description = "The AWS region things are created in"
 }
 
-variable "ecs_cloudwatch_log_group" {
+variable "ecs_cloudwatch_group" {
   description = "AWS Cloudwatch Log Group for ECS"
 }
 
 variable "az_count" {
   description = "Number of AZs to cover in a given region"
   default     = "2"
-}
-
-variable "ecs_app_task_family" {
-  description = "ECS Task Family"
-  type        = string
-}
-
-variable "ecs_s3_bucket_name" {
-  description = "The name fo the ECS bucket for ecr-viewer"
 }
 
 variable "ecs_cluster_name" {
@@ -72,11 +41,6 @@ variable "env" {
   type        = string
   description = "ECS development environment"
   default     = "dev"
-}
-
-variable "ecr_repo_url" {
-  type        = list(string)
-  description = "ECR repository urls"
 }
 
 variable "health_check_path" {
@@ -93,28 +57,17 @@ variable "fargate_memory" {
   default     = "2048"
 }
 
-variable "target_group_name" {
-  description = "ALB Target Group Name"
-  type        = string
-}
-
 # Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
 # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
 # In addition, if you want to delete log groups set "skip_destroy" to false
 variable "retention_in_days" {
-  type        = number
-  description = 30
+  type = number
 }
 
 
 #################
 ### NETWORKING ##
 #################
-
-variable "cidr" {
-  type        = string
-  description = "CIDR block"
-}
 
 variable "vpc_id" {
   type        = string

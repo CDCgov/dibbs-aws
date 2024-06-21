@@ -1,11 +1,13 @@
 # Create a Service Discovery Namespace
 resource "aws_service_discovery_private_dns_namespace" "dibbs_aws_ecs_ns" {
+  # TODO parameterize name
   name = "dibbs-aws-ecs-service-connect-ns"
   vpc  = var.vpc_id
 }
 
 # Register ECS Services with Service Discovery
 resource "aws_service_discovery_service" "this" {
+  # TODO parameterize name
   name         = "alis-services"
   namespace_id = aws_service_discovery_private_dns_namespace.dibbs_aws_ecs_ns.id
   dns_config {
@@ -19,6 +21,7 @@ resource "aws_service_discovery_service" "this" {
 
 # Define the AWS App Mesh resources
 resource "aws_appmesh_mesh" "dibbs_aws_ecs_mesh" {
+  # TODO parameterize name
   name = "dibbs-aws-ecs-mesh"
 }
 
@@ -28,10 +31,41 @@ resource "aws_appmesh_virtual_node" "this" {
   name      = each.key
   mesh_name = aws_appmesh_mesh.dibbs_aws_ecs_mesh.name
 
+  # dynamic "spec" {
+  #   # The conditional for this for_each checks the key for the current interation of aws_ecs_task_definition.this
+  #   # and var.service_data so that we only create a dynamic load_balancer block for the public services.
+  #   # It may seem a little weird but it works and I'm happy with it.
+  #   # We loop through the service_data so that we have access to the container_port
+  #   # TODO: set a local.public_services list variable that only contains the public services
+  #   for_each = { for key, value in var.service_data : key => value }
+  #   content {
+  #     listener {
+  #       port_mapping {
+  #         port     = spec.value.container_port
+  #         protocol = "http"
+  #       }
+  #     }
+
+  #     service_discovery {
+  #       aws_cloud_map {
+  #         service_name   = spec.key
+  #         namespace_name = aws_service_discovery_private_dns_namespace.dibbs_aws_ecs_ns.id
+  #         # namespace_name = "dibbs-aws-service-connect-ns"
+  #       }
+  #     }
+  #   }
+  # }
+
   spec {
     listener {
       port_mapping {
         port     = 8080
+        protocol = "http"
+      }
+    }
+    listener {
+      port_mapping {
+        port     = 3000
         protocol = "http"
       }
     }

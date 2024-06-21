@@ -11,5 +11,4 @@
 */
 
 owner = "dibbs"
-ghcr_token = "ghcr_token"
-ghcr_username = "[ghcr_username]"
+project = "dibbs"

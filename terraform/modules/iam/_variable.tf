@@ -13,3 +13,12 @@ variable "ecs_cluster_name" {
 variable "region" {
   type = string
 }
+variable "ecs_ecr_policy_name" {
+  type = string
+}
+variable "ecs_cloudwatch_policy_name" {
+  type = string
+}
+variable "ecs_cloudwatch_role_name" {
+  type = string
+}

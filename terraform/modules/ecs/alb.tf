@@ -1,4 +1,4 @@
-resource "aws_alb" "main" {
+resource "aws_alb" "ecs" {
   name               = var.alb_name
   internal           = false
   load_balancer_type = "application"
@@ -28,29 +28,34 @@ resource "aws_alb_target_group" "this" {
     healthy_threshold   = "3"
     interval            = "120"
     protocol            = "HTTP"
-    matcher             = "200"
+    matcher             = "200-499"
     timeout             = "3"
-    path                = var.health_check_path
+    path                = "/${each.key}"
     unhealthy_threshold = "2"
   }
 }
 
-# The aws_alb_listener and aws_alb_listener_rule resources are depended on by other resources so
+# The aws_alb_listener and aws_alb_listener_rule resources are not depended on by other resources so
 # they can be implemented via a loop or hard coded depending ease of maintenance
-# I've chosen the ways that reduce duplicated resource blocks: hard code the listener, loop for listener rule
+# I've chosen the ways that reduce duplicated resource blocks: hard coded listener (i.e. http), looped listener rule (i.e. this)
 
 # We may want to create this resource via a loop through our target groups but at the moment that seemed extra
 resource "aws_alb_listener" "http" {
-  load_balancer_arn = aws_alb.main.arn
+  load_balancer_arn = aws_alb.ecs.arn
   port              = "80"
   protocol          = "HTTP"
   default_action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.this["ecr-viewer"].arn
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Fixed response content"
+      status_code  = "200"
+    }
   }
 }
 
-# We may wan to create this resource without the loop if the path_patterns ever break the pattern of being the name of the service
+# We may want to create this resource without the loop if the path_patterns ever break the pattern of being the name of the service
 resource "aws_alb_listener_rule" "this" {
   for_each = {
     for key, value in aws_alb_target_group.this : key => value
@@ -65,7 +70,7 @@ resource "aws_alb_listener_rule" "this" {
 
   condition {
     path_pattern {
-      values = ["/${each.key}/*"]
+      values = ["/${each.key}", "/${each.key}/*"]
     }
   }
 
@@ -73,7 +78,8 @@ resource "aws_alb_listener_rule" "this" {
 
 # Security Group for ECS
 resource "aws_security_group" "ecs" {
-  vpc_id                 = var.vpc_id
+  vpc_id = var.vpc_id
+  # TODO parameterize sg name
   name                   = "dibbs-aws-ecs"
   description            = "Security group for ECS"
   revoke_rules_on_delete = true
@@ -106,7 +112,8 @@ resource "aws_security_group_rule" "ecs_all_egress" {
 
 # Security Group for alb
 resource "aws_security_group" "alb" {
-  vpc_id                 = var.vpc_id
+  vpc_id = var.vpc_id
+  # TODO parameterize sg name
   name                   = "dibbs-aws-ecs-alb"
   description            = "Security group for ALB"
   revoke_rules_on_delete = true

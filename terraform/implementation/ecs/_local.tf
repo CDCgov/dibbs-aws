@@ -1,8 +1,15 @@
+resource "random_string" "s3_viewer" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
 locals {
   service_data = {
     ecr-viewer = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecr-viewer:${var.phdi_version}",
       container_port = 3000,
       host_port      = 3000,
@@ -14,13 +21,14 @@ locals {
         },
         {
           name  = "ECR_BUCKET_NAME",
-          value = var.s3_viewer_bucket_name
+          value = local.s3_viewer_bucket_name
         }
       ]
     },
     fhir-converter = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/fhir-converter:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -30,6 +38,7 @@ locals {
     ingestion = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ingestion:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -39,6 +48,7 @@ locals {
     validation = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/validation:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -48,6 +58,7 @@ locals {
     message-parser = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/message-parser:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -57,6 +68,7 @@ locals {
     trigger-code-reference = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/trigger-code-reference:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -66,6 +78,7 @@ locals {
     orchestration = {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
+      app_count      = 1
       app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/orchestration:${var.phdi_version}",
       container_port = 8080,
       host_port      = 8080,
@@ -103,19 +116,19 @@ locals {
     }
   }
 
-  ecs_alb_sg                   = "${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
-  ecs_alb_name                 = "${var.ecs_alb_name}-${var.owner}-${terraform.workspace}"
-  ecs_app_service_name         = "${var.ecs_app_service_name}-${var.owner}-${terraform.workspace}"
-  ecs_app_task_name            = "${var.ecs_app_task_name}-${var.owner}-${terraform.workspace}"
-  ecs_task_execution_role_name = "${var.ecs_task_execution_role_name}-${var.owner}-${terraform.workspace}"
-  ecs_cloudwatch_log_group     = "${var.ecs_cloudwatch_log_group}-${var.owner}-${terraform.workspace}"
-  ecs_target_group_name        = "${var.ecs_target_group_name}-${var.owner}-${terraform.workspace}"
-  ecs_app_task_family          = "${var.ecs_app_task_family}-${var.owner}-${terraform.workspace}"
-  ecs_cluster_name             = "${var.ecs_cluster_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_name        = "${var.s3_viewer_bucket_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_role_name   = "${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_policy_name = "${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
-  vpc                          = "${var.vpc}-${var.owner}-${terraform.workspace}"
+  ecs_ecr_policy_name          = "${var.project}-${var.ecs_ecr_policy_name}-${var.owner}-${terraform.workspace}"
+  ecs_alb_sg                   = "${var.project}-${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
+  ecs_alb_name                 = "${var.project}-${var.ecs_alb_name}-${var.owner}-${terraform.workspace}"
+  ecs_app_task_name            = "${var.project}-${var.ecs_app_task_name}-${var.owner}-${terraform.workspace}"
+  ecs_task_execution_role_name = "${var.project}-${var.ecs_task_execution_role_name}-${var.owner}-${terraform.workspace}"
+  ecs_cloudwatch_group         = "/${var.project}-${var.ecs_cloudwatch_group}-${var.owner}-${terraform.workspace}"
+  ecs_cluster_name             = "${var.project}-${var.ecs_cluster_name}-${var.owner}-${terraform.workspace}"
+  ecs_cloudwatch_policy_name   = "${var.project}-${var.ecs_cloudwatch_policy_name}-${var.owner}-${terraform.workspace}"
+  ecs_cloudwatch_role_name     = "${var.project}-${var.ecs_cloudwatch_role_name}-${var.owner}-${terraform.workspace}"
+  s3_viewer_bucket_name        = "${var.project}-${var.s3_viewer_bucket_name}-${var.owner}-${terraform.workspace}-${random_string.s3_viewer.result}"
+  s3_viewer_bucket_role_name   = "${var.project}-${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
+  s3_viewer_bucket_policy_name = "${var.project}-${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
+  vpc                          = "${var.project}-${var.vpc}-${var.owner}-${terraform.workspace}"
 
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway

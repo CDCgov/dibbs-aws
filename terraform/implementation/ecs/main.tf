@@ -16,6 +16,9 @@ module "iam" {
   ecs_cluster_name             = local.ecs_cluster_name
   aws_caller_identity          = data.aws_caller_identity.current.account_id
   region                       = var.region
+  ecs_ecr_policy_name          = local.ecs_ecr_policy_name
+  ecs_cloudwatch_policy_name   = local.ecs_cloudwatch_policy_name
+  ecs_cloudwatch_role_name     = local.ecs_cloudwatch_role_name
 }
 
 module "ecr" {
@@ -44,19 +47,13 @@ module "ecs" {
   public_subnet_ids           = flatten(module.vpc.public_subnets)
   private_subnet_ids          = flatten(module.vpc.private_subnets)
   vpc_id                      = module.vpc.vpc_id
-  cidr                        = module.vpc.vpc_cidr_block
   availability_zones          = module.vpc.azs
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role.arn
-  ecr_repo_url                = module.ecr.repository_url
   ecs_cluster_name            = local.ecs_cluster_name
-  ecs_s3_bucket_name          = module.s3.ecs_s3_bucket_name
-  app_service_name            = local.ecs_app_service_name
   app_task_name               = local.ecs_app_task_name
   alb_name                    = local.ecs_alb_name
-  ecs_cloudwatch_log_group    = local.ecs_cloudwatch_log_group
+  ecs_cloudwatch_group        = local.ecs_cloudwatch_group
   service_data                = local.service_data
-  ecs_app_task_family         = local.ecs_app_task_family
-  target_group_name           = local.ecs_target_group_name
   retention_in_days           = var.cw_retention_in_days
   region                      = var.region
 }
