@@ -9,8 +9,14 @@ provider "aws" {
   }
 }
 
+resource "random_string" "setup" {
+  length  = 8
+  special = false
+  upper   = false
+}
+
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "dibbs-aws-tfstate-${var.owner}-${terraform.workspace}"
+  bucket = "${var.project}-tfstate-${var.owner}-${terraform.workspace}-${random_string.setup.result}"
 
   force_destroy = true
 }
@@ -43,7 +49,7 @@ resource "aws_s3_bucket_versioning" "default" {
 
 # Create a DynamoDB table for locking the state file
 resource "aws_dynamodb_table" "tfstate_lock" {
-  name         = "dibbs-aws-tfstate-lock-${var.owner}-${terraform.workspace}"
+  name         = "${var.project}-tfstate-lock-${var.owner}-${terraform.workspace}-${random_string.setup.result}"
   hash_key     = "LockID"
   billing_mode = "PAY_PER_REQUEST"
 
@@ -56,8 +62,8 @@ resource "aws_dynamodb_table" "tfstate_lock" {
 resource "local_file" "env" {
   content  = <<-EOT
     ENVIRONMENT=${terraform.workspace}
-    BUCKET=dibbs-aws-tfstate-${var.owner}-${terraform.workspace}
-    DYNAMODB_TABLE=dibbs-aws-tfstate-lock-${var.owner}-${terraform.workspace}
+    BUCKET=${aws_s3_bucket.tfstate.bucket}
+    DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
     REGION=${var.region}
   EOT
   filename = "../.env"

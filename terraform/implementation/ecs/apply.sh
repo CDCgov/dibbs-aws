@@ -66,12 +66,33 @@ if ! command -v terraform &> /dev/null; then
 fi
 
 if [ ! -f "$ENVIRONMENT.tfvars" ]; then
-    echo "No tfvars file exists, creating '$ENVIRONMENT.tfvars', use this to override variables"
+    echo "Creating $ENVIRONMENT.tfvars"
     touch "$ENVIRONMENT.tfvars"
-    exit 1
 fi
 
-echo "$ENVIRONMENT"
+if ! grep -q "owner" "$ENVIRONMENT.tfvars"; then
+    read -p "Who is the owner of this infrastructure? default=skylight" owner_choice
+    owner_choice=${owner_choice:-skylight}
+    echo "owner = \"$owner_choice\"" >> "$ENVIRONMENT.tfvars"
+fi
+
+if ! grep -q "project" "$ENVIRONMENT.tfvars"; then
+    read -p "What is this project called? default=dibbs" project_choice
+    project_choice=${project_choice:-dibbs}
+    echo "project  = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
+fi
+
+if ! grep -q "region" "$ENVIRONMENT.tfvars"; then
+    read -p "What aws region are you setting up in? default=us-east-1" region_choice
+    region_choice=${region_choice:-us-east-1}
+    echo "region  = \"$region_choice\"" >> "$ENVIRONMENT.tfvars"
+fi
+
+echo "Running Terraform with the following configuration:"
+echo "Environment: $ENVIRONMENT"
+echo "Bucket: $BUCKET"
+echo "DynamoDB Table: $DYNAMODB_TABLE"
+echo "Region: $REGION"
 
 terraform init \
     -migrate-state \
@@ -96,5 +117,5 @@ else
     fi
 fi
 
-terraform apply \
+terraform destroy \
     -var-file="$ENVIRONMENT.tfvars"

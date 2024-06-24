@@ -1,6 +1,9 @@
 variable "owner" {
   type = string
 }
+variable "project" {
+  type = string
+}
 variable "region" {
   description = "AWS region"
   type        = string
