@@ -1,5 +1,5 @@
 resource "aws_alb" "ecs" {
-  name               = var.alb_name
+  name               = var.ecs_alb_name
   internal           = false
   load_balancer_type = "application"
   subnets            = flatten([var.public_subnet_ids])
@@ -8,11 +8,10 @@ resource "aws_alb" "ecs" {
   enable_deletion_protection = false
 
   tags = {
-    Name = var.alb_name
+    Name = var.ecs_alb_name
   }
 }
 
-# Defines the target gropu associated with the ALB
 resource "aws_alb_target_group" "this" {
   for_each = {
     for key, value in var.service_data : key => value
@@ -76,10 +75,8 @@ resource "aws_alb_listener_rule" "this" {
 
 }
 
-# Security Group for ECS
 resource "aws_security_group" "ecs" {
-  vpc_id = var.vpc_id
-  # TODO parameterize sg name
+  vpc_id                 = var.vpc_id
   name                   = "dibbs-aws-ecs"
   description            = "Security group for ECS"
   revoke_rules_on_delete = true

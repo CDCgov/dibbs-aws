@@ -121,3 +121,15 @@ variable "ecs_cloudwatch_role_name" {
   type    = string
   default = "ecs-cwr"
 }
+variable "cloudmap_namespace_name" {
+  type    = string
+  default = "cloudmap-service-connect"
+}
+variable "cloudmap_service_name" {
+  type    = string
+  default = "cloudmap-services"
+}
+variable "appmesh_name" {
+  type    = string
+  default = "appmesh"
+}

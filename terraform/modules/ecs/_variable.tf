@@ -1,9 +1,4 @@
-variable "app_task_name" {
-  description = "ECS Task Name"
-  type        = string
-}
-
-variable "alb_name" {
+variable "ecs_alb_name" {
   description = "ALB Name"
   type        = string
 }
@@ -57,17 +52,9 @@ variable "fargate_memory" {
   default     = "2048"
 }
 
-# Note:  Retention period can change (i.e. 0, 7, 14, 90, 180, etc.)
-# See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group
-# In addition, if you want to delete log groups set "skip_destroy" to false
-variable "retention_in_days" {
+variable "cw_retention_in_days" {
   type = number
 }
-
-
-#################
-### NETWORKING ##
-#################
 
 variable "vpc_id" {
   type        = string
@@ -87,4 +74,18 @@ variable "private_subnet_ids" {
 variable "service_data" {
   type        = map(any)
   description = "Environment variables to pass to the container"
+}
+
+variable "cloudmap_namespace_name" {
+  type        = string
+  description = ""
+}
+variable "cloudmap_service_name" {
+  type        = string
+  description = ""
+}
+
+variable "appmesh_name" {
+  type        = string
+  description = ""
 }

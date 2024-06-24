@@ -1,8 +1,5 @@
-# Pull images from GitHub Container Registry and push to AWS Elastic Container Registry
-
 resource "time_static" "now" {}
 
-# NOTE: This pulls image down from the docker registry
 resource "docker_image" "ghcr_image" {
   for_each      = var.service_data
   name          = data.docker_registry_image.ghcr_data[each.key].name

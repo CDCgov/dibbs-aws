@@ -1,6 +1,6 @@
 module "vpc" {
   source                      = "terraform-aws-modules/vpc/aws"
-  name                        = local.vpc
+  name                        = local.vpc_name
   default_security_group_name = local.ecs_alb_sg
   cidr                        = var.vpc_cidr
   azs                         = var.availability_zones
@@ -28,8 +28,6 @@ module "ecr" {
   service_data            = local.service_data
   phdi_version            = var.phdi_version
   ecs_cluster_name        = local.ecs_cluster_name
-  tags                    = {}
-  lifecycle_policy        = ""
   region                  = var.region
 }
 
@@ -50,10 +48,12 @@ module "ecs" {
   availability_zones          = module.vpc.azs
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role.arn
   ecs_cluster_name            = local.ecs_cluster_name
-  app_task_name               = local.ecs_app_task_name
-  alb_name                    = local.ecs_alb_name
+  ecs_alb_name                = local.ecs_alb_name
   ecs_cloudwatch_group        = local.ecs_cloudwatch_group
   service_data                = local.service_data
-  retention_in_days           = var.cw_retention_in_days
+  cw_retention_in_days        = var.cw_retention_in_days
   region                      = var.region
+  cloudmap_namespace_name     = local.cloudmap_namespace_name
+  cloudmap_service_name       = local.cloudmap_service_name
+  appmesh_name                = local.appmesh_name
 }

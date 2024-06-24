@@ -5,6 +5,7 @@ provider "aws" {
     tags = {
       Owner       = var.owner
       Environment = terraform.workspace
+      project     = var.project
     }
   }
 }

@@ -116,6 +116,9 @@ locals {
     }
   }
 
+  appmesh_name                 = "${var.project}-${var.appmesh_name}-${var.owner}-${terraform.workspace}"
+  cloudmap_namespace_name      = "${var.project}-${var.cloudmap_namespace_name}-${var.owner}-${terraform.workspace}"
+  cloudmap_service_name        = "${var.project}-${var.cloudmap_service_name}-${var.owner}-${terraform.workspace}"
   ecs_ecr_policy_name          = "${var.project}-${var.ecs_ecr_policy_name}-${var.owner}-${terraform.workspace}"
   ecs_alb_sg                   = "${var.project}-${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
   ecs_alb_name                 = "${var.project}-${var.ecs_alb_name}-${var.owner}-${terraform.workspace}"
@@ -128,7 +131,7 @@ locals {
   s3_viewer_bucket_name        = "${var.project}-${var.s3_viewer_bucket_name}-${var.owner}-${terraform.workspace}-${random_string.s3_viewer.result}"
   s3_viewer_bucket_role_name   = "${var.project}-${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
   s3_viewer_bucket_policy_name = "${var.project}-${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
-  vpc                          = "${var.project}-${var.vpc}-${var.owner}-${terraform.workspace}"
+  vpc_name                     = "${var.project}-${var.vpc}-${var.owner}-${terraform.workspace}"
 
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway

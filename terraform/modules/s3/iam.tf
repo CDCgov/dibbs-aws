@@ -1,4 +1,3 @@
-# s3 bucket role
 resource "aws_iam_role" "s3_role_for_ecr_viewer" {
   name               = var.s3_viewer_bucket_role_name
   assume_role_policy = var.ecs_assume_role_policy

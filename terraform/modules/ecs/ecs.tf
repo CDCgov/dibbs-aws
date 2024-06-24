@@ -59,6 +59,11 @@ resource "aws_ecs_service" "this" {
     type = "ECS"
   }
 
+  force_new_deployment = true
+  triggers = {
+    redeployment = plantimestamp()
+  }
+
   dynamic "load_balancer" {
     # The conditional for this for_each checks the key for the current interation of aws_ecs_task_definition.this
     # and var.service_data so that we only create a dynamic load_balancer block for the public services.
