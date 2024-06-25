@@ -164,7 +164,7 @@ This section will go over some of the sections you will need to amend or change 
 
 <em><strong>4.5.1. Update And Setup Your AWS Backend</em></strong>
 * In your terminal, navigate to the _/terraform/setup_ folder (`cd /terraform/setup`).  
-* Run `./setup.sh`.\
+* Run `./setup.sh`.
 * Now set your variable values for (1) *Region*, (2) *Owner*, and (3) *Project* when prompted in the command line.  
 &nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>:  The default value for Owner is `Skylight`.  You can change this value to an \
 &nbsp;&nbsp;&nbsp;&nbsp;abbreviated version of your organization (i.e. `WA-STILTS`).  _The Owner name \
@@ -218,11 +218,11 @@ This section will go over some of the sections you will need to amend or change 
 * In this _defaults.tfvars_ file, you can update and override any other default values.
 
 <em><strong>4.10.2. Test and Validate Your Changes</em></strong>
-** Save your changes.
+* Save your changes.
 * Run `terraform init`.
 * Validate your changes `terraform validate`.
 * If no errors, run `terraform plan` to see what changes will result.
 * Then run `terraform apply`.  Fix any issues that may result until your apply is successful.
-* Ensure your changes are saved, committed and pushed for your team to review.
+* Save, commit and push your changes to your github repository for your team to review.
 
 [Return to Table of Contents](#table-of-contents).
