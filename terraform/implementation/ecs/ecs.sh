@@ -116,12 +116,13 @@ terraform init \
     -backend-config "region=$REGION" \
     || (echo "terraform init failed, exiting..." && exit 1)
 
-if [ "$CI" = false ]; then
-    # Check if workspace exists
-    if terraform workspace list | grep -q "$ENVIRONMENT"; then
-        echo "Selecting $ENVIRONMENT terraform workspace"
-        terraform workspace select "$ENVIRONMENT"
-    else
+
+# Check if workspace exists
+if terraform workspace list | grep -q "$ENVIRONMENT"; then
+    echo "Selecting $ENVIRONMENT terraform workspace"
+    terraform workspace select "$ENVIRONMENT"
+else
+    if [ "$CI" = false ]; then
         read -p "Workspace '$ENVIRONMENT' does not exist. Do you want to create it? (y/n): " choice
         if [[ $choice =~ ^[Yy]$ ]]; then
             echo "Creating '$ENVIRONMENT' terraform workspace"
@@ -130,7 +131,14 @@ if [ "$CI" = false ]; then
             echo "Workspace creation cancelled."
             exit 1
         fi
+    else
+        echo "Creating '$ENVIRONMENT' terraform workspace"
+        terraform workspace new "$ENVIRONMENT"
     fi
 fi
 
-terraform apply -var-file="$ENVIRONMENT.tfvars"
+if [ "$CI" = false ]; then
+    terraform apply -var-file="$ENVIRONMENT.tfvars"
+else
+    terraform apply -auto-approve -var-file="$ENVIRONMENT.tfvars"
+fi

@@ -52,13 +52,22 @@ fi
 if ! grep -q "project" "$ENVIRONMENT.tfvars"; then
     read -p "What is this project called? ( default=dibbs ): " project_choice
     project_choice=${project_choice:-dibbs}
-    echo "project  = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
+    echo "project = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
 fi
 
 if ! grep -q "region" "$ENVIRONMENT.tfvars"; then
     read -p "What aws region are you setting up in? ( default=us-east-1 ): " region_choice
     region_choice=${region_choice:-us-east-1}
-    echo "region  = \"$region_choice\"" >> "$ENVIRONMENT.tfvars"
+    echo "region = \"$region_choice\"" >> "$ENVIRONMENT.tfvars"
+fi
+
+if ! grep -q "github_repo" "$ENVIRONMENT.tfvars"; then
+    read -p "Are you using GitHub for your source control? (y/n): " github_choice
+    if [[ "$github_choice" =~ ^[Yy]$ ]]; then
+        read -p "What is the organization/repo value for assume role? ( default=\"\" ): " repo_choice
+        repo_choice=${repo_choice:-""}
+        echo "github_repo = \"$repo_choice\"" >> "$ENVIRONMENT.tfvars"
+    fi
 fi
 
 echo "Running Terraform with the following variables:"
