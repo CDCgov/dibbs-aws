@@ -14,10 +14,11 @@
   - [4.2 Clone DIBBS-AWS Repository](#42-clone-dibbs-aws-repository)
   - [4.3 Begin Using Repository](#43-begin-using-repository)
   - [4.4 Make A New Branch](#44-make-a-new-branch)
-  - [4.5 Amendments To Your Local Branch](#45-amendments-to-your-local-terraform)
-  - [4.6 Running Code Locally](#46-running-code-locally)
-  - [4.7 Review Prospective Changes](#47-review-prospective-changes)
-  - [4.8 Apply Changes](#48-apply-changes)
+  - [4.5 Update Terraform Through The Command Line](#45-update-terraform-through-the-command-line)
+  - [4.6 Run Terraform Code In Your Designated Environment](#46-run-terraform-code-in-your-designated-environment)
+  - [4.7 Validate Your Terraform Changes](#47-validate-your-terraform-changes)
+  - [4.8 Review Prospective Changes](#48-review-prospective-changes)
+  - [4.9 Apply Changes](#49-apply-changes)
 
 # 1. Overview
 
@@ -94,10 +95,10 @@ Please refer to [CDC's Template Repository](https://github.com/CDCgov/template) 
 # 3. Architectural Design
 The current architectural design for dibbs-aws is as follows:
 
-![Current DIBBS Architecture 6-14-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/9f995f48-41dc-42f9-848c-1b779afa8285)
+![Current DIBBS Architecture 6-14-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/7d43d3c1-5d61-41b8-a1c3-bb4884073825)
 
 The final architectural design encompasses the elements in the following:
-![Future DIBBS Architecture](https://github.com/CDCgov/dibbs-aws/assets/29112142/4ea4b871-67c3-43cb-9444-4cccbd07338a)
+![Future DIBBS Architecture](https://github.com/CDCgov/dibbs-aws/assets/29112142/1a28b5a6-758d-41c7-b16a-454e64858e7c)
 
 Please note the final architectural design may change.
 
@@ -151,51 +152,58 @@ Make a new branch to store any of your amendments to ensure you keep a clean mai
 <em><strong>4.4.1.</em></strong> Navigate to the `dibbs-aws` repository on your local machine.\
 &ensp; `cd /workspace/dibbs-aws`\
 <em><strong>4.4.2.</em></strong> Make a new branch.\
-&ensp; For example, `git checkout -b update–and-setup-dibbs-aws-backend`.\
+&ensp; For example, `git checkout -b setup-dibbs-aws-backend-and-services`.\
 
 [Return to Table of Contents](#table-of-contents).
 
-## 4.5 Amendments to Your Local Terraform
+## 4.5 Update Terraform Through The Command Line
 
 This section will go over some of the sections you will need to amend or change in your local terraform branch.
 
-<em><strong>4.5.1. Update Terraform Code</em></strong>
-* Navigate to the _terraform/implementation/ecs/_variable.tf_ file.  Update default values with your unique team or project name.  _For example_, locate the `owner` variable and change the default value from `dibbs` to your unique team or project name (i.e. _stilt-stateNameAbbreviation_, _stilt-WA_, etc.).
-* Alternatively, you can create an _override.tf_ file to override any default values in this repo.  See Hashicorp's [Override Files](https://developer.hashicorp.com/terraform/language/files/override) documentation for additional information.
+<em><strong>4.5.1. Update And Setup Your AWS Backend</em></strong>
+* In your terminal, navigate to the _/terraform/setup_ folder (`cd /terraform/setup`).  
+* Run `./setup.sh`.\
+* Now set your variable values for (1) *Region*, (2) *Owner*, and (3) *Project* when prompted in the command line.  
+&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>:  The default value for Owner is `Skylight`.  You can change this value to an \
+&nbsp;&nbsp;&nbsp;&nbsp;abbreviated version of your organization (i.e. `WA-STILTS`).  _The Owner name \
+&nbsp;&nbsp;&nbsp;&nbsp;should be <u>less than</u> 13 characters_. 
+* Initialize your AWS backend service by running `terraform init`.
 
-<em><strong>4.5.2. Validate Changes</em></strong>
-* Run `terraform validate` to ensure the new configurations are valid before you proceed.  Resolve any conflicts.  If there are no conflicts, move to 4.5.3.
+<em><strong> 4.5.2. Check What Files Changed</em></strong>
+* Run `git status` to see what changes have changed.
 
 <em><strong> 4.5.3. Save Changes</em></strong>
-* Save changes to your working branch.
-
-
-<em><strong>4.5.4. Commit Changes</em></strong>
-*You can commit your changes prior to running a terraform plan.  
-&ensp; `git add terraform/implementation/ecs/var.tf`\
-&ensp; `git commit -m "update terraform default dibbs values to [insertValue]"`\
-&ensp; `git push`
+* Save and commit changes to your working branch.
 
 [Return to Table of Contents](#table-of-contents).
 
-
-## 4.6 Running Code Locally
-<em><strong>4.6.1. Run ECS Module Changes Locally</em></strong>
-* To run your ECS Module Changes locally, navigate to _terraform/implementation/ecs/_.
-* In your command line or editor terminal run `ecs.sh development`.
+## 4.6 Run Terraform Code In Your Designated Environment
+<em><strong>4.6.1. Run ECS Module Locally</em></strong>
+* To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation/ecs`.
+* In your terminal run the ECS Script in your designated environment `./ecs.sh -e {insertEnvironmentName}`.\
+&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
+&nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires to develop in.
 
 [Return to Table of Contents](#table-of-contents).
 
-## 4.7 Review Prospective Changes
-<em><strong>4.7.1. Run Terraform Plan</em></strong>
+## 4.7 Validate Your Terraform Changes
+
+<em><strong>4.7.1. Validate Changes</em></strong>
+* Run `terraform validate` to ensure the new configurations are valid.
+* If you receive a `success`, then move to 4.8.
+
+[Return to Table of Contents](#table-of-contents).
+
+## 4.8 Review Prospective Changes
+<em><strong>4.8.1. Run Terraform Plan</em></strong>
 * Run `terraform plan` to see what resources will be created with the amendments you created in section 4.5.
 * Resolve any conflicts that may arise.  _For example_, target group names can only be 13 characters long.  So, if you receive an error for the target group name above the limit, you may need to revise the target group name to satisfy this requirement.  Once you have made the necessary changes, run `terraform validate` then `terraform plan` again.
-* Review the plan and ensure things look correct before moving to 4.8.  
+* Review the plan and ensure things look correct before moving to 4.9.  
 
 [Return to Table of Contents](#table-of-contents).
 
-## 4.8 Apply Changes
-<em><strong>4.8.1. Run Terraform Apply</em></strong>
+## 4.9 Apply Changes
+<em><strong>4.9.1. Run Terraform Apply</em></strong>
 * Run `terraform apply` to officially create the necessary resources using Terraform.
 * You will first receive a plan.  Review the plan to ensure it is consistent to the changes you would like to make.  
 * If the plan is correct, type `yes` to apply your terraform changes.
