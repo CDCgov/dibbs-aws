@@ -21,7 +21,7 @@ resource "aws_appmesh_mesh" "this" {
 }
 
 resource "aws_appmesh_virtual_node" "this" {
-  for_each  = aws_ecs_service.this
+  for_each  = var.service_data
   name      = each.key
   mesh_name = aws_appmesh_mesh.this.name
 
@@ -52,15 +52,15 @@ resource "aws_appmesh_virtual_node" "this" {
 
   spec {
     listener {
-      port_mapping {
-        port     = 8080
-        protocol = "http"
-      }
-    }
-    listener {
-      port_mapping {
-        port     = 3000
-        protocol = "http"
+      dynamic "port_mapping" {
+        for_each = {
+          for key, value in var.service_data : key => value
+          if each.key == key
+        }
+        content {
+          port     = port_mapping.value.container_port
+          protocol = "http"
+        }
       }
     }
 

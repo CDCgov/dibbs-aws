@@ -60,12 +60,21 @@ resource "aws_dynamodb_table" "tfstate_lock" {
   }
 }
 
-resource "local_file" "env" {
+resource "local_file" "setup_env" {
   content  = <<-EOT
     ENVIRONMENT=${terraform.workspace}
     BUCKET=${aws_s3_bucket.tfstate.bucket}
     DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
     REGION=${var.region}
   EOT
-  filename = "../.env"
+  filename = ".env"
+}
+
+resource "local_file" "ecs_env" {
+  content  = <<-EOT
+    BUCKET=${aws_s3_bucket.tfstate.bucket}
+    DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
+    REGION=${var.region}
+  EOT
+  filename = "../ecs/.env"
 }
