@@ -19,6 +19,8 @@
   - [4.7 Validate Your Terraform Changes](#47-validate-your-terraform-changes)
   - [4.8 Review Prospective Changes](#48-review-prospective-changes)
   - [4.9 Apply Changes](#49-apply-changes)
+  - [4.10 Update Variables](#410-update-variables)
+  
 
 # 1. Overview
 
@@ -95,10 +97,10 @@ Please refer to [CDC's Template Repository](https://github.com/CDCgov/template) 
 # 3. Architectural Design
 The current architectural design for dibbs-aws is as follows:
 
-![Current DIBBS Architecture 6-14-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/7d43d3c1-5d61-41b8-a1c3-bb4884073825)
+![Current DIBBS Architecture as of 6-24-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/7d43d3c1-5d61-41b8-a1c3-bb4884073825)
 
 The final architectural design encompasses the elements in the following:
-![Future DIBBS Architecture](https://github.com/CDCgov/dibbs-aws/assets/29112142/1a28b5a6-758d-41c7-b16a-454e64858e7c)
+![Future DIBBS Architecture](https://github.com/CDCgov/dibbs-aws/assets/29112142/bc27fa96-d246-4f8d-90ee-7baef0311c2b)
 
 Please note the final architectural design may change.
 
@@ -179,10 +181,10 @@ This section will go over some of the sections you will need to amend or change 
 
 ## 4.6 Run Terraform Code In Your Designated Environment
 <em><strong>4.6.1. Run ECS Module Locally</em></strong>
-* To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation/ecs`.
+* To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation`.
 * In your terminal run the ECS Script in your designated environment `./ecs.sh -e {insertEnvironmentName}`.\
 &nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
-&nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires to develop in.
+&nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires.
 
 [Return to Table of Contents](#table-of-contents).
 
@@ -207,5 +209,20 @@ This section will go over some of the sections you will need to amend or change 
 * Run `terraform apply` to officially create the necessary resources using Terraform.
 * You will first receive a plan.  Review the plan to ensure it is consistent to the changes you would like to make.  
 * If the plan is correct, type `yes` to apply your terraform changes.
+
+[Return to Table of Contents](#table-of-contents).
+
+## 4.10 Update Variables
+<em><strong>4.10.1. Update Other Default Variables</em></strong>
+* Navigate to the _defaults.tfvars_ file `cd terraform/implementation/ecs/default.tfvars`.
+* In this _defaults.tfvars_ file, you can update and override any other default values.
+
+<em><strong>4.10.2. Test and Validate Your Changes</em></strong>
+** Save your changes.
+* Run `terraform init`.
+* Validate your changes `terraform validate`.
+* If no errors, run `terraform plan` to see what changes will result.
+* Then run `terraform apply`.  Fix any issues that may result until your apply is successful.
+* Ensure your changes are saved, committed and pushed for your team to review.
 
 [Return to Table of Contents](#table-of-contents).
