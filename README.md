@@ -141,9 +141,9 @@ Engineers will need following tools installed on their local machine:
 &ensp; _Note_: If you only have a default terraform workspace, you can create a terraform workspace to develop in.  _Skip to "Create a terraform workspace to develop in," below_.
 - <u>Select the terraform workspace to develop in</u>.\
  &ensp; `terraform workspace select {selectEnvironmentName}`\
- &ensp; For example, `terraform workspace select dev`.\
+ &ensp; For example, `terraform workspace select dev`.
 - <u>Create a terraform workspace to develop in</u>.\
-&ensp; `terraform workspace new {newEnvironmentName}`.\
+&ensp; `terraform workspace new {newEnvironmentName}`.
 &ensp; For example, `terraform workspace new dev`.
 
 [Return to Table of Contents](#table-of-contents).
@@ -154,7 +154,7 @@ Make a new branch to store any of your amendments to ensure you keep a clean mai
 <em><strong>4.4.1.</em></strong> Navigate to the `dibbs-aws` repository on your local machine.\
 &ensp; `cd /workspace/dibbs-aws`\
 <em><strong>4.4.2.</em></strong> Make a new branch.\
-&ensp; For example, `git checkout -b setup-dibbs-aws-backend-and-services`.\
+&ensp; For example, `git checkout -b setup-dibbs-aws-backend-and-services`.
 
 [Return to Table of Contents](#table-of-contents).
 
