@@ -126,9 +126,9 @@ Engineers will need following tools installed on their local machine:
 <em><strong>4.2.1.</em></strong> Create a directory to store the repository on your local machine
 - Mac OS users: `mkdir workspace`
 - Windows users: `md workspace`
-<em><strong>4.2.2.</em></strong> Clone the dibbs-aws repository (<u>use one of the following commands</u>:)
-- `git clone git@github.com:CDCgov/dibbs-cloud.git` 
-- `git clone https://github.com/CDCgov/dibbs-cloud.git`
+
+<em><strong>4.2.2.</em></strong> Clone the dibbs-aws repository (<u>use one of the following commands</u>:)\
+&nbsp;&nbsp;&nbsp;&nbsp;`git clone git@github.com:CDCgov/dibbs-cloud.git` <br />  &nbsp;&nbsp;&nbsp;&nbsp;`git clone https://github.com/CDCgov/dibbs-cloud.git`
 
 [Return to Table of Contents](#table-of-contents).
 
