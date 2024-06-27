@@ -40,9 +40,8 @@ resource "aws_ecs_service" "this" {
   name            = each.key
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = each.value.arn
-  # TODO: set this using service_data
-  desired_count = var.service_data[each.key].app_count
-  launch_type   = "FARGATE"
+  desired_count   = var.service_data[each.key].app_count
+  launch_type     = "FARGATE"
 
   scheduling_strategy = "REPLICA"
 

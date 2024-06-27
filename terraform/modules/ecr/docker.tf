@@ -20,9 +20,9 @@ resource "docker_tag" "tag_for_aws" {
 }
 
 resource "docker_registry_image" "my_docker_image" {
-  for_each      = var.service_data
-  name          = "${aws_ecr_repository.repo[each.key].repository_url}:${var.phdi_version}"
-  depends_on    = [
+  for_each = var.service_data
+  name     = "${aws_ecr_repository.repo[each.key].repository_url}:${var.phdi_version}"
+  depends_on = [
     docker_image.ghcr_image,
     docker_tag.tag_for_aws,
     aws_ecr_repository.repo

@@ -25,31 +25,6 @@ resource "aws_appmesh_virtual_node" "this" {
   name      = each.key
   mesh_name = aws_appmesh_mesh.this.name
 
-  # dynamic "spec" {
-  #   # The conditional for this for_each checks the key for the current interation of aws_ecs_task_definition.this
-  #   # and var.service_data so that we only create a dynamic load_balancer block for the public services.
-  #   # It may seem a little weird but it works and I'm happy with it.
-  #   # We loop through the service_data so that we have access to the container_port
-  #   # TODO: set a local.public_services list variable that only contains the public services
-  #   for_each = { for key, value in var.service_data : key => value }
-  #   content {
-  #     listener {
-  #       port_mapping {
-  #         port     = spec.value.container_port
-  #         protocol = "http"
-  #       }
-  #     }
-
-  #     service_discovery {
-  #       aws_cloud_map {
-  #         service_name   = spec.key
-  #         namespace_name = aws_service_discovery_private_dns_namespace.this.id
-  #         # namespace_name = "dibbs-aws-service-connect-ns"
-  #       }
-  #     }
-  #   }
-  # }
-
   spec {
     listener {
       dynamic "port_mapping" {

@@ -10,6 +10,6 @@ variable "region" {
   default     = "us-east-1"
 }
 variable "oidc_github_repo" {
-  type = string
+  type    = string
   default = ""
 }
