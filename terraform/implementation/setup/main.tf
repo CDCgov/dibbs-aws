@@ -3,9 +3,10 @@ provider "aws" {
   region = var.region
   default_tags {
     tags = {
-      Owner       = var.owner
-      Environment = terraform.workspace
-      project     = var.project
+      owner     = var.owner
+      workspace = terraform.workspace
+      project   = var.project
+      id        = random_string.setup.result
     }
   }
 }
@@ -17,7 +18,7 @@ resource "random_string" "setup" {
 }
 
 resource "aws_s3_bucket" "tfstate" {
-  bucket = "${var.project}-tfstate-${var.owner}-${terraform.workspace}-${random_string.setup.result}"
+  bucket = "${var.project}-tfstate-${var.owner}-${random_string.setup.result}"
 
   force_destroy = true
 }
@@ -50,7 +51,7 @@ resource "aws_s3_bucket_versioning" "default" {
 
 # Create a DynamoDB table for locking the state file
 resource "aws_dynamodb_table" "tfstate_lock" {
-  name         = "${var.project}-tfstate-lock-${var.owner}-${terraform.workspace}-${random_string.setup.result}"
+  name         = "${var.project}-tfstate-lock-${var.owner}-${random_string.setup.result}"
   hash_key     = "LockID"
   billing_mode = "PAY_PER_REQUEST"
 
@@ -62,7 +63,7 @@ resource "aws_dynamodb_table" "tfstate_lock" {
 
 resource "local_file" "setup_env" {
   content  = <<-EOT
-    ENVIRONMENT=${terraform.workspace}
+    WORKSPACE=${terraform.workspace}
     BUCKET=${aws_s3_bucket.tfstate.bucket}
     DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
     REGION=${var.region}

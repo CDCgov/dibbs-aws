@@ -9,7 +9,7 @@ variable "region" {
   type        = string
   default     = "us-east-1"
 }
-variable "github_repo" {
+variable "oidc_github_repo" {
   type = string
   default = ""
 }

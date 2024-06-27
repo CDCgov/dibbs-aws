@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "github_assume_role" {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
       values = [
-        "repo:${var.github_repo}:*",
+        "repo:${var.oidc_github_repo}:*",
       ]
     }
   }
@@ -104,12 +104,12 @@ data "aws_iam_policy_document" "github" {
 }
 
 resource "aws_iam_policy" "github" {
-  name        = "${var.project}-github-policy-${var.owner}-${terraform.workspace}"
+  name        = "${var.project}-github-policy-${var.owner}-${random_string.setup.result}"
   policy      = data.aws_iam_policy_document.github.json
 }
 
 resource "aws_iam_role" "github" {
-  name               = "${var.project}-github-role-${var.owner}-${terraform.workspace}"
+  name               = "${var.project}-github-role-${var.owner}-${random_string.setup.result}"
   assume_role_policy = data.aws_iam_policy_document.github_assume_role.json
 }
 
