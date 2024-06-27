@@ -10,9 +10,6 @@ on:
         options:
           - ""
           - prod
-  push:
-    branches:
-      - 1611-create-elastic-container-service
 
 concurrency:
   group: ${{ github.event.inputs.deploy_env }}-deploy
