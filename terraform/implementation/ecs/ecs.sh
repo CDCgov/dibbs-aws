@@ -88,8 +88,8 @@ if [ "$CI" = false ]; then
     fi
 
     if ! grep -q "project" "$ENVIRONMENT.tfvars"; then
-        read -p "What is this project called? ( default=dibbs ): " project_choice
-        project_choice=${project_choice:-dibbs}
+        read -p "What is this project called? ( default=dibbs-ce ): " project_choice
+        project_choice=${project_choice:-dibbs-ce}
         echo "project = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
     fi
 
@@ -109,7 +109,6 @@ echo "Region: $REGION"
 cat "$ENVIRONMENT.tfvars"
 
 terraform init \
-    -migrate-state \
     -var-file="$ENVIRONMENT.tfvars" \
     -backend-config "bucket=$BUCKET" \
     -backend-config "dynamodb_table=$DYNAMODB_TABLE" \

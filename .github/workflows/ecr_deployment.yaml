@@ -1,13 +1,34 @@
 name: Deploy to ECS
 
 on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - ""
+          - prod
   push:
     branches:
       - 1611-create-elastic-container-service
 
+concurrency:
+  group: ${{ github.event.inputs.deploy_env }}-deploy
+  cancel-in-progress: false
+
 permissions:
   id-token: write
   contents: read
+
+env:
+  aws_region: us-east-1
+  environment: prod
+  # environment: ${{ github.event.inputs.environment }}
+  owner: "skylight"
+  project: "dibbs-ce"
+
 jobs:
   terraform:
     name: Run Terraform
@@ -27,17 +48,17 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          role-session-name: githubECSDeploymentWorkflow
-          aws-region: us-east-1
+          role-session-name: githubDeploymentWorkflow
+          aws-region: ${{ env.aws_region }}
 
-      - name: Load variables
+      - name: Terraform
         env:
-          ENVIRONMENT: dev
-          BUCKET: infra-tfstate-alis-default-aizwjxuh
-          DYNAMODB_TABLE: infra-tfstate-lock-alis-default-aizwjxuh
-          REGION: us-east-1
-          OWNER: alis
-          PROJECT: infra
+          ENVIRONMENT: ${{ env.environment }}
+          BUCKET: ${{ secrets.TFSTATE_BUCKET }}
+          DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
+          REGION: ${{ env.aws_region }}
+          OWNER: ${{ env.owner }}
+          PROJECT: ${{ env.project }}
         shell: bash
         run: |
           echo "ENVIRONMENT=$ENVIRONMENT" >> .env
@@ -47,7 +68,4 @@ jobs:
           echo "owner = \"$OWNER\"" >> $ENVIRONMENT.tfvars
           echo "project = \"$PROJECT\"" >> $ENVIRONMENT.tfvars
           echo "region = \"$REGION\"" >> $ENVIRONMENT.tfvars
-
-      - name: Terraform
-        run: |
-          # ./ecs.sh -e dev --ci
+          ./ecs.sh -e $ENVIRONMENT --ci

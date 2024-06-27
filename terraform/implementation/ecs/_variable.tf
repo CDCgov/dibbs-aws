@@ -6,7 +6,7 @@ variable "owner" {
 variable "project" {
   description = ""
   type        = string
-  default     = "dibbs"
+  default     = "dibbs-ce"
 }
 variable "region" {
   description = "AWS region"
