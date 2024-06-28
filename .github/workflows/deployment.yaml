@@ -12,7 +12,7 @@ on:
           - prod
 
 concurrency:
-  group: ${{ github.event.inputs.deploy_env }}-deploy
+  group: ${{ github.event.inputs.environment }}-deploy
   cancel-in-progress: false
 
 permissions:
@@ -21,8 +21,7 @@ permissions:
 
 env:
   aws_region: us-east-1
-  environment: prod
-  # environment: ${{ github.event.inputs.environment }}
+  environment: ${{ github.event.inputs.environment }}
   owner: "skylight"
   project: "dibbs-ce"
 
