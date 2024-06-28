@@ -13,7 +13,7 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = jsonencode([
     {
       name        = each.key,
-      image       = each.value.app_image,
+      image       = "${each.value.app_image}:${each.value.app_version}",
       networkMode = "awsvpc",
       logConfiguration = {
         logDriver = "awslogs",

@@ -7,10 +7,12 @@ resource "random_string" "s3_viewer" {
 locals {
   service_data = {
     ecr-viewer = {
+      short_name     = "ecrv",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ecr-viewer:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-ecr-viewer",
+      app_version    = var.phdi_version,
       container_port = 3000,
       host_port      = 3000,
       public         = true
@@ -26,60 +28,72 @@ locals {
       ]
     },
     fhir-converter = {
+      short_name     = "fhirc",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/fhir-converter:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-fhir-converter",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = false
       env_vars       = []
     },
     ingestion = {
+      short_name     = "inge",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/ingestion:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-ingestion",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = false
       env_vars       = []
     },
     validation = {
+      short_name     = "vali",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/validation:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-validation",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = false
       env_vars       = []
     },
     message-parser = {
+      short_name     = "msgp",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/message-parser:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-message-parser",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = false
       env_vars       = []
     },
     trigger-code-reference = {
+      short_name     = "trigcr",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/trigger-code-reference:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-trigger-code-reference",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = false
       env_vars       = []
     },
     orchestration = {
+      short_name     = "orch",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/orchestration:${var.phdi_version}",
+      app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-orchestration",
+      app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
       public         = true
@@ -122,6 +136,7 @@ locals {
   ecs_ecr_policy_name          = "${var.project}-${var.ecs_ecr_policy_name}-${var.owner}-${terraform.workspace}"
   ecs_alb_sg                   = "${var.project}-${var.ecs_alb_sg}-${var.owner}-${terraform.workspace}"
   ecs_alb_name                 = "${var.project}-${var.ecs_alb_name}-${var.owner}-${terraform.workspace}"
+  ecs_alb_tg_name              = "${var.project}-${var.owner}-${terraform.workspace}"
   ecs_app_task_name            = "${var.project}-${var.ecs_app_task_name}-${var.owner}-${terraform.workspace}"
   ecs_task_execution_role_name = "${var.project}-${var.ecs_task_execution_role_name}-${var.owner}-${terraform.workspace}"
   ecs_cloudwatch_group         = "/${var.project}-${var.ecs_cloudwatch_group}-${var.owner}-${terraform.workspace}"

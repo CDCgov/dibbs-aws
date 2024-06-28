@@ -27,7 +27,6 @@ module "ecr" {
   ecs_task_execution_role = module.iam.ecs_task_execution_role.arn
   service_data            = local.service_data
   phdi_version            = var.phdi_version
-  ecs_cluster_name        = local.ecs_cluster_name
   region                  = var.region
 }
 
@@ -49,6 +48,7 @@ module "ecs" {
   ecs_task_execution_role_arn = module.iam.ecs_task_execution_role.arn
   ecs_cluster_name            = local.ecs_cluster_name
   ecs_alb_name                = local.ecs_alb_name
+  ecs_alb_tg_name             = local.ecs_alb_tg_name
   ecs_cloudwatch_group        = local.ecs_cloudwatch_group
   service_data                = local.service_data
   cw_retention_in_days        = var.cw_retention_in_days

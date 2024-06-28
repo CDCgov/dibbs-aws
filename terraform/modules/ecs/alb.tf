@@ -17,7 +17,7 @@ resource "aws_alb_target_group" "this" {
     for key, value in var.service_data : key => value
     if(key == "orchestration") || (key == "ecr-viewer")
   }
-  name        = "${each.key}-tg"
+  name        = "${var.ecs_alb_tg_name}-${each.value.short_name}"
   port        = each.value.container_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

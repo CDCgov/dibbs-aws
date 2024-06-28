@@ -5,11 +5,6 @@ variable "ecs_task_execution_role" {
   description = "ECS Task Execution Role"
 }
 
-variable "ecs_cluster_name" {
-  type        = string
-  description = "ECS Cluster Name"
-}
-
 variable "aws_caller_identity" {
   type        = string
   description = "AWS Caller Identity"

@@ -1,5 +1,5 @@
 variable "owner" {
-  description = "The owner of the infrastructure (use snake or camel case, no spaces, up to 10 characters)"
+  description = "The owner of the infrastructure"
   type        = string
   default     = "skylight"
 }

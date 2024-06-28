@@ -3,6 +3,11 @@ variable "ecs_alb_name" {
   type        = string
 }
 
+variable "ecs_alb_tg_name" {
+  description = "ALB Target Group Name"
+  type        = string
+}
+
 variable "availability_zones" {
   description = "AZs"
   type        = list(string)
