@@ -72,7 +72,18 @@ resource "aws_alb_listener_rule" "this" {
       values = ["/${each.key}", "/${each.key}/*"]
     }
   }
+  lifecycle {
+    replace_triggered_by = [
+      null_resource.target_groups
+    ]
+  }
+}
 
+resource "null_resource" "target_groups" {
+  for_each = aws_alb_target_group.this
+  triggers = {
+    target_group = each.value.id
+  }
 }
 
 resource "aws_security_group" "ecs" {

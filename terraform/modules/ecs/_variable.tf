@@ -13,11 +13,6 @@ variable "availability_zones" {
   type        = list(string)
 }
 
-variable "ecs_task_execution_role_arn" {
-  description = "ECS Task Execution Role ARN"
-  type        = string
-}
-
 variable "region" {
   description = "The AWS region things are created in"
 }
@@ -93,4 +88,23 @@ variable "cloudmap_service_name" {
 variable "appmesh_name" {
   type        = string
   description = ""
+}
+
+variable "s3_viewer_bucket_name" {
+  type = string
+}
+
+variable "s3_viewer_bucket_role_name" {
+  type    = string
+}
+
+variable "ecs_task_execution_role_name" {
+  type        = string
+  description = "ECS Task Execution Role Name"
+}
+
+variable "ecs_task_role_name" {
+  type        = string
+  description = "ECS Task Role Name"
+
 }

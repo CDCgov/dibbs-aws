@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "dibbs_app_cluster" {
 resource "aws_ecs_task_definition" "this" {
   for_each                 = var.service_data
   family                   = each.key
-  execution_role_arn       = var.ecs_task_execution_role_arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution.arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = each.value.fargate_cpu
@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "this" {
       environment = each.value.env_vars
     }
   ])
-  task_role_arn = var.ecs_task_execution_role_arn
+  task_role_arn = each.key == "ecr-viewer" ? aws_iam_role.s3_role_for_ecr_viewer.arn : aws_iam_role.ecs_task.arn
 }
 
 resource "aws_ecs_service" "this" {

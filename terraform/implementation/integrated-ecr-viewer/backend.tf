@@ -15,7 +15,6 @@ terraform {
   }
 }
 
-# Credentials should be provided by using the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
 provider "aws" {
   region = "us-east-1"
   default_tags {

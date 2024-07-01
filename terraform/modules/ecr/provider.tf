@@ -20,10 +20,10 @@ provider "docker" {
 
     config_file_content = jsonencode({
       "auths" = {
-        "${var.aws_caller_identity}.dkr.ecr.${var.region}.amazonaws.com" = {}
+        "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" = {}
       }
       "credHelpers" = {
-        "${var.aws_caller_identity}.dkr.ecr.${var.region}.amazonaws.com" = "ecr-login"
+        "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" = "ecr-login"
       }
     })
   }
