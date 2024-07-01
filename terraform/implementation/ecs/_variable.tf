@@ -1,25 +1,28 @@
-variable "owner" {
-  description = "The owner of the infrastructure"
-  type        = string
-  default     = "skylight"
-}
-
-variable "project" {
-  description = ""
-  type        = string
-  default     = "dibbs-ce"
-}
-
-variable "region" {
-  description = "AWS region"
-  type        = string
-  default     = "us-east-1"
+variable "appmesh_name" {
+  type    = string
+  default = "appmesh"
 }
 
 variable "availability_zones" {
   description = "The availability zones to use"
   type        = list(string)
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
+}
+
+variable "cloudmap_namespace_name" {
+  type    = string
+  default = "cloudmap-service-connect"
+}
+
+variable "cloudmap_service_name" {
+  type    = string
+  default = "cloudmap-services"
+}
+
+variable "cw_retention_in_days" {
+  description = "The number of days to retain logs in CloudWatch"
+  type        = number
+  default     = 30
 }
 
 variable "ecs_alb_name" {
@@ -34,10 +37,10 @@ variable "ecs_alb_sg" {
   default     = "ecs-albsg"
 }
 
-variable "cw_retention_in_days" {
-  description = "The number of days to retain logs in CloudWatch"
-  type        = number
-  default     = 30
+variable "ecs_cloudwatch_group" {
+  description = "The name of the CloudWatch log group"
+  type        = string
+  default     = "ecs-cwlg"
 }
 
 variable "ecs_cluster_name" {
@@ -58,10 +61,23 @@ variable "ecs_task_role_name" {
   default     = "ecs-tr"
 }
 
-variable "vpc" {
-  description = "The name of the VPC"
+variable "enable_nat_gateway" {
+  description = "Enable NAT Gateway"
+  type        = bool
+  default     = true
+}
+
+variable "owner" {
+  description = "The owner of the infrastructure"
   type        = string
-  default     = "ecs-vpc"
+  default     = "skylight"
+}
+
+# Manually update to set the version you want to run
+variable "phdi_version" {
+  type        = string
+  description = "PHDI container image version"
+  default     = "v1.4.4"
 }
 
 variable "private_subnets" {
@@ -70,34 +86,22 @@ variable "private_subnets" {
   default     = ["176.24.1.0/24", "176.24.3.0/24"]
 }
 
+variable "project" {
+  description = ""
+  type        = string
+  default     = "dibbs-ce"
+}
+
 variable "public_subnets" {
   description = "The public subnets"
   type        = list(string)
   default     = ["176.24.2.0/24", "176.24.4.0/24"]
 }
 
-variable "vpc_cidr" {
-  description = "The CIDR block for the VPC"
+variable "region" {
+  description = "AWS region"
   type        = string
-  default     = "176.24.0.0/16"
-}
-
-variable "ecs_cloudwatch_group" {
-  description = "The name of the CloudWatch log group"
-  type        = string
-  default     = "ecs-cwlg"
-}
-
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  type        = bool
-  default     = true
-}
-
-variable "single_nat_gateway" {
-  description = "Single NAT Gateway"
-  type        = bool
-  default     = true
+  default     = "us-east-1"
 }
 
 variable "s3_viewer_bucket_name" {
@@ -118,30 +122,26 @@ variable "s3_viewer_bucket_policy_name" {
   default     = "s3-viewer-policy"
 }
 
+variable "single_nat_gateway" {
+  description = "Single NAT Gateway"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Tags to apply to resources"
   type        = map(string)
   default     = {}
 }
 
-# Manually update to set the version you want to run
-variable "phdi_version" {
+variable "vpc" {
+  description = "The name of the VPC"
   type        = string
-  description = "PHDI container image version"
-  default     = "v1.4.4"
+  default     = "ecs-vpc"
 }
 
-variable "cloudmap_namespace_name" {
-  type    = string
-  default = "cloudmap-service-connect"
-}
-
-variable "cloudmap_service_name" {
-  type    = string
-  default = "cloudmap-services"
-}
-
-variable "appmesh_name" {
-  type    = string
-  default = "appmesh"
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC"
+  type        = string
+  default     = "176.24.0.0/16"
 }
