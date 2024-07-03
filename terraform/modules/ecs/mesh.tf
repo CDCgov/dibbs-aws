@@ -39,24 +39,16 @@ resource "aws_appmesh_virtual_node" "this" {
       }
     }
 
+    backend {
+      virtual_service {
+        virtual_service_name = each.key
+      }
+    }
+
     service_discovery {
       aws_cloud_map {
         service_name   = each.key
         namespace_name = aws_service_discovery_private_dns_namespace.this.id
-      }
-    }
-  }
-}
-
-resource "aws_appmesh_virtual_service" "this" {
-  for_each  = aws_appmesh_virtual_node.this
-  name      = each.key
-  mesh_name = aws_appmesh_mesh.this.name
-
-  spec {
-    provider {
-      virtual_node {
-        virtual_node_name = each.key
       }
     }
   }

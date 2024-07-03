@@ -4,7 +4,7 @@ data "aws_iam_policy_document" "assume_role" {
 
     principals {
       type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
+      identifiers = ["ec2.amazonaws.com", "ecs-tasks.amazonaws.com"]
     }
   }
 }
@@ -38,4 +38,8 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       "*",
     ]
   }
+}
+
+data "aws_iam_policy" "amazon_ec2_container_service_for_ec2_role" {
+  name = "AmazonEC2ContainerServiceforEC2Role"
 }

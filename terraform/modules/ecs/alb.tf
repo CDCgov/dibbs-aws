@@ -107,6 +107,17 @@ resource "aws_security_group_rule" "ecs_alb_ingress" {
   source_security_group_id = aws_security_group.alb.id
 }
 
+# ECS Security Group Rules - INBOUND
+resource "aws_security_group_rule" "ecs_ecs_ingress" {
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  description              = "Allow inbound traffic from ECS"
+  security_group_id        = aws_security_group.ecs.id
+  source_security_group_id = aws_security_group.ecs.id
+}
+
 # ECS Security Group Rules - OUTBOUND
 resource "aws_security_group_rule" "ecs_all_egress" {
   type              = "egress"

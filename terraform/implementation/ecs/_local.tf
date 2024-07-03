@@ -87,10 +87,6 @@ locals {
       public         = true
       env_vars = [
         {
-          name  = "APPMESH_VIRTUAL_NODE_NAME",
-          value = "orchestration"
-        },
-        {
           name  = "INGESTION_URL",
           value = "http://ingestion:8080"
         },

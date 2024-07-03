@@ -14,9 +14,12 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution" {
   policy_arn = aws_iam_policy.ecs_task_execution.arn
 }
 
-# empty task role
+# task role
 resource "aws_iam_role" "ecs_task" {
   name               = var.ecs_task_role_name
+  managed_policy_arns = [
+    data.aws_iam_policy.amazon_ec2_container_service_for_ec2_role.arn
+  ]
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 

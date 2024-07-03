@@ -26,7 +26,8 @@ resource "aws_ecs_task_definition" "this" {
       portMappings = [
         {
           containerPort = each.value.container_port,
-          hostPort      = each.value.host_port
+          hostPort      = each.value.host_port,
+          name          = "http"
         }
       ],
       environment = each.value.env_vars
@@ -86,7 +87,24 @@ resource "aws_ecs_service" "this" {
     assign_public_ip = false
   }
 
-  service_registries {
-    registry_arn = aws_service_discovery_service.this.arn
+  service_connect_configuration {
+    enabled   = "true"
+    namespace = aws_service_discovery_private_dns_namespace.this.arn
+    log_configuration {
+      log_driver = "awslogs"
+      options = {
+        "awslogs-group"         = var.ecs_cloudwatch_group
+        "awslogs-region"        = var.region
+        "awslogs-stream-prefix" = "ecs"
+      }
+    }
+    service {
+      discovery_name = each.key
+      port_name      = "http"
+      client_alias {
+        dns_name = each.key
+        port     = var.service_data[each.key].container_port
+      }
+    }
   }
 }
