@@ -1,18 +1,23 @@
 variable "oidc_github_repo" {
-  type    = string
-  default = ""
+  description = "The GitHub repository for OIDC"
+  type        = string
+  default     = ""
 }
 
 variable "owner" {
-  type = string
+  description = "The owner of the project"
+  type        = string
+  default     = "skylight"
 }
 
 variable "project" {
-  type = string
+  description = "The name of the project"
+  type        = string
+  default     = "dibbs-ce"
 }
 
 variable "region" {
-  description = "AWS region"
   type        = string
-  default     = "us-east-1"
+  description = "The AWS region where resources are created"
+  default = "us-east-1"
 }

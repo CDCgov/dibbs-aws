@@ -1,6 +1,7 @@
 variable "appmesh_name" {
-  type    = string
-  default = "appmesh"
+  description = "The name of the App Mesh"
+  type        = string
+  default     = "appmesh"
 }
 
 variable "availability_zones" {
@@ -10,13 +11,15 @@ variable "availability_zones" {
 }
 
 variable "cloudmap_namespace_name" {
-  type    = string
-  default = "cloudmap-service-connect"
+  description = "The name of the CloudMap namespace"
+  type        = string
+  default     = "cloudmap-service-connect"
 }
 
 variable "cloudmap_service_name" {
-  type    = string
-  default = "cloudmap-services"
+  description = "The name of the CloudMap service"
+  type        = string
+  default     = "cloudmap-services"
 }
 
 variable "cw_retention_in_days" {
@@ -44,7 +47,7 @@ variable "ecs_cloudwatch_group" {
 }
 
 variable "ecs_cluster_name" {
-  description = "The name of the target group"
+  description = "The name of the ECS cluster"
   type        = string
   default     = "ecs-cluster"
 }
@@ -75,8 +78,8 @@ variable "owner" {
 
 # Manually update to set the version you want to run
 variable "phdi_version" {
-  type        = string
   description = "PHDI container image version"
+  type        = string
   default     = "v1.4.4"
 }
 
@@ -87,7 +90,7 @@ variable "private_subnets" {
 }
 
 variable "project" {
-  description = ""
+  description = "The project name"
   type        = string
   default     = "dibbs-ce"
 }
@@ -111,15 +114,9 @@ variable "s3_viewer_bucket_name" {
 }
 
 variable "s3_viewer_bucket_role_name" {
-  description = "The role for the viewer bucket"
+  description = "The role for the ecr-viewer bucket"
   type        = string
   default     = "s3-viewer-role"
-}
-
-variable "s3_viewer_bucket_policy_name" {
-  description = "The policy name for the viewer bucket"
-  type        = string
-  default     = "s3-viewer-policy"
 }
 
 variable "single_nat_gateway" {

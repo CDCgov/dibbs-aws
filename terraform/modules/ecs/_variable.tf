@@ -1,63 +1,50 @@
 variable "appmesh_name" {
   type        = string
-  description = ""
-}
-
-variable "availability_zones" {
-  description = "AZs"
-  type        = list(string)
-}
-
-variable "az_count" {
-  description = "Number of AZs to cover in a given region"
-  default     = "2"
+  description = "Name of the AWS App Mesh"
 }
 
 variable "cloudmap_namespace_name" {
   type        = string
-  description = ""
+  description = "Name of the AWS Cloud Map namespace"
 }
 
 variable "cloudmap_service_name" {
   type        = string
-  description = ""
+  description = "Name of the AWS Cloud Map service"
 }
 
 variable "cw_retention_in_days" {
-  type = number
+  type        = number
+  description = "Retention period in days for CloudWatch logs"
 }
 
 variable "ecs_alb_name" {
-  description = "ALB Name"
+  description = "Name of the Application Load Balancer (ALB)"
   type        = string
 }
 
 variable "ecs_alb_tg_name" {
-  description = "ALB Target Group Name"
+  description = "Name of the ALB Target Group"
   type        = string
 }
 
 variable "ecs_cluster_name" {
   type        = string
-  description = "ECS Cluster Name"
+  description = "Name of the ECS Cluster"
 }
 
 variable "ecs_cloudwatch_group" {
-  description = "AWS Cloudwatch Log Group for ECS"
+  description = "Name of the AWS CloudWatch Log Group for ECS"
 }
 
 variable "ecs_task_execution_role_name" {
   type        = string
-  description = "ECS Task Execution Role Name"
+  description = "Name of the ECS Task Execution Role"
 }
 
 variable "ecs_task_role_name" {
   type        = string
-  description = "ECS Task Role Name"
-}
-
-variable "health_check_path" {
-  default = "/"
+  description = "Name of the ECS Task Role"
 }
 
 variable "private_subnet_ids" {
@@ -71,15 +58,18 @@ variable "public_subnet_ids" {
 }
 
 variable "region" {
-  description = "The AWS region things are created in"
+  type        = string
+  description = "The AWS region where resources are created"
 }
 
 variable "s3_viewer_bucket_name" {
-  type = string
+  type        = string
+  description = "Name of the S3 bucket for the viewer"
 }
 
 variable "s3_viewer_bucket_role_name" {
-  type    = string
+  type        = string
+  description = "Name of the IAM role for the ecr-viewer bucket"
 }
 
 variable "service_data" {
@@ -98,6 +88,7 @@ variable "service_data" {
       value = string
     }))
   }))
+  description = "Data for the DIBBS services"
 }
 
 variable "vpc_id" {

@@ -125,6 +125,5 @@ locals {
   ecs_cluster_name             = "${var.project}-${var.ecs_cluster_name}-${var.owner}-${terraform.workspace}"
   s3_viewer_bucket_name        = "${var.project}-${var.s3_viewer_bucket_name}-${var.owner}-${terraform.workspace}-${random_string.s3_viewer.result}"
   s3_viewer_bucket_role_name   = "${var.project}-${var.s3_viewer_bucket_role_name}-${var.owner}-${terraform.workspace}"
-  s3_viewer_bucket_policy_name = "${var.project}-${var.s3_viewer_bucket_policy_name}-${var.owner}-${terraform.workspace}"
   vpc_name                     = "${var.project}-${var.vpc}-${var.owner}-${terraform.workspace}"
 }

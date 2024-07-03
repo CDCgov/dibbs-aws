@@ -37,7 +37,6 @@ module "ecs" {
   public_subnet_ids            = flatten(module.vpc.public_subnets)
   private_subnet_ids           = flatten(module.vpc.private_subnets)
   vpc_id                       = module.vpc.vpc_id
-  availability_zones           = module.vpc.azs
 
   cw_retention_in_days         = var.cw_retention_in_days
   region                       = var.region

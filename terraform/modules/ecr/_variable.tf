@@ -1,6 +1,6 @@
 variable "region" {
   type        = string
-  description = "AWS region"
+  description = "The AWS region where resources are created"
 }
 
 variable "service_data" {
