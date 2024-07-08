@@ -15,7 +15,7 @@ resource "aws_alb" "ecs" {
 resource "aws_alb_target_group" "this" {
   for_each = {
     for key, value in var.service_data : key => value
-    if(key == "orchestration") || (key == "ecr-viewer")
+    if var.service_data[key].public == true
   }
   name        = "${var.ecs_alb_tg_name}-${each.value.short_name}"
   port        = each.value.container_port
@@ -30,7 +30,7 @@ resource "aws_alb_target_group" "this" {
     matcher             = "200-499"
     timeout             = "3"
     path                = "/${each.key}"
-    unhealthy_threshold = "2"
+    unhealthy_threshold = "3"
   }
 }
 
@@ -58,7 +58,7 @@ resource "aws_alb_listener" "http" {
 resource "aws_alb_listener_rule" "this" {
   for_each = {
     for key, value in aws_alb_target_group.this : key => value
-    if(key == "orchestration") || (key == "ecr-viewer")
+    if var.service_data[key].public == true
   }
   listener_arn = aws_alb_listener.http.arn
 

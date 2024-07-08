@@ -24,20 +24,8 @@ data "aws_iam_policy_document" "ecr_viewer_s3" {
   }
 }
 
-data "aws_iam_policy_document" "ecs_task_execution" {
-  statement {
-    actions = [
-      "ecr:GetAuthorizationToken",
-      "ecr:BatchCheckLayerAvailability",
-      "ecr:GetDownloadUrlForLayer",
-      "ecr:BatchGetImage",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents"
-    ]
-    resources = [
-      "*",
-    ]
-  }
+data "aws_iam_policy" "ecs_task_execution" {
+  name = "AmazonECSTaskExecutionRolePolicy"
 }
 
 data "aws_iam_policy" "amazon_ec2_container_service_for_ec2_role" {

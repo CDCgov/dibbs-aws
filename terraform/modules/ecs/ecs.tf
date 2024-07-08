@@ -30,7 +30,7 @@ resource "aws_ecs_task_definition" "this" {
           name          = "http"
         }
       ],
-      environment = each.value.env_vars
+      environment = each.value.env_vars,
     }
   ])
   task_role_arn = each.key == "ecr-viewer" ? aws_iam_role.s3_role_for_ecr_viewer.arn : aws_iam_role.ecs_task.arn
@@ -72,7 +72,7 @@ resource "aws_ecs_service" "this" {
     # TODO: set a local.public_services list variable that only contains the public services
     for_each = {
       for key, value in var.service_data : key => value
-      if(each.key == "orchestration" && key == "orchestration") || (each.key == "ecr-viewer" && key == "ecr-viewer")
+      if var.service_data[key].public == true && each.key == key
     }
     content {
       target_group_arn = aws_alb_target_group.this[each.key].arn

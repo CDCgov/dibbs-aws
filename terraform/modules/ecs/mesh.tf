@@ -3,19 +3,6 @@ resource "aws_service_discovery_private_dns_namespace" "this" {
   vpc  = var.vpc_id
 }
 
-resource "aws_service_discovery_service" "this" {
-  # TODO parameterize name
-  name         = var.cloudmap_service_name
-  namespace_id = aws_service_discovery_private_dns_namespace.this.id
-  dns_config {
-    namespace_id = aws_service_discovery_private_dns_namespace.this.id
-    dns_records {
-      ttl  = 60
-      type = "A"
-    }
-  }
-}
-
 resource "aws_appmesh_mesh" "this" {
   name = var.appmesh_name
 }
