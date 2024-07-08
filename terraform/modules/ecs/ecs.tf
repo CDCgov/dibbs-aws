@@ -69,7 +69,6 @@ resource "aws_ecs_service" "this" {
     # and var.service_data so that we only create a dynamic load_balancer block for the public services.
     # It may seem a little weird but it works and I'm happy with it.
     # We loop through the service_data so that we have access to the container_port
-    # TODO: set a local.public_services list variable that only contains the public services
     for_each = {
       for key, value in var.service_data : key => value
       if var.service_data[key].public == true && each.key == key

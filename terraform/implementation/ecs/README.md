@@ -3,13 +3,13 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | =5.31.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | =5.56.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.31.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.56.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
@@ -25,7 +25,7 @@
 | Name | Type |
 |------|------|
 | [random_string.s3_viewer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.31.0/docs/data-sources/caller_identity) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/caller_identity) | data source |
 
 ## Inputs
 

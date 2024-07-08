@@ -1,12 +1,16 @@
 /*
-* Terraform variables file, copy this file to <ENVIRONMENT>.tfvars ( development.tfvars, production.tfvars ) and fill in the values you require.
+* Terraform variables file, copy this file to <ENVIRONMENT>.tfvars ( dev.tfvars, prod.tfvars ) and fill in the values you require.
 * Remove the comments and replace the values with the desired values for your environment.
 * This tfvars file is used to configure the environment for the Terraform implementation.
-* The 'owner' variable specifies the owner of the resources that will be provisioned and is included in resource naming and tagging.
-* The 'region' variable specifies the AWS region where the resources will be provisioned.
-* The new file you create will not be tracked in git by default, so make sure you store it in a secure location for later use.
 * required:
+* - owner: The owner of the environment
+* - project: The name of the project
+* - region: The region to launch the AWS resources in
 * optional:
+* - oidc_github_repo: The GitHub repository to use for OIDC authentication
 */
-owner = "JurrasicPark"
-region = "us-east-1"
+
+owner            = "John"
+project          = "JurassicPark"
+region           = "us-east-1"
+oidc_github_repo = "CDCgov/dibbs-aws"

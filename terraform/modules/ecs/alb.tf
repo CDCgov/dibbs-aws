@@ -88,7 +88,7 @@ resource "null_resource" "target_groups" {
 
 resource "aws_security_group" "ecs" {
   vpc_id                 = var.vpc_id
-  name                   = "dibbs-aws-ecs"
+  name                   = var.ecs_cluster_name
   description            = "Security group for ECS"
   revoke_rules_on_delete = true
   lifecycle {
@@ -132,8 +132,7 @@ resource "aws_security_group_rule" "ecs_all_egress" {
 # Security Group for alb
 resource "aws_security_group" "alb" {
   vpc_id = var.vpc_id
-  # TODO parameterize sg name
-  name                   = "dibbs-aws-ecs-alb"
+  name                   = var.ecs_alb_name
   description            = "Security group for ALB"
   revoke_rules_on_delete = true
   lifecycle {
