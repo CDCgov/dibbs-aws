@@ -38,10 +38,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_oidc_github_repo"></a> [oidc\_github\_repo](#input\_oidc\_github\_repo) | n/a | `string` | `""` | no |
-| <a name="input_owner"></a> [owner](#input\_owner) | n/a | `string` | n/a | yes |
-| <a name="input_project"></a> [project](#input\_project) | n/a | `string` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
+| <a name="input_oidc_github_repo"></a> [oidc\_github\_repo](#input\_oidc\_github\_repo) | The GitHub repository for OIDC | `string` | `""` | no |
+| <a name="input_owner"></a> [owner](#input\_owner) | The owner of the project | `string` | `"skylight"` | no |
+| <a name="input_project"></a> [project](#input\_project) | The name of the project | `string` | `"dibbs-ce"` | no |
+| <a name="input_region"></a> [region](#input\_region) | The AWS region where resources are created | `string` | `"us-east-1"` | no |
 
 ## Outputs
 
