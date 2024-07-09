@@ -124,7 +124,7 @@ locals {
         },
         {
           name  = "ECR_VIEWER_URL",
-          value = "http://ecr-viewer:3000"
+          value = "http://ecr-viewer:3000/ecr-viewer"
         },
         {
           name  = "MESSAGE_PARSER_URL",
