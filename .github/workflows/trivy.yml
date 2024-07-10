@@ -21,7 +21,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.23.0
         with:
           scan-type: 'fs'
-          scan-ref: './'
+          scan-ref: 'terraform/'
           scanners: 'vuln,secret,config'
           ignore-unfixed: false
           exit-code: '1'
