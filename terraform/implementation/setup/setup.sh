@@ -9,9 +9,10 @@ else
     read -p "Is this your first time running this script? [Yy]: " script_choice
     script_choice=$script_choice
     if [[ "$script_choice" =~ ^[Yy]$ ]]; then
-        echo "Running terraform locally, if all goes well, we will set up your s3 backend and push your terraform state."
+        echo "Running terraform with a local backend. After this terraform is applied, we will automatically set up your s3 backend and push your terraform state."
         USE_S3_BACKEND=false
     else
+        echo "Cannot find .env file. Please create a .env file with the following variables: BUCKET, DYNAMODB_TABLE, REGION."
         exit 1
     fi
 fi
@@ -23,7 +24,7 @@ if [ -z "$WORKSPACE" ]; then
 fi
 
 if ! command -v terraform &> /dev/null; then
-    echo "Terraform is not installed. Please install Terraform and try again."
+    echo "Terraform is not installed. Please install Terraform."
     exit 1
 fi
 
@@ -40,7 +41,7 @@ fi
 
 if ! grep -q "project" "$WORKSPACE.tfvars"; then
     read -p "What is this project called? ( default=dibbs ): " project_choice
-    project_choice=${project_choice:-dibbs}
+    project_choice=${project_choice:-dibbs-ce}
     echo "project = \"$project_choice\"" >> "$WORKSPACE.tfvars"
 fi
 
