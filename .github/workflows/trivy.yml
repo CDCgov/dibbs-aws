@@ -18,10 +18,10 @@ jobs:
 
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.23.0
         with:
           scan-type: 'fs'
-          scan-ref: 'terraforms/'
+          scan-ref: 'terraform/'
           scanners: 'vuln,secret,config'
           ignore-unfixed: false
           exit-code: '1'
