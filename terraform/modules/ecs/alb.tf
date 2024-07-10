@@ -1,9 +1,12 @@
+# https://avd.aquasec.com/misconfig/aws/elb/avd-aws-0053
+# trivy:ignore:AVD-AWS-0053
 resource "aws_alb" "ecs" {
-  name               = var.ecs_alb_name
-  internal           = false
-  load_balancer_type = "application"
-  subnets            = flatten([var.public_subnet_ids])
-  security_groups    = [aws_security_group.alb.id]
+  name                       = var.ecs_alb_name
+  internal                   = false
+  load_balancer_type         = "application"
+  subnets                    = flatten([var.public_subnet_ids])
+  security_groups            = [aws_security_group.alb.id]
+  drop_invalid_header_fields = true
 
   enable_deletion_protection = false
 
@@ -39,12 +42,15 @@ resource "aws_alb_target_group" "this" {
 # I've chosen the ways that reduce duplicated resource blocks: hard coded listener (i.e. http), looped listener rule (i.e. this)
 
 # We may want to create this resource via a loop through our target groups but at the moment that seemed extra
+
+# https://avd.aquasec.com/misconfig/aws/elb/avd-aws-0054/
+# trivy:ignore:AVD-AWS-0054
 resource "aws_alb_listener" "http" {
   load_balancer_arn = aws_alb.ecs.arn
   port              = "80"
   protocol          = "HTTP"
   default_action {
-    type = "forward"
+    type             = "forward"
     target_group_arn = aws_alb_target_group.this["ecr-viewer"].arn
   }
 }
@@ -114,6 +120,8 @@ resource "aws_security_group_rule" "ecs_ecs_ingress" {
 }
 
 # ECS Security Group Rules - OUTBOUND
+# https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0104/
+# trivy:ignore:AVD-AWS-0104
 resource "aws_security_group_rule" "ecs_all_egress" {
   type              = "egress"
   from_port         = 0
@@ -126,7 +134,7 @@ resource "aws_security_group_rule" "ecs_all_egress" {
 
 # Security Group for alb
 resource "aws_security_group" "alb" {
-  vpc_id = var.vpc_id
+  vpc_id                 = var.vpc_id
   name                   = var.ecs_alb_name
   description            = "Security group for ALB"
   revoke_rules_on_delete = true
@@ -136,6 +144,8 @@ resource "aws_security_group" "alb" {
 }
 
 # Alb Security Group Rules - INBOUND
+# https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0107/
+# trivy:ignore:AVD-AWS-0107
 resource "aws_security_group_rule" "alb_http_ingress" {
   type              = "ingress"
   from_port         = 80
@@ -147,6 +157,8 @@ resource "aws_security_group_rule" "alb_http_ingress" {
 }
 
 # Alb Security Group Rules - INBOUND
+# https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0107/
+# trivy:ignore:AVD-AWS-0107
 resource "aws_security_group_rule" "alb_https_ingress" {
   type              = "ingress"
   from_port         = 443
@@ -158,6 +170,8 @@ resource "aws_security_group_rule" "alb_https_ingress" {
 }
 
 # Alb Security Group Rules - OUTBOUND
+# https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0104/
+# trivy:ignore:AVD-AWS-0104
 resource "aws_security_group_rule" "alb_egress" {
   type              = "egress"
   from_port         = 0

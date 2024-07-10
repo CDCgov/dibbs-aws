@@ -14,7 +14,7 @@ variable "service_data" {
     container_port = number
     host_port      = number
     public         = bool
-    env_vars       = list(object({
+    env_vars = list(object({
       name  = string
       value = string
     }))

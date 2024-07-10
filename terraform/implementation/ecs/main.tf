@@ -1,5 +1,5 @@
 module "vpc" {
-  source                      = "terraform-aws-modules/vpc/aws"
+  source = "terraform-aws-modules/vpc/aws"
 
   name                        = local.vpc_name
   default_security_group_name = local.ecs_alb_sg
@@ -12,14 +12,14 @@ module "vpc" {
 }
 
 module "ecr" {
-  source              = "../../modules/ecr"
+  source = "../../modules/ecr"
 
   region       = var.region
   service_data = local.service_data
 }
 
 module "ecs" {
-  source                       = "../../modules/ecs"
+  source = "../../modules/ecs"
 
   appmesh_name                 = local.appmesh_name
   cloudmap_namespace_name      = local.cloudmap_namespace_name
@@ -34,10 +34,10 @@ module "ecs" {
   s3_viewer_bucket_role_name   = local.s3_viewer_bucket_role_name
   service_data                 = local.service_data
 
-  public_subnet_ids            = flatten(module.vpc.public_subnets)
-  private_subnet_ids           = flatten(module.vpc.private_subnets)
-  vpc_id                       = module.vpc.vpc_id
+  public_subnet_ids  = flatten(module.vpc.public_subnets)
+  private_subnet_ids = flatten(module.vpc.private_subnets)
+  vpc_id             = module.vpc.vpc_id
 
-  cw_retention_in_days         = var.cw_retention_in_days
-  region                       = var.region
+  cw_retention_in_days = var.cw_retention_in_days
+  region               = var.region
 }

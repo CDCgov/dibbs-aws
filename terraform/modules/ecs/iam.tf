@@ -1,6 +1,6 @@
 # task execution role
 resource "aws_iam_role" "ecs_task_execution" {
-  name               = var.ecs_task_execution_role_name
+  name = var.ecs_task_execution_role_name
   managed_policy_arns = [
     data.aws_iam_policy.ecs_task_execution.arn
   ]
@@ -9,7 +9,7 @@ resource "aws_iam_role" "ecs_task_execution" {
 
 # task role
 resource "aws_iam_role" "ecs_task" {
-  name               = var.ecs_task_role_name
+  name = var.ecs_task_role_name
   managed_policy_arns = [
     data.aws_iam_policy.amazon_ec2_container_service_for_ec2_role.arn
   ]
@@ -18,7 +18,7 @@ resource "aws_iam_role" "ecs_task" {
 
 # s3
 resource "aws_iam_role" "s3_role_for_ecr_viewer" {
-  name               = var.s3_viewer_bucket_role_name
+  name = var.s3_viewer_bucket_role_name
   managed_policy_arns = [
     data.aws_iam_policy.amazon_ec2_container_service_for_ec2_role.arn,
     aws_iam_policy.s3_bucket_ecr_viewer.arn

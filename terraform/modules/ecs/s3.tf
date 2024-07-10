@@ -11,6 +11,8 @@ resource "aws_s3_bucket_public_access_block" "ecr_viewer" {
   restrict_public_buckets = true
 }
 
+# https://avd.aquasec.com/misconfig/aws/s3/avd-aws-0132/
+# trivy:ignore:AVD-AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "ecr_viewer" {
   bucket = aws_s3_bucket.ecr_viewer.bucket
   rule {

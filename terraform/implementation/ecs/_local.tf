@@ -103,11 +103,11 @@ locals {
       public         = true
       env_vars = [
         {
-          name = "OTEL_METRICS",
+          name  = "OTEL_METRICS",
           value = "none"
         },
         {
-          name = "OTEL_METRICS_EXPORTER",
+          name  = "OTEL_METRICS_EXPORTER",
           value = "none"
         },
         {

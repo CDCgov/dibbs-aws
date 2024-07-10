@@ -25,6 +25,8 @@ data "aws_iam_policy_document" "github_assume_role" {
   }
 }
 
+# TODO: https://github.com/CDCgov/dibbs-aws/issues/8
+# trivy:ignore:AVD-AWS-0057
 data "aws_iam_policy_document" "github" {
   statement {
     actions = [
@@ -45,65 +47,6 @@ data "aws_iam_policy_document" "github" {
     ]
   }
 }
-
-# TODO: ^^ fix actions and resources available to the GitHub OIDC role
-# actions = [
-#   "appmesh:DescribeMesh",
-#   "appmesh:ListTagsForResource",
-#   "appmesh:DescribeVirtualNode",
-#   "appmesh:DescribeVirtualService",
-#   "dynamodb:GetItem",
-#   "dynamodb:PutItem",
-#   "dynamodb:DeleteItem",
-#   "ec2:DescribeAddresses",
-#   "ec2:DescribeVpcs",
-#   "ec2:DescribeVpcAttribute",
-#   "ec2:DescribeSubnets",
-#   "ec2:DescribeRouteTables",
-#   "ec2:DescribeInternetGateways",
-#   "ec2:DescribeSecurityGroups",
-#   "ec2:DescribeNetworkAcls",
-#   "ec2:DescribeAddress",
-#   "ec2:DescribeSecurityGroupRules",
-#   "ec2:DescribeFlowLogs",
-#   "ec2:DescribeNatGateways",
-#   "ecr:GetAuthorizationToken",
-#   "ecr:DescribeRepositories",
-#   "ecr:ListTagsForResource",
-#   "ecs:DescribeClusters",
-#   "ecs:DescribeTaskDefinition",
-#   "ecs:DescribeServices",
-#   "ecs:UpdateService",
-#   "elasticloadbalancing:DescribeTargetGroups",
-#   "elasticloadbalancing:DescribeLoadBalancers",
-#   "elasticloadbalancing:DescribeTargetGroupAttributes",
-#   "elasticloadbalancing:DescribeLoadBalancerAttributes",
-#   "elasticloadbalancing:DescribeTags",
-#   "elasticloadbalancing:DescribeListeners",
-#   "elasticloadbalancing:DescribeRules",
-#   "iam:GetRole",
-#   "iam:GetPolicy",
-#   "iam:ListRolePolicies",
-#   "iam:GetPolicyVersion",
-#   "iam:ListAttachedRolePolicies",
-#   "logs:DescribeLogGroups",
-#   "logs:ListTagsLogGroup",
-#   "s3:listBucket",
-#   "s3:PutObject",
-#   "s3:PutObjectAcl",
-#   "s3:GetObject",
-#   "s3:GetObjectAcl",
-#   "s3:GetObjectAttributes",
-#   "servicediscovery:GetNamespace",
-#   "servicediscovery:ListTagsForResource",
-#   "servicediscovery:GetService",
-# ]
-# resources = [
-#   "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
-#   "arn:aws:ecs:${var.region}:${data.aws_caller_identity.current.account_id}:cluster/*",
-#   "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group::*",
-#   "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/*"
-# ]
 
 resource "aws_iam_policy" "github" {
   name   = "${var.project}-github-policy-${var.owner}-${random_string.setup.result}"

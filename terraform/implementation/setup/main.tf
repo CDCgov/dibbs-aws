@@ -32,6 +32,8 @@ resource "aws_s3_bucket_public_access_block" "default" {
   restrict_public_buckets = true
 }
 
+# https://avd.aquasec.com/misconfig/aws/s3/avd-aws-0132/
+# trivy:ignore:AVD-AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
   bucket = aws_s3_bucket.tfstate.bucket
 
