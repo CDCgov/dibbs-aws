@@ -1,0 +1,29 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+.vscode/
+
+.env
+
+.DS_Store
+
+# Package Files #
+node_modules/
+
+# Python
+.venv
+.dev_venv
+.python-version
+
+# Terraform
+.terraform
+.terraform.lock.hcl
+.infracost
+terraform.tfstate
+terraform.tfstate.d
+terraform.tfstate.backup
+*.tfvars
+.vscode/settings.json
+credentials.json
+.bash_profile
+awscli-bundle/
+.todo
