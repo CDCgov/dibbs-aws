@@ -99,8 +99,6 @@ The current architectural design for dibbs-aws is as follows:
 
 ![Current DIBBS Architecture as of 6-24-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/7d43d3c1-5d61-41b8-a1c3-bb4884073825)
 
-Please note the final architectural design may change.
-
 + [Return to Table of Contents](#table-of-contents).
 
 
