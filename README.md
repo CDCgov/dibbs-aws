@@ -163,8 +163,13 @@ This section will go over some of the sections you will need to amend or change 
 
 &nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: You will be prompted to set your variable values (i.e. *Region*, *Owner*, *Project*, etc.).  For example, the default value for *Owner* is `Skylight`. You can change this value to one that represents your organization or department.  _The Owner name <u>must</u> be <u>less than</u> 13 characters_.
 
-The setup.sh scripts will assist you with creating the terraform state and tfvars files, as well as check to ensure the necessary arguments or variables were created.  See [setup.sh](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/setup.sh) file. 
+The setup.sh scripts will assist you with creating the terraform state and tfvars files, as well as check to ensure the necessary arguments or variables were created.  See [setup.sh](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/setup.sh) file.  Also see [Inputs](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/README.md#inputs).
 
+The setup.sh script will create the following files:
+
+- _.tfvars_
+- _.env_ (will need to be created manually if prompted)
+- _terraform.state_
 
 
 <em><strong> 4.5.2. Check What Files Changed</em></strong>
