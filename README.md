@@ -160,11 +160,12 @@ This section will go over some of the sections you will need to amend or change 
 <em><strong>4.5.1. Update And Setup Your AWS Backend</em></strong>
 * In your terminal, navigate to the _/terraform/setup_ folder (`cd /terraform/setup`).  
 * Run `./setup.sh`.
-* Now set your variable values for (1) *Region*, (2) *Owner*, and (3) *Project* when prompted in the command line.  
-&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>:  The default value for Owner is `Skylight`.  You can change this value to an \
-&nbsp;&nbsp;&nbsp;&nbsp;abbreviated version of your organization (i.e. `WA-STILTS`).  _The Owner name \
-&nbsp;&nbsp;&nbsp;&nbsp;should be <u>less than</u> 13 characters_. 
-* Initialize your AWS backend service by running `terraform init`.
+
+&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: You will be prompted to set your variable values (i.e. *Region*, *Owner*, *Project*, etc.).  For example, the default value for *Owner* is `Skylight`. You can change this value to one that represents your organization or department.  _The Owner name <u>must</u> be <u>less than</u> 13 characters_.
+
+The setup.sh scripts will assist you with creating the terraform state and tfvars files, as well as check to ensure the necessary arguments or variables were created.  See [setup.sh](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/setup.sh) file. 
+
+
 
 <em><strong> 4.5.2. Check What Files Changed</em></strong>
 * Run `git status` to see what changes have changed.
