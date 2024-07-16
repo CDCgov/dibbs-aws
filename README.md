@@ -112,7 +112,7 @@ Engineers will need following tools installed on their local machine:
 * Terraform version 1.0.0+  [_See_ Hashicorp installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 * AWS CLI version 2+ [_See_ AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
 * AWS Profile Access \
--- <u>Note</u>: Engineers *must* have access and permissions to create AWS resources
+-- <u><em><strong>Note</u></em></strong>: Engineers *must* have access and permissions to create AWS resources
 
 [Return to Table of Contents](#table-of-contents).
 
@@ -133,7 +133,7 @@ Engineers will need following tools installed on their local machine:
 &ensp; Initialize your local terraform code. `terraform init`\
 <em><strong>4.3.2.</em></strong> Developing in a terraform workspace.\
 &ensp; Check the terraform workspaces. `terraform workspace list`\
-&ensp; _Note_: If you only have a default terraform workspace, you can create a terraform workspace to develop in.  _Skip to "Create a terraform workspace to develop in," below_.
+&ensp; <u><em><strong>Note</u></em></strong>: If you only have a default terraform workspace, you can create a terraform workspace to develop in.  _Skip to "Create a terraform workspace to develop in," below_.
 - <u>Select the terraform workspace to develop in</u>.\
  &ensp; `terraform workspace select {selectEnvironmentName}`\
  &ensp; For example, `terraform workspace select dev`.
@@ -161,7 +161,7 @@ This section will go over some of the sections you will need to amend or change 
 * In your terminal, navigate to the _/terraform/setup_ folder (`cd /terraform/setup`).  
 * Run `./setup.sh`.
 
-&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: You will be prompted to set your variable values (i.e. *Region*, *Owner*, *Project*, etc.).  For example, the default value for *Owner* is `Skylight`. You can change this value to one that represents your organization or department.  _The Owner name <u>must</u> be <u>less than</u> 13 characters_.
+&nbsp;&nbsp;&nbsp;&nbsp;<u><em><strong>Note</em></strong></u>: You will be prompted to set your variable values (i.e. *Region*, *Owner*, *Project*, etc.).  For example, the default value for *Owner* is `Skylight`. You can change this value to one that represents your organization or department.  _The Owner name <u>must</u> be <u>less than</u> 13 characters_.
 
 The setup.sh scripts will assist you with creating the terraform state and tfvars files, as well as check to ensure the necessary arguments or variables were created.  See [setup.sh](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/setup.sh) file.  Also see [Inputs](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/README.md#inputs).
 
@@ -184,7 +184,7 @@ The setup.sh script will create the following files:
 <em><strong>4.6.1. Run ECS Module Locally</em></strong>
 * To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation`.
 * In your terminal run the ECS Script in your designated environment `./ecs.sh -e {insertEnvironmentName}`.\
-&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>Note</em></strong>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
+&nbsp;&nbsp;&nbsp;&nbsp;<u><em><strong>Note</em></strong></u>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
 &nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires.
 
 [Return to Table of Contents](#table-of-contents).
