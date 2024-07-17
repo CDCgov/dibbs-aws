@@ -69,6 +69,7 @@ resource "local_file" "setup_env" {
     BUCKET=${aws_s3_bucket.tfstate.bucket}
     DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
     REGION=${var.region}
+    TERRAFORM_ROLE=${aws_iam_role.github.arn}
   EOT
   filename = ".env"
 }
@@ -78,6 +79,7 @@ resource "local_file" "ecs_env" {
     BUCKET=${aws_s3_bucket.tfstate.bucket}
     DYNAMODB_TABLE=${aws_dynamodb_table.tfstate_lock.id}
     REGION=${var.region}
+    TERRAFORM_ROLE=${aws_iam_role.github.arn}
   EOT
   filename = "../ecs/.env"
 }

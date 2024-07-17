@@ -10,6 +10,7 @@ ENVIRONMENT="${ENVIRONMENT:-}"
 BUCKET="${BUCKET:-}"
 DYNAMODB_TABLE="${DYNAMODB_TABLE:-}"
 REGION="${REGION:-}"
+TERRAFORM_ROLE="${TERRAFORM_ROLE:-}"
 CI=false
 
 # parse command line arguments
@@ -28,13 +29,18 @@ do
         shift
         shift
         ;;
-        -dynamodb_table|--dynamodb-table|-d)
+        -dynamodb-table|--dynamodb-table|-d)
         DYNAMODB_TABLE="$2"
         shift
         shift
         ;;
         -region|--region|-r)
         REGION="$2"
+        shift
+        shift
+        ;;
+        -terraform-role|--terraform-role)
+        TERRAFORM_ROLE="$2"
         shift
         shift
         ;;
