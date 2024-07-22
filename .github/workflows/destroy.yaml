@@ -1,4 +1,4 @@
-name: Deploy to ECS
+name: Destroy ECS
 
 on:
   workflow_dispatch:
@@ -64,4 +64,4 @@ jobs:
           echo "owner = $OWNER" >> $ENVIRONMENT.tfvars
           echo "project = $PROJECT" >> $ENVIRONMENT.tfvars
           echo "region = $REGION" >> $ENVIRONMENT.tfvars
-          ./ecs.sh -e $ENVIRONMENT --ci
+          ./destroy.sh $ENVIRONMENT
