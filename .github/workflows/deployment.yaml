@@ -61,7 +61,7 @@ jobs:
           echo "BUCKET=$BUCKET" >> .env
           echo "DYNAMODB_TABLE=$DYNAMODB_TABLE" >> .env
           echo "REGION=$REGION" >> .env
-          echo "owner = $OWNER" >> $ENVIRONMENT.tfvars
-          echo "project = $PROJECT" >> $ENVIRONMENT.tfvars
-          echo "region = $REGION" >> $ENVIRONMENT.tfvars
+          echo "owner = \"$OWNER\"" >> $ENVIRONMENT.tfvars
+          echo "project = \"$PROJECT\"" >> $ENVIRONMENT.tfvars
+          echo "region = \"$REGION\"" >> $ENVIRONMENT.tfvars
           ./ecs.sh -e $ENVIRONMENT --ci
