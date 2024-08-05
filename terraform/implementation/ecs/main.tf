@@ -38,6 +38,7 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
 
+  alb_internal         = var.alb_internal
   cw_retention_in_days = var.cw_retention_in_days
   region               = var.region
 }

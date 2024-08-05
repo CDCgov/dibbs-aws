@@ -31,6 +31,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alb_internal"></a> [alb\_internal](#input\_alb\_internal) | Whether the ALB is public or private | `bool` | `true` | no |
 | <a name="input_appmesh_name"></a> [appmesh\_name](#input\_appmesh\_name) | The name of the App Mesh | `string` | `"appmesh"` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | The availability zones to use | `list(string)` | <pre>[<br>  "us-east-1a",<br>  "us-east-1b",<br>  "us-east-1c"<br>]</pre> | no |
 | <a name="input_cloudmap_namespace_name"></a> [cloudmap\_namespace\_name](#input\_cloudmap\_namespace\_name) | The name of the CloudMap namespace | `string` | `"cloudmap-service-connect"` | no |

@@ -56,6 +56,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_alb_internal"></a> [alb\_internal](#input\_alb\_internal) | Flag to determine if the ALB is public | `bool` | `true` | no |
 | <a name="input_appmesh_name"></a> [appmesh\_name](#input\_appmesh\_name) | Name of the AWS App Mesh | `string` | n/a | yes |
 | <a name="input_cloudmap_namespace_name"></a> [cloudmap\_namespace\_name](#input\_cloudmap\_namespace\_name) | Name of the AWS Cloud Map namespace | `string` | n/a | yes |
 | <a name="input_cloudmap_service_name"></a> [cloudmap\_service\_name](#input\_cloudmap\_service\_name) | Name of the AWS Cloud Map service | `string` | n/a | yes |
