@@ -2,7 +2,7 @@
 # trivy:ignore:AVD-AWS-0053
 resource "aws_alb" "ecs" {
   name                       = var.ecs_alb_name
-  internal                   = false
+  internal                   = var.alb_internal
   load_balancer_type         = "application"
   subnets                    = flatten([var.public_subnet_ids])
   security_groups            = [aws_security_group.alb.id]

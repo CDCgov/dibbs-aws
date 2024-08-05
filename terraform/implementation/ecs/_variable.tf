@@ -1,3 +1,9 @@
+variable "alb_internal" {
+  description = "Whether the ALB is public or private"
+  type        = bool
+  default     = true
+}
+
 variable "appmesh_name" {
   description = "The name of the App Mesh"
   type        = string
