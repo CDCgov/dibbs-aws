@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_log_group" "ecs_cloudwatch_logs" {
-  name              = var.ecs_cloudwatch_group
+  name              = local.ecs_cloudwatch_group
   retention_in_days = var.cw_retention_in_days
 }
 
