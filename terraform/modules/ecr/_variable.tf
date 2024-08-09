@@ -19,4 +19,6 @@ variable "service_data" {
       value = string
     }))
   }))
+  description = "Data for the DIBBS services"
+  default     = {}
 }
