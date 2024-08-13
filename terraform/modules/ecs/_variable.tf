@@ -1,3 +1,8 @@
+variable "alb_internal" {
+  type        = bool
+  description = "Flag to determine if the ALB is public"
+  default     = true
+}
 variable "appmesh_name" {
   type        = string
   description = "Name of the AWS App Mesh"

@@ -67,39 +67,39 @@ data "aws_iam_policy_document" "github_assume_role" {
 # trivy:ignore:AVD-AWS-0057
 data "aws_iam_policy_document" "github" {
   statement {
-  actions = [
-    "ecr:GetAuthorizationToken",
-    "ecr:BatchGetImage",
-    "ecr:BatchCheckLayerAvailability",
-    "ecr:CreateRepository",
-    "ecr:DescribeRepositories",
-    "ecr:DescribeImages",
-    "ecr:GetDownloadUrlForLayer",
-    "ecr:InitiateLayerUpload",
-    "ecr:ListTagsForResource",
-    "ecr:ListImages",
-    "ecr:PutImage",
-    "ecr:UploadLayerPart",
-    "ecr:CompleteLayerUpload",
-    "ecr:TagResource",
-    "ecs:CreateCluster",
-    "ecs:DescribeClusters",
-    "ecs:DescribeTaskDefinition",
-    "ecs:DescribeServices",
-    "ecs:UpdateService",
-    "ecs:TagResource",
-    "ecs:CreateService",
-    "ecs:RegisterTaskDefinition",
-    "servicediscovery:GetNamespace",
-    "servicediscovery:ListTagsForResource",
-    "servicediscovery:GetService",
-    "servicediscovery:CreatePrivateDnsNamespace",
-    "servicediscovery:TagResource",
-    "servicediscovery:GetOperation",
-  ]
-  resources = [
-    "*"
-  ]
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchGetImage",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:CreateRepository",
+      "ecr:DescribeRepositories",
+      "ecr:DescribeImages",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:InitiateLayerUpload",
+      "ecr:ListTagsForResource",
+      "ecr:ListImages",
+      "ecr:PutImage",
+      "ecr:UploadLayerPart",
+      "ecr:CompleteLayerUpload",
+      "ecr:TagResource",
+      "ecs:CreateCluster",
+      "ecs:DescribeClusters",
+      "ecs:DescribeTaskDefinition",
+      "ecs:DescribeServices",
+      "ecs:UpdateService",
+      "ecs:TagResource",
+      "ecs:CreateService",
+      "ecs:RegisterTaskDefinition",
+      "servicediscovery:GetNamespace",
+      "servicediscovery:ListTagsForResource",
+      "servicediscovery:GetService",
+      "servicediscovery:CreatePrivateDnsNamespace",
+      "servicediscovery:TagResource",
+      "servicediscovery:GetOperation",
+    ]
+    resources = [
+      "*"
+    ]
   }
 }
 
@@ -109,7 +109,7 @@ resource "aws_iam_policy" "github" {
 }
 
 resource "aws_iam_role" "github" {
-  name               = "${var.project}-github-role-${var.owner}-${random_string.setup.result}"
+  name = "${var.project}-github-role-${var.owner}-${random_string.setup.result}"
   managed_policy_arns = [
     aws_iam_policy.github.arn,
     data.aws_iam_policy.amazon_vpc_full_access.arn,
