@@ -52,7 +52,7 @@ if ! grep -q "region" "$WORKSPACE.tfvars"; then
 fi
 
 if ! grep -q "oidc_github_repo" "$WORKSPACE.tfvars"; then
-    read -p "Are you using GitHub for your source control? (y/n): " github_choice
+    read -p "Do you want to setup a GitHub IODC role? (y/n): " github_choice
     if [[ "$github_choice" =~ ^[Yy]$ ]]; then
         read -p "What is the organization/repo value for assume role? ( default=\"\" ): " repo_choice
         repo_choice=${repo_choice:-""}
