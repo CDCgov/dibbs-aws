@@ -148,3 +148,14 @@ variable "vpc_cidr" {
   type        = string
   default     = "176.24.0.0/16"
 }
+
+variable "ecr_viewer_database_type" {
+  type        = string
+  description = "Type of the ECR repositories"
+  default     = "postgres"
+}
+
+variable "ecr_viewer_database_schema" {
+  type        = string
+  default     = "core"
+}
