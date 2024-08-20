@@ -150,12 +150,13 @@ variable "vpc_cidr" {
 }
 
 variable "ecr_viewer_database_type" {
+  description = "The SQL variant used for the eCR data tables"
   type        = string
-  description = "Type of the ECR repositories"
   default     = "postgres"
 }
 
 variable "ecr_viewer_database_schema" {
+  description = "The database schema used for the eCR data tables"
   type        = string
   default     = "core"
 }
