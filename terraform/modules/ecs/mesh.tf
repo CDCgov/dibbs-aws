@@ -1,10 +1,12 @@
 resource "aws_service_discovery_private_dns_namespace" "this" {
   name = local.cloudmap_namespace_name
   vpc  = var.vpc_id
+  tags = local.tags
 }
 
 resource "aws_appmesh_mesh" "this" {
   name = local.appmesh_name
+  tags = local.tags
 }
 
 resource "aws_appmesh_virtual_node" "this" {
@@ -39,4 +41,5 @@ resource "aws_appmesh_virtual_node" "this" {
       }
     }
   }
+  tags = local.tags
 }

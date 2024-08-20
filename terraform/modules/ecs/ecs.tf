@@ -1,5 +1,6 @@
 resource "aws_ecs_cluster" "dibbs_app_cluster" {
   name = local.ecs_cluster_name
+  tags = local.tags
 }
 
 resource "aws_ecs_task_definition" "this" {
@@ -34,6 +35,7 @@ resource "aws_ecs_task_definition" "this" {
     }
   ])
   task_role_arn = each.key == "ecr-viewer" ? aws_iam_role.s3_role_for_ecr_viewer.arn : aws_iam_role.ecs_task.arn
+  tags = local.tags
 }
 
 resource "aws_ecs_service" "this" {
@@ -106,4 +108,5 @@ resource "aws_ecs_service" "this" {
       }
     }
   }
+  tags = local.tags
 }

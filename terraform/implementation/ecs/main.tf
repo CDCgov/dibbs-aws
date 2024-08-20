@@ -8,6 +8,7 @@ module "vpc" {
   public_subnets     = var.public_subnets
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway
+  tags = local.tags
 }
 
 module "ecs" {
@@ -20,4 +21,5 @@ module "ecs" {
 
   owner   = var.owner
   project = var.project
+  tags = local.tags
 }

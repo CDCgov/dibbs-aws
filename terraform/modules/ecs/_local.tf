@@ -154,8 +154,7 @@ locals {
   appmesh_name                 = var.appmesh_name == "" ? local.local_name : var.appmesh_name
   cloudmap_namespace_name      = var.cloudmap_namespace_name == "" ? local.local_name : var.cloudmap_namespace_name
   cloudmap_service_name        = var.cloudmap_service_name == "" ? local.local_name : var.cloudmap_service_name
-  ecs_alb_sg                   = var.ecs_alb_sg == "" ? "${local.local_name}-eas" : var.ecs_alb_sg
-  ecs_alb_name                 = var.ecs_alb_name == "" ? "${local.local_name}-ean" : var.ecs_alb_name
+  ecs_alb_name                 = var.ecs_alb_name == "" ? "${local.local_name}" : var.ecs_alb_name
   ecs_alb_tg_name              = var.ecs_alb_tg_name == "" ? local.local_name : var.ecs_alb_tg_name
   ecs_task_execution_role_name = var.ecs_task_execution_role_name == "" ? "${local.local_name}-tern" : var.ecs_task_execution_role_name
   ecs_task_role_name           = var.ecs_task_role_name == "" ? "${local.local_name}-trn" : var.ecs_task_role_name
@@ -163,4 +162,5 @@ locals {
   ecs_cluster_name             = var.ecs_cluster_name == "" ? local.local_name : var.ecs_cluster_name
   s3_viewer_bucket_name        = var.s3_viewer_bucket_name == "" ? "${local.local_name}-${random_string.s3_viewer.result}" : var.s3_viewer_bucket_name
   s3_viewer_bucket_role_name   = var.s3_viewer_bucket_role_name == "" ? local.local_name : var.s3_viewer_bucket_role_name
+  tags = var.tags
 }

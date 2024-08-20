@@ -145,3 +145,9 @@ variable "enable_ecr" {
   description = "Flag to enable the aws ecr service for docker image storage, defaults to true"
   default     = true
 }
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags to apply to resources"
+  default     = {}
+}
