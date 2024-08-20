@@ -1,6 +1,7 @@
 resource "aws_s3_bucket" "ecr_viewer" {
   bucket        = var.s3_viewer_bucket_name
   force_destroy = true
+  tags = local.tags
 }
 
 resource "aws_s3_bucket_public_access_block" "ecr_viewer" {

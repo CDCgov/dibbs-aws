@@ -50,4 +50,5 @@ resource "aws_ecr_repository" "this" {
   for_each     = var.enable_ecr == true ? local.service_data : {}
   name         = each.value.app_image
   force_delete = true
+  tags = local.tags
 }

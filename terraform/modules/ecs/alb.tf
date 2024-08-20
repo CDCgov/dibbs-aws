@@ -10,9 +10,7 @@ resource "aws_alb" "ecs" {
 
   enable_deletion_protection = false
 
-  tags = {
-    Name = local.ecs_alb_name
-  }
+  tags = local.tags
 }
 
 resource "aws_alb_target_group" "this" {
@@ -35,6 +33,7 @@ resource "aws_alb_target_group" "this" {
     path                = "/${each.key}"
     unhealthy_threshold = "3"
   }
+  tags = local.tags
 }
 
 # The aws_alb_listener and aws_alb_listener_rule resources are not depended on by other resources so
@@ -53,6 +52,7 @@ resource "aws_alb_listener" "http" {
     type             = "forward"
     target_group_arn = aws_alb_target_group.this["ecr-viewer"].arn
   }
+  tags = local.tags
 }
 
 # We may want to create this resource without the loop if the path_patterns ever break the pattern of being the name of the service
@@ -78,6 +78,7 @@ resource "aws_alb_listener_rule" "this" {
       null_resource.target_groups
     ]
   }
+  tags = local.tags
 }
 
 resource "null_resource" "target_groups" {
@@ -89,12 +90,13 @@ resource "null_resource" "target_groups" {
 
 resource "aws_security_group" "ecs" {
   vpc_id                 = var.vpc_id
-  name                   = local.ecs_cluster_name
+  name                   = "${local.ecs_cluster_name}-ecs"
   description            = "Security group for ECS"
   revoke_rules_on_delete = true
   lifecycle {
     create_before_destroy = true
   }
+  tags = local.tags
 }
 
 # ECS Security Group Rules - INBOUND
@@ -135,12 +137,13 @@ resource "aws_security_group_rule" "ecs_all_egress" {
 # Security Group for alb
 resource "aws_security_group" "alb" {
   vpc_id                 = var.vpc_id
-  name                   = local.ecs_alb_name
+  name                   = "${local.ecs_alb_name}-alb"
   description            = "Security group for ALB"
   revoke_rules_on_delete = true
   lifecycle {
     create_before_destroy = true
   }
+  tags = local.tags
 }
 
 # Alb Security Group Rules - INBOUND
