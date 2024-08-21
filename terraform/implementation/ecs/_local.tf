@@ -28,6 +28,14 @@ locals {
         {
           name  = "HOSTNAME",
           value = "0.0.0.0"
+        },
+        {
+          name = "DATABASE_TYPE",
+          value = var.ecr_viewer_database_type,
+        },
+        {
+          name = "DATABASE_SCHEMA",
+          value = var.ecr_viewer_database_schema,
         }
       ]
     },
