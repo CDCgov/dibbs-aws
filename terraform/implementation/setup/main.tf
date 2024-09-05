@@ -11,6 +11,25 @@ provider "aws" {
   }
 }
 
+# GitHub OIDC for prod
+module "oidc" {
+  source = "../../modules/oidc"
+
+  # The github repo that will be used for OIDC
+  oidc_github_repo = var.oidc_github_repo
+  
+  # These variables must match the values that you'll be using for your ECS module call in the /ecs module
+  region           = var.region
+  owner            = var.owner
+  project          = var.project
+
+  # This variable must match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
+  workspace        = "prod"
+
+  state_bucket_arn   = aws_s3_bucket.tfstate.arn
+  dynamodb_table_arn = aws_dynamodb_table.tfstate_lock.arn
+}
+
 resource "random_string" "setup" {
   length  = 8
   special = false
@@ -69,7 +88,7 @@ resource "local_file" "setup_env" {
     BUCKET="${aws_s3_bucket.tfstate.bucket}"
     DYNAMODB_TABLE="${aws_dynamodb_table.tfstate_lock.id}"
     REGION="${var.region}"
-    TERRAFORM_ROLE="${aws_iam_role.github.arn}"
+    TERRAFORM_ROLE="${module.oidc.role.arn}"
   EOT
   filename = ".env"
 }
@@ -79,7 +98,7 @@ resource "local_file" "ecs_env" {
     BUCKET="${aws_s3_bucket.tfstate.bucket}"
     DYNAMODB_TABLE="${aws_dynamodb_table.tfstate_lock.id}"
     REGION="${var.region}"
-    TERRAFORM_ROLE="${aws_iam_role.github.arn}"
+    TERRAFORM_ROLE="${module.oidc.role.arn}"
   EOT
   filename = "../ecs/.env"
 }
