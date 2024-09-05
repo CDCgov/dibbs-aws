@@ -26,9 +26,9 @@ data "aws_iam_policy_document" "github_assume_role" {
   }
 }
 
-# tfstate policy
+# tfstate and storage policy
 # trivy:ignore:AVD-AWS-0057
-data "aws_iam_policy_document" "tfstate" {
+data "aws_iam_policy_document" "storage" {
   statement {
     actions = [
       "dynamodb:DeleteItem",
@@ -37,6 +37,7 @@ data "aws_iam_policy_document" "tfstate" {
       "s3:*",
     ]
     resources = [
+      "arn:aws:s3:::*",
       "${var.state_bucket_arn}",
       "${var.state_bucket_arn}/*",
       "${var.dynamodb_table_arn}",
@@ -211,7 +212,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
     condition {
       test     = "StringEquals"
       variable = "aws:RequestTag/workspace"
-      values   = [
+      values = [
         var.project,
         var.owner,
         var.workspace
@@ -280,7 +281,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/workspace"
-      values   = [
+      values = [
         var.project,
         var.owner,
         var.workspace
@@ -348,7 +349,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/workspace"
-      values   = [
+      values = [
         var.project,
         var.owner,
         var.workspace

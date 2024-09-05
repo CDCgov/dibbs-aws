@@ -35,7 +35,7 @@ resource "aws_ecs_task_definition" "this" {
     }
   ])
   task_role_arn = each.key == "ecr-viewer" ? aws_iam_role.s3_role_for_ecr_viewer.arn : aws_iam_role.ecs_task.arn
-  tags = local.tags
+  tags          = local.tags
 }
 
 resource "aws_ecs_service" "this" {

@@ -91,6 +91,7 @@ No modules.
 | <a name="input_s3_viewer_bucket_name"></a> [s3\_viewer\_bucket\_name](#input\_s3\_viewer\_bucket\_name) | Name of the S3 bucket for the viewer | `string` | `""` | no |
 | <a name="input_s3_viewer_bucket_role_name"></a> [s3\_viewer\_bucket\_role\_name](#input\_s3\_viewer\_bucket\_role\_name) | Name of the IAM role for the ecr-viewer bucket | `string` | `""` | no |
 | <a name="input_service_data"></a> [service\_data](#input\_service\_data) | Data for the DIBBS services | <pre>map(object({<br>    short_name     = string<br>    fargate_cpu    = number<br>    fargate_memory = number<br>    app_count      = number<br>    app_image      = string<br>    app_version    = string<br>    container_port = number<br>    host_port      = number<br>    public         = bool<br>    registry_url   = string<br>    env_vars = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC | `string` | n/a | yes |
 
 ## Outputs
@@ -109,9 +110,6 @@ No modules.
 | <a name="output_ecs_task_role_arn"></a> [ecs\_task\_role\_arn](#output\_ecs\_task\_role\_arn) | n/a |
 | <a name="output_s3_bucket_arn"></a> [s3\_bucket\_arn](#output\_s3\_bucket\_arn) | The ARN of the S3 bucket |
 | <a name="output_s3_bucket_ecr_viewer_policy_arn"></a> [s3\_bucket\_ecr\_viewer\_policy\_arn](#output\_s3\_bucket\_ecr\_viewer\_policy\_arn) | n/a |
-| <a name="output_s3_bucket_public_access_block_arn"></a> [s3\_bucket\_public\_access\_block\_arn](#output\_s3\_bucket\_public\_access\_block\_arn) | S3 Bucket Public Access Block does not have an ARN |
-| <a name="output_s3_bucket_server_side_encryption_configuration_arn"></a> [s3\_bucket\_server\_side\_encryption\_configuration\_arn](#output\_s3\_bucket\_server\_side\_encryption\_configuration\_arn) | S3 Bucket Server-Side Encryption Configuration does not have an ARN |
-| <a name="output_s3_bucket_versioning_arn"></a> [s3\_bucket\_versioning\_arn](#output\_s3\_bucket\_versioning\_arn) | S3 Bucket Versioning does not have an ARN |
 | <a name="output_s3_role_for_ecr_viewer_arn"></a> [s3\_role\_for\_ecr\_viewer\_arn](#output\_s3\_role\_for\_ecr\_viewer\_arn) | n/a |
 | <a name="output_service_data"></a> [service\_data](#output\_service\_data) | n/a |
 <!-- END_TF_DOCS -->

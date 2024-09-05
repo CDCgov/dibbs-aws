@@ -29,6 +29,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | The availability zones to use | `list(string)` | <pre>[<br>  "us-east-1a",<br>  "us-east-1b",<br>  "us-east-1c"<br>]</pre> | no |
+| <a name="input_ecr_viewer_database_schema"></a> [ecr\_viewer\_database\_schema](#input\_ecr\_viewer\_database\_schema) | The database schema used for the eCR data tables | `string` | `"core"` | no |
+| <a name="input_ecr_viewer_database_type"></a> [ecr\_viewer\_database\_type](#input\_ecr\_viewer\_database\_type) | The SQL variant used for the eCR data tables | `string` | `"postgres"` | no |
 | <a name="input_ecs_alb_sg"></a> [ecs\_alb\_sg](#input\_ecs\_alb\_sg) | The security group for the Application Load Balancer | `string` | `"ecs-albsg"` | no |
 | <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Enable NAT Gateway | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the infrastructure | `string` | `"skylight"` | no |

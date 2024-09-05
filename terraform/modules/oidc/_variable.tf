@@ -1,7 +1,7 @@
-variable "oidc_github_repo"  {
+variable "oidc_github_repo" {
   description = "The GitHub repository for OIDC"
   type        = string
-  default     = ""  
+  default     = ""
 }
 
 variable "owner" {
@@ -23,8 +23,8 @@ variable "region" {
 }
 
 variable "workspace" {
-  default = ""
-  type = string
+  default     = ""
+  type        = string
   description = "terraform workspace that OIDC will have permissions to"
 }
 

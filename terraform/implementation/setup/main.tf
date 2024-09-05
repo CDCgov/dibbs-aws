@@ -17,14 +17,14 @@ module "oidc" {
 
   # The github repo that will be used for OIDC
   oidc_github_repo = var.oidc_github_repo
-  
+
   # These variables must match the values that you'll be using for your ECS module call in the /ecs module
-  region           = var.region
-  owner            = var.owner
-  project          = var.project
+  region  = var.region
+  owner   = var.owner
+  project = var.project
 
   # This variable must match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
-  workspace        = "prod"
+  workspace = "prod"
 
   state_bucket_arn   = aws_s3_bucket.tfstate.arn
   dynamodb_table_arn = aws_dynamodb_table.tfstate_lock.arn
