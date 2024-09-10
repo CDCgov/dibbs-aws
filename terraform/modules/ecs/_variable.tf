@@ -99,7 +99,7 @@ variable "s3_viewer_bucket_role_name" {
 variable "phdi_version" {
   type        = string
   description = "Version of the PHDI application"
-  default     = "v1.4.4"
+  default     = "v1.6.2"
 }
 
 variable "service_data" {
@@ -150,4 +150,10 @@ variable "tags" {
   type        = map(string)
   description = "Tags to apply to resources"
   default     = {}
+}
+
+variable "non_integrated_viewer" {
+  type        = string
+  description = "A flag to determine if the viewer is the non-integrated version"
+  default     = "false"
 }

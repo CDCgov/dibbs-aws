@@ -18,6 +18,7 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
+  alb_internal       = false
 
   owner   = var.owner
   project = var.project

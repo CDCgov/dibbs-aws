@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "ecr_viewer" {
-  bucket        = var.s3_viewer_bucket_name
+  bucket        = local.s3_viewer_bucket_name
   force_destroy = true
   tags          = local.tags
 }
