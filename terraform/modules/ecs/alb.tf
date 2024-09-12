@@ -1,7 +1,7 @@
 # https://avd.aquasec.com/misconfig/aws/elb/avd-aws-0053
 # trivy:ignore:AVD-AWS-0053
 resource "aws_alb" "ecs" {
-  name                       = var.ecs_alb_name
+  name                       = local.ecs_alb_name
   internal                   = var.alb_internal
   load_balancer_type         = "application"
   subnets                    = flatten([var.public_subnet_ids])
@@ -10,17 +10,15 @@ resource "aws_alb" "ecs" {
 
   enable_deletion_protection = false
 
-  tags = {
-    Name = var.ecs_alb_name
-  }
+  tags = local.tags
 }
 
 resource "aws_alb_target_group" "this" {
   for_each = {
-    for key, value in var.service_data : key => value
-    if var.service_data[key].public == true
+    for key, value in local.service_data : key => value
+    if local.service_data[key].public == true
   }
-  name        = "${var.ecs_alb_tg_name}-${each.value.short_name}"
+  name        = "${local.ecs_alb_tg_name}-${each.value.short_name}"
   port        = each.value.container_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
@@ -35,6 +33,7 @@ resource "aws_alb_target_group" "this" {
     path                = "/${each.key}"
     unhealthy_threshold = "3"
   }
+  tags = local.tags
 }
 
 # The aws_alb_listener and aws_alb_listener_rule resources are not depended on by other resources so
@@ -50,16 +49,21 @@ resource "aws_alb_listener" "http" {
   port              = "80"
   protocol          = "HTTP"
   default_action {
-    type             = "forward"
-    target_group_arn = aws_alb_target_group.this["ecr-viewer"].arn
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "I care intently about your request but I'm afraid I don't have anything for you right now."
+      status_code  = "404"
+    }
   }
+  tags = local.tags
 }
 
 # We may want to create this resource without the loop if the path_patterns ever break the pattern of being the name of the service
 resource "aws_alb_listener_rule" "this" {
   for_each = {
     for key, value in aws_alb_target_group.this : key => value
-    if var.service_data[key].public == true
+    if local.service_data[key].public == true
   }
   listener_arn = aws_alb_listener.http.arn
 
@@ -78,6 +82,7 @@ resource "aws_alb_listener_rule" "this" {
       null_resource.target_groups
     ]
   }
+  tags = local.tags
 }
 
 resource "null_resource" "target_groups" {
@@ -89,12 +94,13 @@ resource "null_resource" "target_groups" {
 
 resource "aws_security_group" "ecs" {
   vpc_id                 = var.vpc_id
-  name                   = var.ecs_cluster_name
+  name                   = "${local.ecs_cluster_name}-ecs"
   description            = "Security group for ECS"
   revoke_rules_on_delete = true
   lifecycle {
     create_before_destroy = true
   }
+  tags = local.tags
 }
 
 # ECS Security Group Rules - INBOUND
@@ -135,12 +141,13 @@ resource "aws_security_group_rule" "ecs_all_egress" {
 # Security Group for alb
 resource "aws_security_group" "alb" {
   vpc_id                 = var.vpc_id
-  name                   = var.ecs_alb_name
+  name                   = "${local.ecs_alb_name}-alb"
   description            = "Security group for ALB"
   revoke_rules_on_delete = true
   lifecycle {
     create_before_destroy = true
   }
+  tags = local.tags
 }
 
 # Alb Security Group Rules - INBOUND

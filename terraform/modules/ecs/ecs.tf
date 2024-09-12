@@ -1,9 +1,10 @@
 resource "aws_ecs_cluster" "dibbs_app_cluster" {
-  name = var.ecs_cluster_name
+  name = local.ecs_cluster_name
+  tags = local.tags
 }
 
 resource "aws_ecs_task_definition" "this" {
-  for_each                 = var.service_data
+  for_each                 = local.service_data
   family                   = each.key
   execution_role_arn       = aws_iam_role.ecs_task_execution.arn
   network_mode             = "awsvpc"
@@ -13,12 +14,12 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = jsonencode([
     {
       name        = each.key,
-      image       = "${each.value.app_image}:${each.value.app_version}",
+      image       = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}",
       networkMode = "awsvpc",
       logConfiguration = {
         logDriver = "awslogs",
         options = {
-          awslogs-group         = var.ecs_cloudwatch_group,
+          awslogs-group         = local.ecs_cloudwatch_group,
           awslogs-region        = var.region,
           awslogs-stream-prefix = "ecs"
         }
@@ -34,6 +35,7 @@ resource "aws_ecs_task_definition" "this" {
     }
   ])
   task_role_arn = each.key == "ecr-viewer" ? aws_iam_role.s3_role_for_ecr_viewer.arn : aws_iam_role.ecs_task.arn
+  tags          = local.tags
 }
 
 resource "aws_ecs_service" "this" {
@@ -41,7 +43,7 @@ resource "aws_ecs_service" "this" {
   name            = each.key
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = each.value.arn
-  desired_count   = var.service_data[each.key].app_count
+  desired_count   = local.service_data[each.key].app_count
   launch_type     = "FARGATE"
 
   scheduling_strategy = "REPLICA"
@@ -66,17 +68,17 @@ resource "aws_ecs_service" "this" {
 
   dynamic "load_balancer" {
     # The conditional for this for_each checks the key for the current interation of aws_ecs_task_definition.this
-    # and var.service_data so that we only create a dynamic load_balancer block for the public services.
+    # and local.service_data so that we only create a dynamic load_balancer block for the public services.
     # It may seem a little weird but it works and I'm happy with it.
     # We loop through the service_data so that we have access to the container_port
     for_each = {
-      for key, value in var.service_data : key => value
-      if var.service_data[key].public == true && each.key == key
+      for key, value in local.service_data : key => value
+      if local.service_data[key].public == true && each.key == key
     }
     content {
       target_group_arn = aws_alb_target_group.this[each.key].arn
       container_name   = each.key
-      container_port   = var.service_data[each.key].container_port
+      container_port   = local.service_data[each.key].container_port
     }
   }
 
@@ -92,7 +94,7 @@ resource "aws_ecs_service" "this" {
     log_configuration {
       log_driver = "awslogs"
       options = {
-        "awslogs-group"         = var.ecs_cloudwatch_group
+        "awslogs-group"         = local.ecs_cloudwatch_group
         "awslogs-region"        = var.region
         "awslogs-stream-prefix" = "ecs"
       }
@@ -102,8 +104,9 @@ resource "aws_ecs_service" "this" {
       port_name      = "http"
       client_alias {
         dns_name = each.key
-        port     = var.service_data[each.key].container_port
+        port     = local.service_data[each.key].container_port
       }
     }
   }
+  tags = local.tags
 }
