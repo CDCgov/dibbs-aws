@@ -1,10 +1,10 @@
 data "docker_registry_image" "dibbs" {
-  for_each = var.enable_ecr == true ? local.service_data : {}
+  for_each = var.disable_ecr == false ? local.service_data : {}
   name     = "ghcr.io/cdcgov/phdi/${each.key}:${each.value.app_version}"
 }
 
 resource "docker_image" "dibbs" {
-  for_each      = var.enable_ecr == true ? local.service_data : {}
+  for_each      = var.disable_ecr == false ? local.service_data : {}
   name          = data.docker_registry_image.dibbs[each.key].name
   keep_locally  = true
   pull_triggers = [data.docker_registry_image.dibbs[each.key].sha256_digest, plantimestamp()]
@@ -12,7 +12,7 @@ resource "docker_image" "dibbs" {
 }
 
 resource "docker_tag" "this" {
-  for_each     = var.enable_ecr == true ? local.service_data : {}
+  for_each     = var.disable_ecr == false ? local.service_data : {}
   source_image = docker_image.dibbs[each.key].name
   target_image = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}"
   lifecycle {
@@ -23,7 +23,7 @@ resource "docker_tag" "this" {
 }
 
 resource "docker_registry_image" "this" {
-  for_each = var.enable_ecr == true ? local.service_data : {}
+  for_each = var.disable_ecr == false ? local.service_data : {}
   name     = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}"
   depends_on = [
     docker_image.dibbs,
@@ -47,7 +47,7 @@ resource "null_resource" "docker_tag" {
 data "aws_ecr_authorization_token" "this" {}
 
 resource "aws_ecr_repository" "this" {
-  for_each     = var.enable_ecr == true ? local.service_data : {}
+  for_each     = var.disable_ecr == false ? local.service_data : {}
   name         = each.value.app_image
   force_delete = true
   tags         = local.tags

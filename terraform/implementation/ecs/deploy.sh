@@ -49,7 +49,7 @@ do
         shift
         ;;
         -h|--help)
-        echo "Usage: ./ecs.sh [OPTIONS]"
+        echo "Usage: ./deploy.sh [OPTIONS]"
         echo "Options:"
         echo "  -e, --env            | Set the environment (e.g., production, staging) [REQUIRED]"
         echo "  -b, --bucket         | Set the bucket name [REQUIRED]"
@@ -77,7 +77,7 @@ if [ -z "$ENVIRONMENT" ] || [ -z "$BUCKET" ] || [ -z "$DYNAMODB_TABLE" ] || [ -z
     echo "BUCKET: $BUCKET"
     echo "DYNAMODB_TABLE: $DYNAMODB_TABLE"
     echo "REGION: $REGION"
-    ./ecs.sh -h
+    ./deploy.sh -h
     exit 1
 fi
 

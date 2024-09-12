@@ -5,7 +5,7 @@ resource "random_string" "s3_viewer" {
 }
 
 locals {
-  registry_url      = var.enable_ecr == true ? "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" : "ghcr.io/cdcgov/phdi"
+  registry_url      = var.disable_ecr == false ? "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" : "ghcr.io/cdcgov/phdi"
   registry_auth     = data.aws_ecr_authorization_token.this.proxy_endpoint
   registry_username = data.aws_ecr_authorization_token.this.user_name
   registry_password = data.aws_ecr_authorization_token.this.password
@@ -32,12 +32,21 @@ locals {
         },
         {
           name  = "HOSTNAME",
-          value = "0.0.0.0"
+          value = "127.0.0.1"
         },
         {
           name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
           value = var.non_integrated_viewer
+        },
+        {
+          name  = "SOURCE",
+          value = "s3"
+        },
+        {
+          name  = "APP_ENV",
+          value = "test"
         }
+
       ]
     },
     fhir-converter = {
@@ -139,7 +148,7 @@ locals {
         },
         {
           name  = "ECR_VIEWER_URL",
-          value = "http://ecr-viewer:3000/ecr-viewer"
+          value = "http://ecr-viewer:3000"
         },
         {
           name  = "MESSAGE_PARSER_URL",
@@ -165,6 +174,6 @@ locals {
   ecs_cloudwatch_group         = var.ecs_cloudwatch_group == "" ? "/${local.local_name}" : var.ecs_cloudwatch_group
   ecs_cluster_name             = var.ecs_cluster_name == "" ? local.local_name : var.ecs_cluster_name
   s3_viewer_bucket_name        = var.s3_viewer_bucket_name == "" ? "${local.local_name}-${random_string.s3_viewer.result}" : var.s3_viewer_bucket_name
-  s3_viewer_bucket_role_name   = var.s3_viewer_bucket_role_name == "" ? local.local_name : var.s3_viewer_bucket_role_name
+  s3_viewer_bucket_role_name   = var.s3_viewer_bucket_role_name == "" ? "${local.local_name}-ecrv" : var.s3_viewer_bucket_role_name
   tags                         = var.tags
 }

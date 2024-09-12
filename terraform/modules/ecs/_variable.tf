@@ -99,7 +99,7 @@ variable "s3_viewer_bucket_role_name" {
 variable "phdi_version" {
   type        = string
   description = "Version of the PHDI application"
-  default     = "v1.6.2"
+  default     = "v1.6.1"
 }
 
 variable "service_data" {
@@ -140,10 +140,10 @@ variable "project" {
   default     = "dibbs"
 }
 
-variable "enable_ecr" {
+variable "disable_ecr" {
   type        = bool
-  description = "Flag to enable the aws ecr service for docker image storage, defaults to true"
-  default     = true
+  description = "Flag to disable the aws ecr service for docker image storage, defaults to false"
+  default     = false
 }
 
 variable "tags" {

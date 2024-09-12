@@ -12,7 +12,7 @@ provider "docker" {
   # Docker daemon using the default Unix socket 
   host = "unix:///var/run/docker.sock"
   registry_auth {
-    auth_disabled = var.enable_ecr == true ? false : true
+    auth_disabled = var.disable_ecr
     address       = local.registry_auth
     username      = local.registry_username
     password      = local.registry_password

@@ -10,9 +10,20 @@
 
 [3. Architectural Design](#3-architectural-design)\
 [4. Getting Started](#4-getting-started)
+- [Table of Contents](#table-of-contents)
+- [1. Overview](#1-overview)
+- [2. Notices](#2-notices)
+  - [2.1 Public Domain Standard Notice](#21-public-domain-standard-notice)
+  - [2.2 License Standard Notice](#22-license-standard-notice)
+  - [2.3 Privacy Standard Notice](#23-privacy-standard-notice)
+  - [2.4 Contributing Standard Notice](#24-contributing-standard-notice)
+  - [2.5 Records Management Standard Notice](#25-records-management-standard-notice)
+  - [2.6 Additional Standard Notices](#26-additional-standard-notices)
+- [3. Architectural Design](#3-architectural-design)
+- [4. Getting Started](#4-getting-started)
   - [4.1 Requirements](#41-requirements)
   - [4.2 Clone DIBBS-AWS Repository](#42-clone-dibbs-aws-repository)
-  - [4.3 Begin Using Repository](#43-begin-using-repository)
+  - [4.3 Begin Using Terraform](#43-begin-using-terraform)
   - [4.4 Make A New Branch](#44-make-a-new-branch)
   - [4.5 Update Terraform Through The Command Line](#45-update-terraform-through-the-command-line)
   - [4.6 Run Terraform Code In Your Designated Environment](#46-run-terraform-code-in-your-designated-environment)
@@ -183,7 +194,7 @@ The setup.sh script will create the following files:
 ## 4.6 Run Terraform Code In Your Designated Environment
 <em><strong>4.6.1. Run ECS Module Locally</em></strong>
 * To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation`.
-* In your terminal run the ECS Script in your designated environment `./ecs.sh -e {insertEnvironmentName}`.\
+* In your terminal run the deploy script for your designated environment `./deploy.sh -e {insertEnvironmentName}`.\
 &nbsp;&nbsp;&nbsp;&nbsp;<u><em><strong>Note</em></strong></u>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
 &nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires.
 

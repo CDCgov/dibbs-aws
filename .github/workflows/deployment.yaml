@@ -64,4 +64,4 @@ jobs:
           echo "owner = \"$OWNER\"" >> $ENVIRONMENT.tfvars
           echo "project = \"$PROJECT\"" >> $ENVIRONMENT.tfvars
           echo "region = \"$REGION\"" >> $ENVIRONMENT.tfvars
-          ./ecs.sh -e $ENVIRONMENT --ci
+          ./deploy.sh -e $ENVIRONMENT --ci
