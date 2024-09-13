@@ -99,7 +99,7 @@ variable "s3_viewer_bucket_role_name" {
 variable "phdi_version" {
   type        = string
   description = "Version of the PHDI application"
-  default     = "v1.6.3"
+  default     = "v1.6.4"
 }
 
 variable "service_data" {
@@ -160,7 +160,7 @@ variable "non_integrated_viewer" {
 
 variable "node_env" {
   type        = string
-  description = "The node environment"
+  description = "The app node environment"
   default     = "production"
 }
 

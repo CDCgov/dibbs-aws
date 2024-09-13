@@ -23,4 +23,7 @@ module "ecs" {
   owner   = var.owner
   project = var.project
   tags    = local.tags
+
+  # If intent is to use the non-integrated viewer, set this to true (default is false)
+  # non_integrated_viewer = "true"
 }
