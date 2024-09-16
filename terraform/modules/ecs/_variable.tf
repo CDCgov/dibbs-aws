@@ -99,7 +99,7 @@ variable "s3_viewer_bucket_role_name" {
 variable "phdi_version" {
   type        = string
   description = "Version of the PHDI application"
-  default     = "v1.6.1"
+  default     = "v1.6.4"
 }
 
 variable "service_data" {
@@ -156,4 +156,16 @@ variable "non_integrated_viewer" {
   type        = string
   description = "A flag to determine if the viewer is the non-integrated version"
   default     = "false"
+}
+
+variable "node_env" {
+  type        = string
+  description = "The app node environment"
+  default     = "production"
+}
+
+variable "ecr_viewer_basepath" {
+  type        = string
+  description = "The basepath for the ecr-viewer"
+  default     = "/ecr-viewer"
 }

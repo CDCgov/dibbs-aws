@@ -45,8 +45,15 @@ locals {
         {
           name  = "APP_ENV",
           value = "test"
+        },
+        {
+          name  = "NODE_ENV",
+          value = var.node_env
+        },
+        {
+          name = "NEXT_PUBLIC_BASEPATH",
+          value = var.ecr_viewer_basepath
         }
-
       ]
     },
     fhir-converter = {
@@ -148,7 +155,7 @@ locals {
         },
         {
           name  = "ECR_VIEWER_URL",
-          value = "http://ecr-viewer:3000"
+          value = "http://ecr-viewer:3000${var.ecr_viewer_basepath}"
         },
         {
           name  = "MESSAGE_PARSER_URL",
