@@ -24,6 +24,8 @@ module "ecs" {
   project = var.project
   tags    = local.tags
 
-  # If intent is to use the non-integrated viewer, set this to true (default is false)
+  # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
+  # disable_ecr = true
+  # If intent is to use the non-integrated viewer, set non_integrated_viewer to true (default is false)
   # non_integrated_viewer = "true"
 }

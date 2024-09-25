@@ -113,6 +113,7 @@ echo "Bucket: $BUCKET"
 echo "DynamoDB Table: $DYNAMODB_TABLE"
 echo "Region: $REGION"
 cat "$ENVIRONMENT.tfvars"
+echo ""
 
 terraform init \
     -var-file="$ENVIRONMENT.tfvars" \

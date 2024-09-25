@@ -15,7 +15,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-ecr-viewer",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-ecr-viewer" : "ecr-viewer",
       app_version    = var.phdi_version,
       container_port = 3000,
       host_port      = 3000,
@@ -61,7 +61,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-fhir-converter",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-fhir-converter" : "fhir-converter",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
@@ -74,7 +74,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-ingestion",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-ingestion" : "ingestion",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
@@ -87,7 +87,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-validation",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-validation" : "validation",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
@@ -100,7 +100,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-trigger-code-reference",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-trigger-code-reference" : "trigger-code-reference",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
@@ -113,7 +113,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-message-parser",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-message-parser" : "message-parser",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,
@@ -126,7 +126,7 @@ locals {
       fargate_cpu    = 1024,
       fargate_memory = 2048,
       app_count      = 1
-      app_image      = "${terraform.workspace}-orchestration",
+      app_image      = var.disable_ecr == false ? "${terraform.workspace}-orchestration" : "orchestration",
       app_version    = var.phdi_version,
       container_port = 8080,
       host_port      = 8080,

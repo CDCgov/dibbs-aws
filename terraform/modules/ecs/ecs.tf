@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = jsonencode([
     {
       name        = each.key,
-      image       = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}",
+      image       = var.disable_ecr == false ? dockerless_remote_image.dibbs[each.key].target : "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}",
       networkMode = "awsvpc",
       logConfiguration = {
         logDriver = "awslogs",
