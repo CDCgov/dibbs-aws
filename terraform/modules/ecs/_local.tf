@@ -66,10 +66,6 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
           EOT
         },
         {
-          name  = "NEXTAUTH_URL",
-          value = "https://example.com"
-        },
-        {
           name  = "NODE_ENV",
           value = var.node_env
         },
