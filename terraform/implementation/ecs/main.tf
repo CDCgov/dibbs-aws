@@ -24,7 +24,7 @@ module "ecs" {
   project = var.project
   tags    = local.tags
   
-  phdi_version = "v1.6.4"
+  phdi_version = "v1.6.8"
   
   # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
   # disable_ecr = true
