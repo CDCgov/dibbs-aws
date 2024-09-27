@@ -66,10 +66,6 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
           EOT
         },
         {
-          name  = "NODE_ENV",
-          value = var.node_env
-        },
-        {
           name = "NEXT_PUBLIC_BASEPATH",
           value = var.ecr_viewer_basepath
         }

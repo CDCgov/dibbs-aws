@@ -158,12 +158,6 @@ variable "non_integrated_viewer" {
   default     = "false"
 }
 
-variable "node_env" {
-  type        = string
-  description = "The app node environment"
-  default     = "production"
-}
-
 variable "ecr_viewer_basepath" {
   type        = string
   description = "The basepath for the ecr-viewer"
