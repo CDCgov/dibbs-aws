@@ -1,7 +1,7 @@
 resource "dockerless_remote_image" "dibbs" {
   for_each = var.disable_ecr == false ? local.service_data : {}
-  source = "ghcr.io/cdcgov/phdi/${each.key}:${each.value.app_version}"
-  target = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}"
+  source   = "ghcr.io/cdcgov/phdi/${each.key}:${each.value.app_version}"
+  target   = "${each.value.registry_url}/${each.value.app_image}:${each.value.app_version}"
 }
 
 data "aws_ecr_authorization_token" "this" {}

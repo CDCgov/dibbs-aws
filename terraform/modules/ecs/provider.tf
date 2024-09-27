@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     dockerless = {
-      source = "nullstone-io/dockerless"
+      source  = "nullstone-io/dockerless"
       version = "0.1.1"
     }
   }
