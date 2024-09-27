@@ -1,29 +1,17 @@
 terraform {
   required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
+    dockerless = {
+      source  = "nullstone-io/dockerless"
+      version = "0.1.1"
     }
   }
 }
 
-provider "docker" {
-  # Note: Terraform will automatically communicate with the local 
-  # Docker daemon using the default Unix socket 
-  host = "unix:///var/run/docker.sock"
-  registry_auth {
-    auth_disabled = var.disable_ecr
-    address       = local.registry_auth
-    username      = local.registry_username
-    password      = local.registry_password
-
-    config_file_content = jsonencode({
-      "auths" = {
-        "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" = {},
-      }
-      "credHelpers" = {
-        "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" = "ecr-login",
-      }
-    })
+provider "dockerless" {
+  registry_auth = {
+    "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com" = {
+      username = local.registry_username
+      password = local.registry_password
+    }
   }
 }
