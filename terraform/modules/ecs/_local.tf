@@ -31,6 +31,10 @@ locals {
           value = local.s3_viewer_bucket_name
         },
         {
+          name  = "HOSTNAME",
+          value = "0.0.0.0"
+        },
+        {
           name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
           value = var.non_integrated_viewer
         },
