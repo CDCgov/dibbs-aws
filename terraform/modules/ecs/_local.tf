@@ -32,7 +32,7 @@ locals {
         },
         {
           name  = "HOSTNAME",
-          value = "127.0.0.1"
+          value = "0.0.0.0"
         },
         {
           name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
@@ -44,14 +44,14 @@ locals {
         },
         {
           name  = "APP_ENV",
-          value = "test"
+          value = var.ecr_viewer_app_env
         },
         {
-          name  = "NODE_ENV",
-          value = var.node_env
+          name  = "NBS_PUB_KEY",
+          value = var.ecr_viewer_auth_pub_key
         },
         {
-          name = "NEXT_PUBLIC_BASEPATH",
+          name  = "NEXT_PUBLIC_BASEPATH",
           value = var.ecr_viewer_basepath
         }
       ]
