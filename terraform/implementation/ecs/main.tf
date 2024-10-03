@@ -34,8 +34,8 @@ module "ecs" {
   region             = var.region
   alb_internal       = false
   ecr_viewer_app_env = "test"
-  phdi_version = "v1.6.1"
-  
+  phdi_version = "v1.6.9"
+
   owner   = var.owner
   project = var.project
   tags    = local.tags
