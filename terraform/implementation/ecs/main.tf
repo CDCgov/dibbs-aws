@@ -18,7 +18,6 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
-  alb_internal       = false
 
   owner   = var.owner
   project = var.project
@@ -27,5 +26,8 @@ module "ecs" {
   # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
   # disable_ecr = true
   # If intent is to use the non-integrated viewer, set non_integrated_viewer to true (default is false)
-  # non_integrated_viewer = "true"
+  non_integrated_viewer = true
+  ecr_viewer_app_env = "test"
+  alb_internal       = false
+  phdi_version       = "v1.6.1"
 }
