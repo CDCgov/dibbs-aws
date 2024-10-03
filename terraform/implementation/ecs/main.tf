@@ -32,8 +32,10 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
-  # alb_internal       = false
-
+  alb_internal       = false
+  ecr_viewer_app_env = "test"
+  phdi_version = "v1.6.1"
+  
   owner   = var.owner
   project = var.project
   tags    = local.tags
