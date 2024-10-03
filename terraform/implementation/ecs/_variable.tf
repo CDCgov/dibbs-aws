@@ -4,6 +4,12 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
+variable "create_internet_gateway" {
+  type        = bool
+  description = "Flag to determine if an internet gateway should be created"
+  default     = false
+}
+
 variable "ecs_alb_sg" {
   description = "The security group for the Application Load Balancer"
   type        = string
@@ -13,7 +19,7 @@ variable "ecs_alb_sg" {
 variable "enable_nat_gateway" {
   description = "Enable NAT Gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "owner" {
@@ -32,7 +38,7 @@ variable "phdi_version" {
 variable "private_subnets" {
   description = "The private subnets"
   type        = list(string)
-  default     = ["176.24.1.0/24", "176.24.3.0/24"]
+  default     = ["176.27.1.0/24", "176.27.3.0/24"]
 }
 
 variable "project" {
@@ -44,7 +50,7 @@ variable "project" {
 variable "public_subnets" {
   description = "The public subnets"
   type        = list(string)
-  default     = ["176.24.2.0/24", "176.24.4.0/24"]
+  default     = ["176.27.2.0/24", "176.27.4.0/24"]
 }
 
 variable "region" {
@@ -56,7 +62,7 @@ variable "region" {
 variable "single_nat_gateway" {
   description = "Single NAT Gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "vpc" {
@@ -68,7 +74,7 @@ variable "vpc" {
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
-  default     = "176.24.0.0/16"
+  default     = "176.27.0.0/16"
 }
 
 variable "ecr_viewer_database_type" {

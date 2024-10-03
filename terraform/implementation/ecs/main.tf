@@ -8,6 +8,20 @@ module "vpc" {
   public_subnets     = var.public_subnets
   enable_nat_gateway = var.enable_nat_gateway
   single_nat_gateway = var.single_nat_gateway
+  create_igw         = var.create_internet_gateway
+  tags               = local.tags
+}
+
+module "vpc_test" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name               = "alis-test-vpc"
+  cidr               = "176.29.0.0/16"
+  azs                = var.availability_zones
+  private_subnets    = ["176.29.1.0/24", "176.29.3.0/24"]
+  public_subnets     = ["176.29.2.0/24", "176.29.4.0/24"]
+  enable_nat_gateway = var.enable_nat_gateway
+  single_nat_gateway = var.single_nat_gateway
   tags               = local.tags
 }
 
@@ -18,7 +32,7 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
-  alb_internal       = false
+  # alb_internal       = false
 
   owner   = var.owner
   project = var.project

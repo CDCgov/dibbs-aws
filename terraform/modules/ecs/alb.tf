@@ -4,7 +4,7 @@ resource "aws_alb" "ecs" {
   name                       = local.ecs_alb_name
   internal                   = var.alb_internal
   load_balancer_type         = "application"
-  subnets                    = flatten([var.public_subnet_ids])
+  subnets                    = var.alb_internal == true ? flatten([var.private_subnet_ids]) : flatten([var.public_subnet_ids])
   security_groups            = [aws_security_group.alb.id]
   drop_invalid_header_fields = true
 
@@ -33,6 +33,40 @@ resource "aws_alb_target_group" "this" {
     path                = "/${each.key}"
     unhealthy_threshold = "3"
   }
+  tags = local.tags
+}
+
+resource "aws_vpc_endpoint" "endpoints" {
+  count = length(local.vpc_endpoints)
+  vpc_id = var.vpc_id
+  vpc_endpoint_type = "Interface"
+  private_dns_enabled = true
+  service_name = local.vpc_endpoints[count.index]
+  security_group_ids = [aws_security_group.ecs.id]
+  subnet_ids = flatten([var.private_subnet_ids])
+  tags = local.tags
+}
+
+data "aws_route_table" "this" {
+  for_each = { for rt in var.private_subnet_ids : rt => rt }
+  subnet_id = each.key
+}
+
+# data "null_data_source" "route_tables_ids" {
+#   inputs = {
+#     route_tables_ids = [for rt in data.aws_route_table.this : rt.id]
+#   }
+# }
+
+resource "aws_vpc_endpoint" "s3" {
+  # count = length(local.vpc_endpoints)
+  vpc_id = var.vpc_id
+  vpc_endpoint_type = "Gateway"
+  route_table_ids = [for rt in data.aws_route_table.this : rt.id]
+  # private_dns_enabled = true
+  service_name = "com.amazonaws.${var.region}.s3"
+  # security_group_ids = [aws_security_group.ecs.id]
+  # subnet_ids = flatten([var.private_subnet_ids])
   tags = local.tags
 }
 
