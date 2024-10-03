@@ -254,6 +254,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "iam:TagRole",
       "iam:TagPolicy",
       "iam:UntagPolicy",
+      "iam:CreatePolicyVersion",
       "logs:PutRetentionPolicy",
       "servicediscovery:TagResource",
     ]
