@@ -2,9 +2,9 @@
 # trivy:ignore:AVD-AWS-0053
 resource "aws_alb" "ecs" {
   name                       = local.ecs_alb_name
-  internal                   = var.alb_internal
+  internal                   = var.internal
   load_balancer_type         = "application"
-  subnets                    = flatten([var.public_subnet_ids])
+  subnets                    = var.internal == true ? flatten([var.private_subnet_ids]) : flatten([var.public_subnet_ids])
   security_groups            = [aws_security_group.alb.id]
   drop_invalid_header_fields = true
 
@@ -34,6 +34,26 @@ resource "aws_alb_target_group" "this" {
     unhealthy_threshold = "3"
   }
   tags = local.tags
+}
+
+resource "aws_vpc_endpoint" "endpoints" {
+  count               = var.internal == true ? length(local.vpc_endpoints) : 0
+  vpc_id              = var.vpc_id
+  vpc_endpoint_type   = "Interface"
+  private_dns_enabled = true
+  service_name        = local.vpc_endpoints[count.index]
+  security_group_ids  = [aws_security_group.ecs.id]
+  subnet_ids          = flatten([var.private_subnet_ids])
+  tags                = local.tags
+}
+
+resource "aws_vpc_endpoint" "s3" {
+  count             = var.internal == true ? 1 : 0
+  vpc_id            = var.vpc_id
+  vpc_endpoint_type = "Gateway"
+  route_table_ids   = [for rt in data.aws_route_table.this : rt.id]
+  service_name      = local.s3_service_name
+  tags              = local.tags
 }
 
 # The aws_alb_listener and aws_alb_listener_rule resources are not depended on by other resources so

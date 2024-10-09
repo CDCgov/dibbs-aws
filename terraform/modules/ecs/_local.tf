@@ -183,4 +183,14 @@ locals {
   s3_viewer_bucket_name        = var.s3_viewer_bucket_name == "" ? "${local.local_name}-${random_string.s3_viewer.result}" : var.s3_viewer_bucket_name
   s3_viewer_bucket_role_name   = var.s3_viewer_bucket_role_name == "" ? "${local.local_name}-ecrv" : var.s3_viewer_bucket_role_name
   tags                         = var.tags
+  vpc_endpoints = [
+    "com.amazonaws.${var.region}.ecr.dkr",
+    "com.amazonaws.${var.region}.ecr.api",
+    "com.amazonaws.${var.region}.ecs",
+    "com.amazonaws.${var.region}.ecs-telemetry",
+    "com.amazonaws.${var.region}.logs",
+    "com.amazonaws.${var.region}.secretsmanager",
+  ]
+  s3_service_name = "com.amazonaws.${var.region}.s3"
+  private_subnet_kvs = { for rt in var.private_subnet_ids : rt => rt }
 }

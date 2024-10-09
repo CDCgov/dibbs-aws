@@ -33,3 +33,8 @@ data "aws_iam_policy" "ecs_task_execution" {
 data "aws_iam_policy" "amazon_ec2_container_service_for_ec2_role" {
   name = "AmazonEC2ContainerServiceforEC2Role"
 }
+
+data "aws_route_table" "this" {
+  for_each  = local.private_subnet_kvs
+  subnet_id = each.key
+}
