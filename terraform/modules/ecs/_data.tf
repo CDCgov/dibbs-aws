@@ -36,5 +36,5 @@ data "aws_iam_policy" "amazon_ec2_container_service_for_ec2_role" {
 
 data "aws_route_table" "this" {
   for_each  = local.private_subnet_kvs
-  subnet_id = each.key
+  subnet_id = each.value
 }

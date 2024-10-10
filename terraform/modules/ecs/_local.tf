@@ -191,6 +191,6 @@ locals {
     "com.amazonaws.${var.region}.logs",
     "com.amazonaws.${var.region}.secretsmanager",
   ]
-  s3_service_name = "com.amazonaws.${var.region}.s3"
-  private_subnet_kvs = { for rt in var.private_subnet_ids : rt => rt }
+  s3_service_name    = "com.amazonaws.${var.region}.s3"
+  private_subnet_kvs = { for index, rt in var.private_subnet_ids : index => rt }
 }

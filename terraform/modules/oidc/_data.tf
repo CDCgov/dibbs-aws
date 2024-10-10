@@ -41,7 +41,6 @@ data "aws_iam_policy_document" "storage" {
       "${var.state_bucket_arn}",
       "${var.state_bucket_arn}/*",
       "${var.dynamodb_table_arn}",
-      "arn:aws:s3:::prod-region-starport-layer-bucket/*"
     ]
   }
 }
@@ -52,6 +51,8 @@ data "aws_iam_policy_document" "wildcard" {
   statement {
     actions = [
       "ec2:DescribeAddresses",
+      "ec2:DescribeVpcEndpoints",
+      "ec2:DescribePrefixLists",
       "ec2:DescribeAddressesAttribute",
       "ec2:DescribeFlowLogs",
       "ec2:DescribeInternetGateways",
@@ -135,6 +136,7 @@ data "aws_iam_policy_document" "scoped_one" {
 data "aws_iam_policy_document" "scoped_two" {
   statement {
     actions = [
+      "ec2:createVpcEndpoint",
       "ec2:CreateFlowLogs",
       "ec2:CreateNatGateway",
       "ec2:CreateNetworkAclEntry",
@@ -156,6 +158,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:natgateway/*",
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.project_owner_workspace}*",
+      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
     ]
   }
 }
@@ -165,6 +168,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
   statement {
     actions = [
       "appmesh:CreateMesh",
+      "ec2:createVpcEndpoint",
       "appmesh:CreateVirtualNode",
       "appmesh:DeleteMesh",
       "appmesh:DeleteVirtualNode",
@@ -185,12 +189,14 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "iam:CreateRole",
       "logs:CreateLogDelivery",
       "logs:CreateLogGroup",
+      "logs:TagResource",
       "servicediscovery:CreatePrivateDnsNamespace",
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}",
-      "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}/*",
+      "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}/*",      
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
+      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-flow-log/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:subnet/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:route-table/*",
@@ -256,6 +262,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "iam:TagPolicy",
       "iam:UntagPolicy",
       "logs:PutRetentionPolicy",
+      "logs:UntagResource",
       "servicediscovery:TagResource",
     ]
     resources = [
@@ -305,6 +312,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "ecs:DeleteCluster",
       "ecs:DeleteService",
       "ec2:DeleteVpc",
+      "ec2:DeleteVpcEndpoints",
       "ec2:DeleteTags",
       "ec2:DisassociateRouteTable",
       "ec2:DeleteRouteTable",
@@ -332,6 +340,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:natgateway/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:security-group/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-flow-log/*",
+      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:internet-gateway/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:elastic-ip/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:network-interface/*",

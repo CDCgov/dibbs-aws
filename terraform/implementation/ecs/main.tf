@@ -26,8 +26,14 @@ module "ecs" {
 
   # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
   # disable_ecr = true
+
   # If intent is to use the non-integrated viewer, set non_integrated_viewer to "true" (default is false)
   # non_integrated_viewer = "true"
-  # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true) This requires an internet gateway to be present in the VPC.
+
+  # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true)
+  # This requires an internet gateway to be present in the VPC.
   # internal       = false
+
+  # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
+  # ecr_viewer_app_env = "test"
 }
