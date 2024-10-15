@@ -1,10 +1,11 @@
-name: Deploy to ECS
+name: Deploy
+run-name: Deploy to ${{ inputs.workspace }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'The environment to deploy to'
+      workspace:
+        description: 'The workspace to deploy to'
         required: true
         type: choice
         options:
@@ -12,7 +13,7 @@ on:
           - prod
 
 concurrency:
-  group: ${{ github.event.inputs.environment }}-deploy
+  group: ${{ github.event.inputs.workspace }}-deploy
   cancel-in-progress: false
 
 permissions:
@@ -20,10 +21,7 @@ permissions:
   contents: read
 
 env:
-  aws_region: us-east-1
-  environment: ${{ github.event.inputs.environment }}
-  owner: "skylight"
-  project: "dibbs"
+  workspace: ${{ github.event.inputs.workspace }}
 
 jobs:
   terraform:
@@ -45,23 +43,23 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: githubDeploymentWorkflow
-          aws-region: ${{ env.aws_region }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Terraform
         env:
-          ENVIRONMENT: ${{ env.environment }}
+          WORKSPACE: ${{ env.workspace }}
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
-          REGION: ${{ env.aws_region }}
-          OWNER: ${{ env.owner }}
-          PROJECT: ${{ env.project }}
+          REGION: ${{ secrets.AWS_REGION }}
+          OWNER: ${{ vars.OWNER }}
+          PROJECT: ${{ vars.PROJECT }}
         shell: bash
         run: |
-          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
+          echo "WORKSPACE=$WORKSPACE" >> .env
           echo "BUCKET=$BUCKET" >> .env
           echo "DYNAMODB_TABLE=$DYNAMODB_TABLE" >> .env
           echo "REGION=$REGION" >> .env
-          echo "owner = \"$OWNER\"" >> $ENVIRONMENT.tfvars
-          echo "project = \"$PROJECT\"" >> $ENVIRONMENT.tfvars
-          echo "region = \"$REGION\"" >> $ENVIRONMENT.tfvars
-          ./deploy.sh -e $ENVIRONMENT --ci
+          echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
+          echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
+          echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          ./deploy.sh -e $WORKSPACE --ci

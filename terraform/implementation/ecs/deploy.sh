@@ -6,7 +6,7 @@ if [ -f .env ]; then
 fi
 
 # set default values
-ENVIRONMENT="${ENVIRONMENT:-}"
+WORKSPACE="${WORKSPACE:-}"
 BUCKET="${BUCKET:-}"
 DYNAMODB_TABLE="${DYNAMODB_TABLE:-}"
 REGION="${REGION:-}"
@@ -20,7 +20,7 @@ do
 
     case $key in
         -env|--env|-e)
-        ENVIRONMENT="$2"
+        WORKSPACE="$2"
         shift
         shift
         ;;
@@ -71,9 +71,9 @@ if ! command -v terraform &> /dev/null; then
     exit 1
 fi
 
-if [ -z "$ENVIRONMENT" ] || [ -z "$BUCKET" ] || [ -z "$DYNAMODB_TABLE" ] || [ -z "$REGION" ]; then
+if [ -z "$WORKSPACE" ] || [ -z "$BUCKET" ] || [ -z "$DYNAMODB_TABLE" ] || [ -z "$REGION" ]; then
     echo "Missing required arguments. Please provide all the required arguments."
-    echo "ENVIRONMENT: $ENVIRONMENT"
+    echo "WORKSPACE: $WORKSPACE"
     echo "BUCKET: $BUCKET"
     echo "DYNAMODB_TABLE: $DYNAMODB_TABLE"
     echo "REGION: $REGION"
@@ -82,41 +82,41 @@ if [ -z "$ENVIRONMENT" ] || [ -z "$BUCKET" ] || [ -z "$DYNAMODB_TABLE" ] || [ -z
 fi
 
 if [ "$CI" = false ]; then
-    if [ ! -f "$ENVIRONMENT.tfvars" ]; then
-        echo "Creating $ENVIRONMENT.tfvars"
-        touch "$ENVIRONMENT.tfvars"
+    if [ ! -f "$WORKSPACE.tfvars" ]; then
+        echo "Creating $WORKSPACE.tfvars"
+        touch "$WORKSPACE.tfvars"
     fi
 
-    if ! grep -q "owner" "$ENVIRONMENT.tfvars"; then
+    if ! grep -q "owner" "$WORKSPACE.tfvars"; then
         read -p "Who is the owner of this infrastructure? ( default=skylight ): " owner_choice
         owner_choice=${owner_choice:-skylight}
-        echo "owner = \"$owner_choice\"" >> "$ENVIRONMENT.tfvars"
+        echo "owner = \"$owner_choice\"" >> "$WORKSPACE.tfvars"
     fi
 
-    if ! grep -q "project" "$ENVIRONMENT.tfvars"; then
+    if ! grep -q "project" "$WORKSPACE.tfvars"; then
         read -p "What is this project called? ( default=dibbs ): " project_choice
         project_choice=${project_choice:-dibbs}
-        echo "project = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
+        echo "project = \"$project_choice\"" >> "$WORKSPACE.tfvars"
     fi
 
-    if ! grep -q "region" "$ENVIRONMENT.tfvars"; then
+    if ! grep -q "region" "$WORKSPACE.tfvars"; then
         read -p "What aws region are you setting up in? ( default=us-east-1 ): " region_choice
         region_choice=${region_choice:-us-east-1}
-        echo "region = \"$region_choice\"" >> "$ENVIRONMENT.tfvars"
+        echo "region = \"$region_choice\"" >> "$WORKSPACE.tfvars"
     fi
 fi
 
 echo "Running Terraform with the following variables:"
-echo "Environment: $ENVIRONMENT"
-echo "Terraform Workspace: $ENVIRONMENT"
+echo "Environment: $WORKSPACE"
+echo "Terraform Workspace: $WORKSPACE"
 echo "Bucket: $BUCKET"
 echo "DynamoDB Table: $DYNAMODB_TABLE"
 echo "Region: $REGION"
-cat "$ENVIRONMENT.tfvars"
+cat "$WORKSPACE.tfvars"
 echo ""
 
 terraform init \
-    -var-file="$ENVIRONMENT.tfvars" \
+    -var-file="$WORKSPACE.tfvars" \
     -backend-config "bucket=$BUCKET" \
     -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
     -backend-config "region=$REGION" \
@@ -124,27 +124,27 @@ terraform init \
 
 
 # Check if workspace exists
-if terraform workspace list | grep -q "$ENVIRONMENT"; then
-    echo "Selecting $ENVIRONMENT terraform workspace"
-    terraform workspace select "$ENVIRONMENT"
+if terraform workspace list | grep -q "$WORKSPACE"; then
+    echo "Selecting $WORKSPACE terraform workspace"
+    terraform workspace select "$WORKSPACE"
 else
     if [ "$CI" = false ]; then
-        read -p "Workspace '$ENVIRONMENT' does not exist. Do you want to create it? (y/n): " choice
+        read -p "Workspace '$WORKSPACE' does not exist. Do you want to create it? (y/n): " choice
         if [[ $choice =~ ^[Yy]$ ]]; then
-            echo "Creating '$ENVIRONMENT' terraform workspace"
-            terraform workspace new "$ENVIRONMENT"
+            echo "Creating '$WORKSPACE' terraform workspace"
+            terraform workspace new "$WORKSPACE"
         else
             echo "Workspace creation cancelled."
             exit 1
         fi
     else
-        echo "Creating '$ENVIRONMENT' terraform workspace"
-        terraform workspace new "$ENVIRONMENT"
+        echo "Creating '$WORKSPACE' terraform workspace"
+        terraform workspace new "$WORKSPACE"
     fi
 fi
 
 if [ "$CI" = false ]; then
-    terraform apply -var-file="$ENVIRONMENT.tfvars"
+    terraform apply -var-file="$WORKSPACE.tfvars"
 else
-    terraform apply -auto-approve -var-file="$ENVIRONMENT.tfvars"
+    terraform apply -auto-approve -var-file="$WORKSPACE.tfvars"
 fi
