@@ -23,7 +23,7 @@ env:
   aws_region: us-east-1
   environment: ${{ github.event.inputs.environment }}
   owner: "skylight"
-  project: "dibbs-ce"
+  project: "dibbs"
 
 jobs:
   terraform:

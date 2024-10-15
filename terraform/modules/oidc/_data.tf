@@ -194,7 +194,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}",
-      "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}/*",      
+      "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-flow-log/*",

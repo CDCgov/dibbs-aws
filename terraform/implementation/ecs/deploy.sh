@@ -94,8 +94,8 @@ if [ "$CI" = false ]; then
     fi
 
     if ! grep -q "project" "$ENVIRONMENT.tfvars"; then
-        read -p "What is this project called? ( default=dibbs-ce ): " project_choice
-        project_choice=${project_choice:-dibbs-ce}
+        read -p "What is this project called? ( default=dibbs ): " project_choice
+        project_choice=${project_choice:-dibbs}
         echo "project = \"$project_choice\"" >> "$ENVIRONMENT.tfvars"
     fi
 

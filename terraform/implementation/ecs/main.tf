@@ -35,5 +35,5 @@ module "ecs" {
   # internal       = false
 
   # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
-  # ecr_viewer_app_env = "test"
+  ecr_viewer_app_env = "test"
 }
