@@ -44,7 +44,7 @@ variable "private_subnets" {
 variable "project" {
   description = "The project name"
   type        = string
-  default     = "dibbs-ce"
+  default     = "dibbs"
 }
 
 variable "public_subnets" {

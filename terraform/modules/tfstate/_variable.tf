@@ -18,7 +18,7 @@ variable "region" {
   type        = string
   description = "The AWS region where resources are created"
   default     = ""
-    validation {
+  validation {
     condition     = can(regex("^(us)-[[:alnum:]]{2,10}-[0-9]$", var.region))
     error_message = "region must be a valid AWS region"
   }

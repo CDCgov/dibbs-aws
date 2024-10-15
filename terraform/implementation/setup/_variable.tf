@@ -13,7 +13,7 @@ variable "owner" {
 variable "project" {
   description = "The name of the project"
   type        = string
-  default     = "dibbs-ce"
+  default     = "dibbs"
 }
 
 variable "region" {

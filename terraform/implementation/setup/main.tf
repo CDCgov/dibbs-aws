@@ -5,11 +5,11 @@ resource "random_string" "setup" {
 }
 
 module "tfstate" {
-  source = "../../modules/tfstate"
+  source     = "../../modules/tfstate"
   identifier = random_string.setup.result
-  owner = var.owner
-  project = var.project
-  region = var.region
+  owner      = var.owner
+  project    = var.project
+  region     = var.region
 }
 
 # GitHub OIDC for prod
@@ -28,7 +28,7 @@ module "oidc" {
   workspace = "prod"
 
   # state_bucket_arn   = module.tfstate.aws_s3_bucket.tfstate.arn
-  state_bucket_arn   = module.tfstate.state_bucket.arn
+  state_bucket_arn = module.tfstate.state_bucket.arn
   # dynamodb_table_arn = aws_dynamodb_table.tfstate_lock.arn
   dynamodb_table_arn = module.tfstate.dynamodb_table.arn
 }
