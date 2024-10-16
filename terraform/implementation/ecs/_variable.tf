@@ -4,6 +4,11 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
+variable "internal" {
+  description = "Internal"
+  type        = bool
+  default     = true
+}
 variable "create_internet_gateway" {
   type        = bool
   description = "Flag to determine if an internet gateway should be created"

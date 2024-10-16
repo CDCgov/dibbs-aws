@@ -34,6 +34,7 @@
 | <a name="input_ecr_viewer_database_type"></a> [ecr\_viewer\_database\_type](#input\_ecr\_viewer\_database\_type) | The SQL variant used for the eCR data tables | `string` | `"postgres"` | no |
 | <a name="input_ecs_alb_sg"></a> [ecs\_alb\_sg](#input\_ecs\_alb\_sg) | The security group for the Application Load Balancer | `string` | `"ecs-albsg"` | no |
 | <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Enable NAT Gateway | `bool` | `false` | no |
+| <a name="input_internal"></a> [internal](#input\_internal) | Internal | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the infrastructure | `string` | `"skylight"` | no |
 | <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"v1.4.4"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The private subnets | `list(string)` | <pre>[<br>  "176.24.1.0/24",<br>  "176.24.3.0/24"<br>]</pre> | no |

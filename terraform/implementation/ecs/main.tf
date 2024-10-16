@@ -1,14 +1,15 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name               = local.vpc_name
-  cidr               = var.vpc_cidr
-  azs                = var.availability_zones
-  private_subnets    = var.private_subnets
-  public_subnets     = var.public_subnets
-  enable_nat_gateway = var.enable_nat_gateway
-  single_nat_gateway = var.single_nat_gateway
-  create_igw         = var.create_internet_gateway
+  name            = local.vpc_name
+  cidr            = var.vpc_cidr
+  azs             = var.availability_zones
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+  # if internal is true, then the VPC will not have a NAT or internet gateway
+  enable_nat_gateway = var.internal ? false : true
+  single_nat_gateway = var.internal ? false : true
+  create_igw         = var.internal ? false : true
   tags               = local.tags
 }
 
@@ -32,7 +33,7 @@ module "ecs" {
 
   # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true)
   # This requires an internet gateway to be present in the VPC.
-  # internal       = false
+  internal = var.internal
 
   # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
   # ecr_viewer_app_env = "test"
