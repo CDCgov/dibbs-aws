@@ -1,18 +1,26 @@
-name: Deploy to ECS
+name: Terraform (Plan||Apply)
+run-name: Terraform ${{ inputs.terraform_action }} ${{ inputs.workspace }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'The environment to deploy to'
+      workspace:
+        description: 'The workspace to terraform against'
         required: true
         type: choice
         options:
           - ""
           - prod
+      terraform_action:
+        description: 'The terraform action to perform'
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
 
 concurrency:
-  group: ${{ github.event.inputs.environment }}-deploy
+  group: ${{ github.event.inputs.workspace }}-terraform
   cancel-in-progress: false
 
 permissions:
@@ -20,10 +28,8 @@ permissions:
   contents: read
 
 env:
-  aws_region: us-east-1
-  environment: ${{ github.event.inputs.environment }}
-  owner: "skylight"
-  project: "dibbs-ce"
+  workspace: ${{ github.event.inputs.workspace }}
+  terraform_action: ${{ github.event.inputs.terraform_action }}
 
 jobs:
   terraform:
@@ -45,23 +51,32 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: githubDeploymentWorkflow
-          aws-region: ${{ env.aws_region }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Terraform
         env:
-          ENVIRONMENT: ${{ env.environment }}
+          ACTION: ${{ env.terraform_action }}
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
-          REGION: ${{ env.aws_region }}
-          OWNER: ${{ env.owner }}
-          PROJECT: ${{ env.project }}
+          OWNER: ${{ vars.OWNER }}
+          PROJECT: ${{ vars.PROJECT }}
+          REGION: ${{ secrets.AWS_REGION }}
+          WORKSPACE: ${{ env.workspace }}
         shell: bash
         run: |
-          echo "ENVIRONMENT=$ENVIRONMENT" >> .env
-          echo "BUCKET=$BUCKET" >> .env
-          echo "DYNAMODB_TABLE=$DYNAMODB_TABLE" >> .env
-          echo "REGION=$REGION" >> .env
-          echo "owner = \"$OWNER\"" >> $ENVIRONMENT.tfvars
-          echo "project = \"$PROJECT\"" >> $ENVIRONMENT.tfvars
-          echo "region = \"$REGION\"" >> $ENVIRONMENT.tfvars
-          ./deploy.sh -e $ENVIRONMENT --ci
+          echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
+          echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
+          echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          terraform init \
+            -var-file="$WORKSPACE.tfvars" \
+            -backend-config "bucket=$BUCKET" \
+            -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
+            -backend-config "region=$REGION" \
+            || (echo "terraform init failed, exiting..." && exit 1)
+          terraform workspace select "$WORKSPACE"
+          if [ "$ACTION" == "plan" ]; then
+            terraform plan -var-file="$WORKSPACE.tfvars"
+          fi
+          if [ "$ACTION" == "apply" ]; then
+            terraform apply -auto-approve -var-file="$WORKSPACE.tfvars"
+          fi

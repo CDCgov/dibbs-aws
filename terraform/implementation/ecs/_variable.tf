@@ -4,6 +4,17 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
+variable "internal" {
+  description = "Internal"
+  type        = bool
+  default     = true
+}
+variable "create_internet_gateway" {
+  type        = bool
+  description = "Flag to determine if an internet gateway should be created"
+  default     = false
+}
+
 variable "ecs_alb_sg" {
   description = "The security group for the Application Load Balancer"
   type        = string
@@ -13,7 +24,7 @@ variable "ecs_alb_sg" {
 variable "enable_nat_gateway" {
   description = "Enable NAT Gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "owner" {
@@ -38,7 +49,7 @@ variable "private_subnets" {
 variable "project" {
   description = "The project name"
   type        = string
-  default     = "dibbs-ce"
+  default     = "dibbs"
 }
 
 variable "public_subnets" {
@@ -56,7 +67,7 @@ variable "region" {
 variable "single_nat_gateway" {
   description = "Single NAT Gateway"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "vpc" {
