@@ -43,7 +43,7 @@ resource "aws_ecs_service" "this" {
   name            = each.key
   cluster         = aws_ecs_cluster.dibbs_app_cluster.id
   task_definition = each.value.arn
-  desired_count   = local.service_data[each.key].app_count
+  desired_count   = local.service_data[each.key].min_capacity
   launch_type     = "FARGATE"
 
   scheduling_strategy = "REPLICA"
@@ -108,5 +108,10 @@ resource "aws_ecs_service" "this" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
+
   tags = local.tags
 }
