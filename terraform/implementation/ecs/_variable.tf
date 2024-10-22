@@ -70,15 +70,3 @@ variable "vpc_cidr" {
   type        = string
   default     = "176.24.0.0/16"
 }
-
-variable "ecr_viewer_database_type" {
-  description = "The SQL variant used for the eCR data tables"
-  type        = string
-  default     = "postgres"
-}
-
-variable "ecr_viewer_database_schema" {
-  description = "The database schema used for the eCR data tables"
-  type        = string
-  default     = "core"
-}

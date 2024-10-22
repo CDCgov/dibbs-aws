@@ -190,3 +190,15 @@ Iynom6unaheZpS4DFIh2w9UCAwEAAQ==
 -----END PUBLIC KEY-----
           EOT
 }
+
+variable "ecr_viewer_metadata_database_schema" {
+  description = "The database schema used for the eCR metadata tables"
+  type        = string
+  default     = "core"
+}
+
+variable "ecr_viewer_metadata_database_type" {
+  description = "The SQL variant used for the eCR metadata tables"
+  type        = string
+  default     = "postgres"
+}

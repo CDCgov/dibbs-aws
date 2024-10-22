@@ -53,6 +53,14 @@ locals {
         {
           name  = "NEXT_PUBLIC_BASEPATH",
           value = var.ecr_viewer_basepath
+        },
+        {
+          name  = "METADATA_DATABASE_SCHEMA",
+          value = var.ecr_viewer_metadata_database_schema
+        },
+        {
+          name  = "METADATA_DATABASE_TYPE",
+          value = var.ecr_viewer_metadata_database_type
         }
       ]
     },
