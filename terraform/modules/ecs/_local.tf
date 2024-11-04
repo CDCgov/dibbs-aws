@@ -14,7 +14,8 @@ locals {
       short_name     = "ecrv",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-ecr-viewer" : "ecr-viewer",
       app_version    = var.phdi_version,
       container_port = 3000,
@@ -60,7 +61,8 @@ locals {
       short_name     = "fhirc",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-fhir-converter" : "fhir-converter",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -73,7 +75,8 @@ locals {
       short_name     = "inge",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-ingestion" : "ingestion",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -86,7 +89,8 @@ locals {
       short_name     = "vali",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-validation" : "validation",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -99,7 +103,8 @@ locals {
       short_name     = "trigcr",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-trigger-code-reference" : "trigger-code-reference",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -112,7 +117,8 @@ locals {
       short_name     = "msgp",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-message-parser" : "message-parser",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -125,7 +131,8 @@ locals {
       short_name     = "orch",
       fargate_cpu    = 1024,
       fargate_memory = 2048,
-      app_count      = 1
+      min_capacity   = 1
+      max_capacity   = 5
       app_image      = var.disable_ecr == false ? "${terraform.workspace}-orchestration" : "orchestration",
       app_version    = var.phdi_version,
       container_port = 8080,
@@ -183,4 +190,14 @@ locals {
   s3_viewer_bucket_name        = var.s3_viewer_bucket_name == "" ? "${local.local_name}-${random_string.s3_viewer.result}" : var.s3_viewer_bucket_name
   s3_viewer_bucket_role_name   = var.s3_viewer_bucket_role_name == "" ? "${local.local_name}-ecrv" : var.s3_viewer_bucket_role_name
   tags                         = var.tags
+  vpc_endpoints = [
+    "com.amazonaws.${var.region}.ecr.dkr",
+    "com.amazonaws.${var.region}.ecr.api",
+    "com.amazonaws.${var.region}.ecs",
+    "com.amazonaws.${var.region}.ecs-telemetry",
+    "com.amazonaws.${var.region}.logs",
+    "com.amazonaws.${var.region}.secretsmanager",
+  ]
+  s3_service_name    = "com.amazonaws.${var.region}.s3"
+  private_subnet_kvs = { for index, rt in var.private_subnet_ids : index => rt }
 }

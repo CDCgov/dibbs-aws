@@ -2,6 +2,34 @@
 
 WORKSPACE=tfstate
 
+# write a function with aruments to set the backend
+set_backend () {
+    region=$(grep "region" "$WORKSPACE.tfvars" | cut -d'=' -f2 | tr -d ' "')
+    owner=$(grep "owner" "$WORKSPACE.tfvars" | cut -d'=' -f2 | tr -d ' "')
+    project=$(grep "project" "$WORKSPACE.tfvars" | cut -d'=' -f2 | tr -d ' "')
+cat > backend.tf <<EOF
+terraform {
+  backend "$1" {}
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "=5.70.0"
+    }
+  }
+}
+provider "aws" {
+  region = "$region"
+  default_tags {
+    tags = {
+      owner       = "$owner"
+      environment = "$WORKSPACE"
+      project     = "$project"
+    }
+  }
+}
+EOF
+}
+
 if [ -f .env ]; then
     export $(cat .env | xargs)
     USE_S3_BACKEND=true
@@ -41,7 +69,7 @@ fi
 
 if ! grep -q "project" "$WORKSPACE.tfvars"; then
     read -p "What is this project called? ( default=dibbs ): " project_choice
-    project_choice=${project_choice:-dibbs-ce}
+    project_choice=${project_choice:-dibbs}
     echo "project = \"$project_choice\"" >> "$WORKSPACE.tfvars"
 fi
 
@@ -52,7 +80,7 @@ if ! grep -q "region" "$WORKSPACE.tfvars"; then
 fi
 
 if ! grep -q "oidc_github_repo" "$WORKSPACE.tfvars"; then
-    read -p "Do you want to setup a GitHub IODC role? (y/n): " github_choice
+    read -p "Do you want to setup a GitHub OIDC role? (y/n): " github_choice
     if [[ "$github_choice" =~ ^[Yy]$ ]]; then
         read -p "What is the organization/repo value for assume role? ( default=\"\" ): " repo_choice
         repo_choice=${repo_choice:-""}
@@ -72,9 +100,7 @@ if [ "$USE_S3_BACKEND" == "true" ]; then
         -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
         -backend-config "region=$REGION"
 else
-echo "terraform {
-  backend \"local\" {}
-}" > backend.tf
+    set_backend "local"
     terraform init -var-file="$WORKSPACE.tfvars"
 fi
 
@@ -92,13 +118,9 @@ terraform apply -var-file="$WORKSPACE.tfvars"
 if [ "$USE_S3_BACKEND" == "false" ]; then
     echo "Setting up your s3 terraform backend"
     if [ -f .env ]; then
-        export $(cat ../ecs/.env | xargs)
+        export $(cat .env | xargs)
     fi
-
-echo "terraform {
-  backend \"s3\" {}
-}" > backend.tf
-
+    set_backend "s3"
     terraform init \
         -var-file="$WORKSPACE.tfvars" \
         -migrate-state \

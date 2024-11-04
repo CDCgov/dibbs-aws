@@ -51,6 +51,8 @@ No modules.
 | [aws_security_group_rule.ecs_all_egress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_security_group_rule.ecs_ecs_ingress](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
 | [aws_service_discovery_private_dns_namespace.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/service_discovery_private_dns_namespace) | resource |
+| [aws_vpc_endpoint.endpoints](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [dockerless_remote_image.dibbs](https://registry.terraform.io/providers/nullstone-io/dockerless/0.1.1/docs/resources/remote_image) | resource |
 | [null_resource.target_groups](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_string.s3_viewer](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
@@ -60,12 +62,12 @@ No modules.
 | [aws_iam_policy.ecs_task_execution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy) | data source |
 | [aws_iam_policy_document.assume_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.ecr_viewer_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_route_table.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route_table) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_alb_internal"></a> [alb\_internal](#input\_alb\_internal) | Flag to determine if the ALB is public (intended for external access) or private (only intended to be accessed within your AWS VPC). | `bool` | `true` | no |
 | <a name="input_appmesh_name"></a> [appmesh\_name](#input\_appmesh\_name) | Name of the AWS App Mesh | `string` | `""` | no |
 | <a name="input_cloudmap_namespace_name"></a> [cloudmap\_namespace\_name](#input\_cloudmap\_namespace\_name) | Name of the AWS Cloud Map namespace | `string` | `""` | no |
 | <a name="input_cloudmap_service_name"></a> [cloudmap\_service\_name](#input\_cloudmap\_service\_name) | Name of the AWS Cloud Map service | `string` | `""` | no |
@@ -81,16 +83,17 @@ No modules.
 | <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | Name of the ECS Cluster | `string` | `""` | no |
 | <a name="input_ecs_task_execution_role_name"></a> [ecs\_task\_execution\_role\_name](#input\_ecs\_task\_execution\_role\_name) | Name of the ECS Task Execution Role | `string` | `""` | no |
 | <a name="input_ecs_task_role_name"></a> [ecs\_task\_role\_name](#input\_ecs\_task\_role\_name) | Name of the ECS Task Role | `string` | `""` | no |
+| <a name="input_internal"></a> [internal](#input\_internal) | Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example). | `bool` | `true` | no |
 | <a name="input_non_integrated_viewer"></a> [non\_integrated\_viewer](#input\_non\_integrated\_viewer) | A flag to determine if the viewer is the non-integrated version | `string` | `"false"` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | Owner of the resources | `string` | `"CDC"` | no |
-| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | Version of the PHDI application | `string` | `"v1.6.4"` | no |
+| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | Version of the PHDI application | `string` | `"v1.6.9"` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of private subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `string` | `"dibbs"` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | List of public subnet IDs | `list(string)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where resources are created | `string` | n/a | yes |
 | <a name="input_s3_viewer_bucket_name"></a> [s3\_viewer\_bucket\_name](#input\_s3\_viewer\_bucket\_name) | Name of the S3 bucket for the viewer | `string` | `""` | no |
 | <a name="input_s3_viewer_bucket_role_name"></a> [s3\_viewer\_bucket\_role\_name](#input\_s3\_viewer\_bucket\_role\_name) | Name of the IAM role for the ecr-viewer bucket | `string` | `""` | no |
-| <a name="input_service_data"></a> [service\_data](#input\_service\_data) | Data for the DIBBS services | <pre>map(object({<br/>    short_name     = string<br/>    fargate_cpu    = number<br/>    fargate_memory = number<br/>    app_count      = number<br/>    app_image      = string<br/>    app_version    = string<br/>    container_port = number<br/>    host_port      = number<br/>    public         = bool<br/>    registry_url   = string<br/>    env_vars = list(object({<br/>      name  = string<br/>      value = string<br/>    }))<br/>  }))</pre> | `{}` | no |
+| <a name="input_service_data"></a> [service\_data](#input\_service\_data) | Data for the DIBBS services | <pre>map(object({<br>    short_name     = string<br>    fargate_cpu    = number<br>    fargate_memory = number<br>    app_count      = number<br>    app_image      = string<br>    app_version    = string<br>    container_port = number<br>    host_port      = number<br>    public         = bool<br>    registry_url   = string<br>    env_vars = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  }))</pre> | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources | `map(string)` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC | `string` | n/a | yes |
 

@@ -4,16 +4,16 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b", "us-east-1c"]
 }
 
+variable "internal" {
+  description = "Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example)."
+  type        = bool
+  default     = true
+}
+
 variable "ecs_alb_sg" {
   description = "The security group for the Application Load Balancer"
   type        = string
   default     = "ecs-albsg"
-}
-
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  type        = bool
-  default     = true
 }
 
 variable "owner" {
@@ -38,7 +38,7 @@ variable "private_subnets" {
 variable "project" {
   description = "The project name"
   type        = string
-  default     = "dibbs-ce"
+  default     = "dibbs"
 }
 
 variable "public_subnets" {
@@ -51,12 +51,6 @@ variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-east-1"
-}
-
-variable "single_nat_gateway" {
-  description = "Single NAT Gateway"
-  type        = bool
-  default     = true
 }
 
 variable "vpc" {

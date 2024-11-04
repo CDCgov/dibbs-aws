@@ -1,6 +1,6 @@
-variable "alb_internal" {
+variable "internal" {
   type        = bool
-  description = "Flag to determine if the ALB is public (intended for external access) or private (only intended to be accessed within your AWS VPC)."
+  description = "Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example)."
   default     = true
 }
 variable "appmesh_name" {

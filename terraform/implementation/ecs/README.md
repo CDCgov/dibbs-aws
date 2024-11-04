@@ -28,18 +28,17 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | The availability zones to use | `list(string)` | <pre>[<br/>  "us-east-1a",<br/>  "us-east-1b",<br/>  "us-east-1c"<br/>]</pre> | no |
+| <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | The availability zones to use | `list(string)` | <pre>[<br>  "us-east-1a",<br>  "us-east-1b",<br>  "us-east-1c"<br>]</pre> | no |
 | <a name="input_ecr_viewer_database_schema"></a> [ecr\_viewer\_database\_schema](#input\_ecr\_viewer\_database\_schema) | The database schema used for the eCR data tables | `string` | `"core"` | no |
 | <a name="input_ecr_viewer_database_type"></a> [ecr\_viewer\_database\_type](#input\_ecr\_viewer\_database\_type) | The SQL variant used for the eCR data tables | `string` | `"postgres"` | no |
 | <a name="input_ecs_alb_sg"></a> [ecs\_alb\_sg](#input\_ecs\_alb\_sg) | The security group for the Application Load Balancer | `string` | `"ecs-albsg"` | no |
-| <a name="input_enable_nat_gateway"></a> [enable\_nat\_gateway](#input\_enable\_nat\_gateway) | Enable NAT Gateway | `bool` | `true` | no |
+| <a name="input_internal"></a> [internal](#input\_internal) | Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example). | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the infrastructure | `string` | `"skylight"` | no |
 | <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"v1.4.4"` | no |
-| <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The private subnets | `list(string)` | <pre>[<br/>  "176.24.1.0/24",<br/>  "176.24.3.0/24"<br/>]</pre> | no |
-| <a name="input_project"></a> [project](#input\_project) | The project name | `string` | `"dibbs-ce"` | no |
-| <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | The public subnets | `list(string)` | <pre>[<br/>  "176.24.2.0/24",<br/>  "176.24.4.0/24"<br/>]</pre> | no |
+| <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The private subnets | `list(string)` | <pre>[<br>  "176.24.1.0/24",<br>  "176.24.3.0/24"<br>]</pre> | no |
+| <a name="input_project"></a> [project](#input\_project) | The project name | `string` | `"dibbs"` | no |
+| <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | The public subnets | `list(string)` | <pre>[<br>  "176.24.2.0/24",<br>  "176.24.4.0/24"<br>]</pre> | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
-| <a name="input_single_nat_gateway"></a> [single\_nat\_gateway](#input\_single\_nat\_gateway) | Single NAT Gateway | `bool` | `true` | no |
 | <a name="input_vpc"></a> [vpc](#input\_vpc) | The name of the VPC | `string` | `"ecs-vpc"` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | The CIDR block for the VPC | `string` | `"176.24.0.0/16"` | no |
 
