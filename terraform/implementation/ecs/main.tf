@@ -14,7 +14,8 @@ module "vpc" {
 }
 
 module "ecs" {
-  source = "../../modules/ecs"
+  source  = "CDCgov/dibbs-ecr-viewer/aws"
+  version = "0.1.0"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
