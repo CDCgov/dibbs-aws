@@ -31,6 +31,9 @@ jobs:
     defaults:
       run:
         shell: bash
+        # this may need to be updated if you change the directory you are working with
+        # ./terraform/implementation/dev || ./terraform/implementation/prod for example
+        # this practice is recommended to keep the terraform code organized while reducing the risk of conflicts
         working-directory: ./terraform/implementation/ecs
     steps:
       - name: Check Out Changes

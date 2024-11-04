@@ -193,9 +193,10 @@ The setup.sh script will create the following files:
 
 ## 4.6 Run Terraform Code In Your Designated Environment
 <em><strong>4.6.1. Run ECS Module Locally</em></strong>
-* To run your ECS Module Changes in your local terminal, navigate to _terraform/implementation/ecs/_ and run the following command: `cd /terraform/implementation`.
+* It is highly recommended to create a new directory per environment that is launched, to do so run `cp terraform/implementation/ecs terraform/implementation/{insertEnvironmentName}`.
+* To run your ECS Module Changes in your local terminal, navigate to your working directory, ` cd terraform/implementation/ecs/` or `cd terraform/implementation/{insertEnvironmentName}`
 * In your terminal run the deploy script for your designated environment `./deploy.sh -e {insertEnvironmentName}`.\
-&nbsp;&nbsp;&nbsp;&nbsp;<u><em><strong>Note</em></strong></u>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod` 
+&nbsp;&nbsp;&nbsp;&nbsp;<u><em><strong>Note</em></strong></u>: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod`, this can match your environment naming convention.
 &nbsp;&nbsp;&nbsp;&nbsp;or whatever environment your team desires.
 
 [Return to Table of Contents](#table-of-contents).
@@ -226,7 +227,7 @@ The setup.sh script will create the following files:
 
 ## 4.10 Update Variables
 <em><strong>4.10.1. Update Other Default Variables</em></strong>
-* Navigate to the _defaults.tfvars_ file `cd terraform/implementation/ecs/default.tfvars`.
+* Navigate to the _defaults.tfvars_ file ` cd terraform/implementation/ecs/` or `cd terraform/implementation/{insertEnvironmentName}`.
 * In this _defaults.tfvars_ file, you can update and override any other default values.
 
 <em><strong>4.10.2. Test and Validate Your Changes</em></strong>
