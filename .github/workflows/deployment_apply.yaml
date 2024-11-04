@@ -1,5 +1,5 @@
 name: Terraform Apply
-run-name: Terraform ${{ inputs.terraform_action }} ${{ inputs.workspace }} by @${{ github.actor }}
+run-name: Terraform apply ${{ inputs.workspace }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:

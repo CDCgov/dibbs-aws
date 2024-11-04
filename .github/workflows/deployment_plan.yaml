@@ -1,5 +1,5 @@
 name: Terraform Plan
-run-name: Terraform ${{ inputs.terraform_action }} ${{ inputs.workspace }} by @${{ github.actor }}
+run-name: Terraform plan ${{ inputs.workspace }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
