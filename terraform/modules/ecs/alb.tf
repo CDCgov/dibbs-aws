@@ -1,5 +1,3 @@
-# https://avd.aquasec.com/misconfig/aws/elb/avd-aws-0053
-# trivy:ignore:AVD-AWS-0053
 resource "aws_alb" "ecs" {
   name                       = local.ecs_alb_name
   internal                   = var.internal

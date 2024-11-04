@@ -1,4 +1,4 @@
-name: Terraform (Plan||Apply)
+name: Terraform Plan
 run-name: Terraform ${{ inputs.terraform_action }} ${{ inputs.workspace }} by @${{ github.actor }}
 
 on:
@@ -11,13 +11,6 @@ on:
         options:
           - ""
           - prod
-      terraform_action:
-        description: 'The terraform action to perform'
-        required: true
-        type: choice
-        options:
-          - plan
-          - apply
 
 concurrency:
   group: ${{ github.event.inputs.workspace }}-terraform
@@ -29,7 +22,7 @@ permissions:
 
 env:
   workspace: ${{ github.event.inputs.workspace }}
-  terraform_action: ${{ github.event.inputs.terraform_action }}
+  terraform_action: plan
 
 jobs:
   terraform:
@@ -51,7 +44,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: githubDeploymentWorkflow
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ vars.AWS_REGION }}
 
       - name: Terraform
         env:
@@ -60,7 +53,7 @@ jobs:
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
-          REGION: ${{ secrets.AWS_REGION }}
+          REGION: ${{ vars.AWS_REGION }}
           WORKSPACE: ${{ env.workspace }}
         shell: bash
         run: |
@@ -74,9 +67,4 @@ jobs:
             -backend-config "region=$REGION" \
             || (echo "terraform init failed, exiting..." && exit 1)
           terraform workspace select "$WORKSPACE"
-          if [ "$ACTION" == "plan" ]; then
-            terraform plan -var-file="$WORKSPACE.tfvars"
-          fi
-          if [ "$ACTION" == "apply" ]; then
-            terraform apply -auto-approve -var-file="$WORKSPACE.tfvars"
-          fi
+          terraform plan -var-file="$WORKSPACE.tfvars"

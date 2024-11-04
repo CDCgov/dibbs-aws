@@ -14,7 +14,7 @@ variable "owner" {
   default     = "skylight"
   validation {
     condition     = can(regex("^[[:alnum:]]{1,8}$", var.owner))
-    error_message = "owner must be 8 characters or less, all lowerspace with no special characters or spaces"
+    error_message = "owner must be 8 characters or less, all lowercase with no special characters or spaces"
   }
 }
 

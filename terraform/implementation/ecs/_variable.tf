@@ -5,26 +5,15 @@ variable "availability_zones" {
 }
 
 variable "internal" {
-  description = "Internal"
+  description = "Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example)."
   type        = bool
   default     = true
-}
-variable "create_internet_gateway" {
-  type        = bool
-  description = "Flag to determine if an internet gateway should be created"
-  default     = false
 }
 
 variable "ecs_alb_sg" {
   description = "The security group for the Application Load Balancer"
   type        = string
   default     = "ecs-albsg"
-}
-
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  type        = bool
-  default     = false
 }
 
 variable "owner" {
@@ -62,12 +51,6 @@ variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-east-1"
-}
-
-variable "single_nat_gateway" {
-  description = "Single NAT Gateway"
-  type        = bool
-  default     = false
 }
 
 variable "vpc" {

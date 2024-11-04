@@ -6,12 +6,14 @@ service_data = {
     short_name     = "ecrv",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-ecr-viewer",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-ecr-viewer" : "ecr-viewer",
     app_version    = var.phdi_version,
     container_port = 3000,
     host_port      = 3000,
     public         = true
+    registry_url   = local.registry_url
     env_vars = [
       {
         name  = "AWS_REGION",
@@ -24,6 +26,26 @@ service_data = {
       {
         name  = "HOSTNAME",
         value = "0.0.0.0"
+      },
+      {
+        name  = "NEXT_PUBLIC_NON_INTEGRATED_VIEWER",
+        value = var.non_integrated_viewer
+      },
+      {
+        name  = "SOURCE",
+        value = "s3"
+      },
+      {
+        name  = "APP_ENV",
+        value = var.ecr_viewer_app_env
+      },
+      {
+        name  = "NBS_PUB_KEY",
+        value = var.ecr_viewer_auth_pub_key
+      },
+      {
+        name  = "NEXT_PUBLIC_BASEPATH",
+        value = var.ecr_viewer_basepath
       }
     ]
   },
@@ -31,79 +53,91 @@ service_data = {
     short_name     = "fhirc",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-fhir-converter",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-fhir-converter" : "fhir-converter",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = false
+    registry_url   = local.registry_url
     env_vars       = []
   },
   ingestion = {
     short_name     = "inge",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-ingestion",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-ingestion" : "ingestion",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = false
+    registry_url   = local.registry_url
     env_vars       = []
   },
   validation = {
     short_name     = "vali",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-validation",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-validation" : "validation",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = false
+    registry_url   = local.registry_url
     env_vars       = []
   },
   trigger-code-reference = {
     short_name     = "trigcr",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-trigger-code-reference",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-trigger-code-reference" : "trigger-code-reference",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = false
+    registry_url   = local.registry_url
     env_vars       = []
   },
   message-parser = {
     short_name     = "msgp",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-message-parser",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-message-parser" : "message-parser",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = false
+    registry_url   = local.registry_url
     env_vars       = []
   },
   orchestration = {
     short_name     = "orch",
     fargate_cpu    = 1024,
     fargate_memory = 2048,
-    app_count      = 1
-    app_image      = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.region}.amazonaws.com/${terraform.workspace}-orchestration",
+    min_capacity   = 1
+    max_capacity   = 5
+    app_image      = var.disable_ecr == false ? "${terraform.workspace}-orchestration" : "orchestration",
     app_version    = var.phdi_version,
     container_port = 8080,
     host_port      = 8080,
     public         = true
+    registry_url   = local.registry_url
     env_vars = [
       {
-        name = "OTEL_METRICS",
+        name  = "OTEL_METRICS",
         value = "none"
       },
       {
-        name = "OTEL_METRICS_EXPORTER",
+        name  = "OTEL_METRICS_EXPORTER",
         value = "none"
       },
       {
@@ -120,7 +154,7 @@ service_data = {
       },
       {
         name  = "ECR_VIEWER_URL",
-        value = "http://ecr-viewer:3000"
+        value = "http://ecr-viewer:3000${var.ecr_viewer_basepath}"
       },
       {
         name  = "MESSAGE_PARSER_URL",
