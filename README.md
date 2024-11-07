@@ -1,15 +1,4 @@
 # Table of Contents
-[1. Overview](#1-overview)\
-[2. Notices](#2-notices)
-  - [2.1 Public Domain Standard Notice](#21-public-domain-standard-notice)
-  - [2.2 License Standard Notice](#22-license-standard-notice)
-  - [2.3 Privacy Standard Notice](#23-privacy-standard-notice)
-  - [2.4 Contributing Standard Notice](#24-contributing-standard-notice)
-  - [2.5 Records Management Standard Notice](#25-records-management-standard-notice)
-  - [2.6 Additional Standard Notices](#26-additional-standard-notices)
-
-[3. Architectural Design](#3-architectural-design)\
-[4. Getting Started](#4-getting-started)
 - [Table of Contents](#table-of-contents)
 - [1. Overview](#1-overview)
 - [2. Notices](#2-notices)
