@@ -15,7 +15,7 @@ module "vpc" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.1.1"
+  version = "0.1.2"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
