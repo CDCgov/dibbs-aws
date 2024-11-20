@@ -9,7 +9,6 @@ module "tfstate" {
   identifier = random_string.setup.result
   owner      = var.owner
   project    = var.project
-  region     = var.region
 }
 
 # GitHub OIDC for prod

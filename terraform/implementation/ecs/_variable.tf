@@ -10,12 +10,6 @@ variable "internal" {
   default     = true
 }
 
-variable "ecs_alb_sg" {
-  description = "The security group for the Application Load Balancer"
-  type        = string
-  default     = "ecs-albsg"
-}
-
 variable "owner" {
   description = "The owner of the infrastructure"
   type        = string
@@ -26,7 +20,7 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "v1.4.4"
+  default     = "v1.6.9"
 }
 
 variable "private_subnets" {
@@ -51,12 +45,6 @@ variable "region" {
   description = "AWS region"
   type        = string
   default     = "us-east-1"
-}
-
-variable "vpc" {
-  description = "The name of the VPC"
-  type        = string
-  default     = "ecs-vpc"
 }
 
 variable "vpc_cidr" {

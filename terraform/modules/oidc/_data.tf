@@ -38,9 +38,9 @@ data "aws_iam_policy_document" "storage" {
     ]
     resources = [
       "arn:aws:s3:::*",
-      "${var.state_bucket_arn}",
+      var.state_bucket_arn,
       "${var.state_bucket_arn}/*",
-      "${var.dynamodb_table_arn}",
+      var.dynamodb_table_arn,
     ]
   }
 }
