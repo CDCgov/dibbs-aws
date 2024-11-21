@@ -1,5 +1,6 @@
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.16.0"
 
   name            = local.vpc_name
   cidr            = var.vpc_cidr
@@ -22,9 +23,10 @@ module "ecs" {
   vpc_id             = module.vpc.vpc_id
   region             = var.region
 
-  owner   = var.owner
-  project = var.project
-  tags    = local.tags
+  owner        = var.owner
+  project      = var.project
+  tags         = local.tags
+  phdi_version = var.phdi_version
 
   # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
   # disable_ecr = true
