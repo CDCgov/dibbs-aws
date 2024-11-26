@@ -50,6 +50,10 @@ data "aws_iam_policy_document" "storage" {
 data "aws_iam_policy_document" "wildcard" {
   statement {
     actions = [
+      "acm:ListCertificates",
+      "acm:DescribeCertificate",
+      "acm:GetCertificate",
+      "acm:ListTagsForCertificate",
       "ec2:DescribeAddresses",
       "ec2:DescribeVpcEndpoints",
       "ec2:DescribePrefixLists",
@@ -76,6 +80,7 @@ data "aws_iam_policy_document" "wildcard" {
       "elasticloadbalancing:DescribeTargetGroups",
       "iam:ListPolicies",
       "route53:CreateHostedZone",
+      "secretsmanager:GetSecretValue",
     ]
     resources = [
       "*"
@@ -236,10 +241,12 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:ReplaceRouteTableAssociation",
       "ec2:RevokeSecurityGroupEgress",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:AssociateRouteTable",
       "ec2:ModifyVpcAttribute",
+      "ec2:CreateTags",
       "elasticloadbalancing:AddTags",
       "elasticloadbalancing:ModifyLoadBalancerAttributes",
       "elasticloadbalancing:ModifyTargetGroupAttributes",
