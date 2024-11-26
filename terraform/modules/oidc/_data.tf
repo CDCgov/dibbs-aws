@@ -246,6 +246,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "ec2:RevokeSecurityGroupIngress",
       "ec2:AssociateRouteTable",
       "ec2:ModifyVpcAttribute",
+      "ec2:ModifyVpcEndpoint",
       "ec2:CreateTags",
       "elasticloadbalancing:AddTags",
       "elasticloadbalancing:ModifyLoadBalancerAttributes",
@@ -275,6 +276,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.project_owner_workspace}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
+      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:security-group/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:subnet/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:route-table/*",
