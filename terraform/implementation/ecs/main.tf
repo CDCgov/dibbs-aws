@@ -48,6 +48,9 @@ module "ecs" {
   # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
   # ecr_viewer_app_env = "test"
 
+  # To disable autoscaling, set enable_autoscaling to false (default is true)
+  # enable_autoscaling = false
+
   # If intent is to use a metadata database for polutating the ecr-viewer library, setup the database data object to connect to the database (supported databases are postgres and sqlserver)
   # Postgresql database example
   # postgres_database_data = {

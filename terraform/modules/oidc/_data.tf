@@ -54,6 +54,9 @@ data "aws_iam_policy_document" "wildcard" {
       "acm:DescribeCertificate",
       "acm:GetCertificate",
       "acm:ListTagsForCertificate",
+      "application-autoscaling:DescribeScalableTargets",
+      "application-autoscaling:DescribeScalingPolicies",
+      "application-autoscaling:ListTagsForResource",
       "ec2:DescribeAddresses",
       "ec2:DescribeVpcEndpoints",
       "ec2:DescribePrefixLists",
@@ -141,6 +144,11 @@ data "aws_iam_policy_document" "scoped_one" {
 data "aws_iam_policy_document" "scoped_two" {
   statement {
     actions = [
+      "application-autoscaling:DeleteScalingPolicy",
+      "application-autoscaling:DeregisterScalableTarget",
+      "application-autoscaling:PutScalingPolicy",
+      "application-autoscaling:RegisterScalableTarget",
+      "application-autoscaling:TagResource",
       "ec2:createVpcEndpoint",
       "ec2:CreateFlowLogs",
       "ec2:CreateNatGateway",
@@ -153,6 +161,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "iam:PassRole",
     ]
     resources = [
+      "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-flow-log/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:subnet/*",
