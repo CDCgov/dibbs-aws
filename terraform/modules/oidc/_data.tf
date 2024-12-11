@@ -252,6 +252,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "elasticloadbalancing:ModifyLoadBalancerAttributes",
       "elasticloadbalancing:ModifyTargetGroupAttributes",
       "elasticloadbalancing:RemoveTags",
+      "elasticloadbalancing:ModifyRule",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
       "ecs:TagResource",
