@@ -22,7 +22,7 @@ module "vpc" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.2.1"
+  version = "0.3.0"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
@@ -47,6 +47,9 @@ module "ecs" {
 
   # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
   # ecr_viewer_app_env = "test"
+
+  # To disable autoscaling, set enable_autoscaling to false (default is true)
+  # enable_autoscaling = false
 
   # If intent is to use a metadata database for polutating the ecr-viewer library, setup the database data object to connect to the database (supported databases are postgres and sqlserver)
   # Postgresql database example
