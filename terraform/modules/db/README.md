@@ -38,6 +38,8 @@ No modules.
 | [aws_security_group.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/security_group) | resource |
 | [aws_security_group.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/security_group) | resource |
 | [random_password.database](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+| [aws_rds_engine_version.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/rds_engine_version) | data source |
+| [aws_rds_engine_version.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/rds_engine_version) | data source |
 
 ## Inputs
 

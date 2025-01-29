@@ -29,30 +29,6 @@ variable "database_type" {
   default     = ""
 }
 
-# variable "postgresql_connection_string_name" {
-#   description = "The name of the secret in AWS Secrets Manager for the Postgresql connection string"
-#   type        = string
-#   default     = ""
-# }
-
-# variable "secrets_manager_sqlserver_host_name" {
-#   description = "The name of the secret in AWS Secrets Manager for the SqlServer host name"
-#   type        = string
-#   default     = ""
-# }
-
-# variable "secrets_manager_sqlserver_password_name" {
-#   description = "The name of the secret in AWS Secrets Manager for the SqlServer password"
-#   type        = string
-#   default     = ""
-# }
-
-# variable "secrets_manager_sqlserver_user_name" {
-#   description = "The name of the secret in AWS Secrets Manager for the SqlServer user name"
-#   type        = string
-#   default     = ""
-# }
-
 variable "private_subnets" {
   description = "The private subnets"
   type        = list(string)

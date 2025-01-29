@@ -19,7 +19,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_oidc"></a> [oidc](#module\_oidc) | ../../modules/oidc | n/a |
+| <a name="module_oidc_dev"></a> [oidc\_dev](#module\_oidc\_dev) | ../../modules/oidc | n/a |
+| <a name="module_oidc_prod"></a> [oidc\_prod](#module\_oidc\_prod) | ../../modules/oidc | n/a |
 | <a name="module_tfstate"></a> [tfstate](#module\_tfstate) | ../../modules/tfstate | n/a |
 
 ## Resources

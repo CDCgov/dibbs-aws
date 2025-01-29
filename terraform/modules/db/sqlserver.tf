@@ -1,23 +1,23 @@
 data "aws_rds_engine_version" "sqlserver" {
-  engine = local.sqlserver_engine
-  preferred_versions = [ local.sqlserver_engine_version ]
+  engine             = local.sqlserver_engine
+  preferred_versions = [local.sqlserver_engine_version]
 }
 
 resource "aws_db_instance" "sqlserver" {
-  count                  = var.database_type == "sqlserver" ? 1 : 0
-  allocated_storage      = "20"
-  identifier             = "${local.vpc_name}-${var.database_type}-ecr-viewer"
-  engine                 = data.aws_rds_engine_version.sqlserver.engine
-  engine_version         = data.aws_rds_engine_version.sqlserver.version_actual
+  count                           = var.database_type == "sqlserver" ? 1 : 0
+  allocated_storage               = "20"
+  identifier                      = "${local.vpc_name}-${var.database_type}-ecr-viewer"
+  engine                          = data.aws_rds_engine_version.sqlserver.engine
+  engine_version                  = data.aws_rds_engine_version.sqlserver.version_actual
   enabled_cloudwatch_logs_exports = []
-  instance_class         = local.sqlserver_instance_class
-  username               = "sa"
-  password               = random_password.database.result
-  parameter_group_name   = aws_db_parameter_group.sqlserver[0].name
-  skip_final_snapshot    = true
-  db_subnet_group_name   = aws_db_subnet_group.this.name
-  vpc_security_group_ids = [aws_security_group.sqlserver.id]
-  license_model          = "license-included"
+  instance_class                  = local.sqlserver_instance_class
+  username                        = "sa"
+  password                        = random_password.database.result
+  parameter_group_name            = aws_db_parameter_group.sqlserver[0].name
+  skip_final_snapshot             = true
+  db_subnet_group_name            = aws_db_subnet_group.this.name
+  vpc_security_group_ids          = [aws_security_group.sqlserver.id]
+  license_model                   = "license-included"
 }
 
 # Create a parameter group to configure SqlServer RDS parameters
