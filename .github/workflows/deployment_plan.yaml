@@ -9,7 +9,6 @@ on:
         required: true
         type: choice
         options:
-          - ""
           - prod
 
 concurrency:
@@ -22,7 +21,6 @@ permissions:
 
 env:
   workspace: ${{ github.event.inputs.workspace }}
-  terraform_action: plan
 
 jobs:
   terraform:
@@ -53,13 +51,12 @@ jobs:
 
       - name: Terraform
         env:
-          ACTION: ${{ env.terraform_action }}
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ env.workspace }}
+          WORKSPACE: ${{ github.event.inputs.workspace }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
@@ -71,5 +68,5 @@ jobs:
             -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
             -backend-config "region=$REGION" \
             || (echo "terraform init failed, exiting..." && exit 1)
-          terraform workspace select "$WORKSPACE"
+          terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
           terraform plan -var-file="$WORKSPACE.tfvars"
