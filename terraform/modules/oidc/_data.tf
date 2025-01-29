@@ -147,7 +147,6 @@ data "aws_iam_policy_document" "scoped_two" {
       "application-autoscaling:DeleteScalingPolicy",
       "application-autoscaling:DeregisterScalableTarget",
       "application-autoscaling:PutScalingPolicy",
-      "application-autoscaling:RegisterScalableTarget",
       "application-autoscaling:TagResource",
       "ec2:createVpcEndpoint",
       "ec2:CreateFlowLogs",
