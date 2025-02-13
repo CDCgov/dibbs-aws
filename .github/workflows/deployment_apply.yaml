@@ -44,9 +44,18 @@ jobs:
           terraform_version: "1.9.8"
 
       - name: configure aws credentials
+        if: ${{ github.event.inputs.workspace }} == 'prod'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-session-name: githubDeploymentWorkflow
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: configure aws credentials
+        if: ${{ github.event.inputs.workspace }} == 'dev'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
           role-session-name: githubDeploymentWorkflow
           aws-region: ${{ vars.AWS_REGION }}
 
