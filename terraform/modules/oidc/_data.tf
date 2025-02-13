@@ -136,6 +136,7 @@ data "aws_iam_policy_document" "scoped_one" {
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.project_owner_workspace}*",
       "arn:aws:iam::aws:policy/service-role/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:*",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
     ]

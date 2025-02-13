@@ -60,7 +60,7 @@ resource "local_file" "setup_env" {
     BUCKET="${module.tfstate.state_bucket.bucket}"
     DYNAMODB_TABLE="${module.tfstate.dynamodb_table.arn}"
     REGION="${var.region}"
-    TERRAFORM_ROLES=["${module.oidc_dev.role.arn}", "${module.oidc_prod.role.arn}"]
+    TERRAFORM_ROLES=("${module.oidc_dev.role.arn}" "${module.oidc_prod.role.arn}")
   EOT
   filename = ".env"
 }
