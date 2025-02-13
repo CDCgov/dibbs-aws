@@ -5,6 +5,13 @@ resource "random_password" "database" {
   override_special = "[]{}"
 }
 
+resource "random_string" "secret_ident" {
+  count = var.database_type == "postgresql" ? 1 : 0
+  length  = 3
+  special = false
+  upper   = false
+}
+
 # Create a DB subnet group
 resource "aws_db_subnet_group" "this" {
   name       = "${local.vpc_name}-db-subnet-group-${terraform.workspace}"

@@ -20,13 +20,13 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "44bc4b087f1f371f63ee270aba98589c542d72ba"
+  default     = "v2.0.0-Beta"
 }
 
 variable "database_type" {
   description = "The type of database to use (postgresql or sqlserver)"
   type        = string
-  default     = ""
+  default     = "postgresql"
 }
 
 variable "private_subnets" {

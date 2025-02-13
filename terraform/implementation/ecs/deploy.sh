@@ -38,7 +38,6 @@ do
         shift
         shift
         ;;
-        ;;
         -ci|--ci)
         CI=true
         shift

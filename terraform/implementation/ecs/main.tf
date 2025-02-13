@@ -30,54 +30,53 @@ module "db" {
   database_type      = var.database_type
   tags               = local.tags
   private_subnet_ids = flatten(module.vpc.private_subnets)
+  public_subnet_ids  = flatten(module.vpc.public_subnets)
 }
 
-# module "ecs" {
-#   # source  = "CDCgov/dibbs-ecr-viewer/aws"
-#   # version = "0.3.0"
-#   source = "../../../../terraform-aws-dibbs-ecr-viewer"
+module "ecs" {
+  # source  = "CDCgov/dibbs-ecr-viewer/aws"
+  # version = "0.3.0"
+  # source = "../../../../terraform-aws-dibbs-ecr-viewer"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=7d445714ad6c4d63c9a7d5c41d712cba6aa252f0"
 
-#   public_subnet_ids  = flatten(module.vpc.public_subnets)
-#   private_subnet_ids = flatten(module.vpc.private_subnets)
-#   vpc_id             = module.vpc.vpc_id
-#   region             = var.region
+  public_subnet_ids  = flatten(module.vpc.public_subnets)
+  private_subnet_ids = flatten(module.vpc.private_subnets)
+  vpc_id             = module.vpc.vpc_id
+  region             = var.region
 
-#   owner        = var.owner
-#   project      = var.project
-#   tags         = local.tags
-#   phdi_version = var.phdi_version
+  owner        = var.owner
+  project      = var.project
+  tags         = local.tags
+  phdi_version = var.phdi_version
 
-#   # If intent is to pull from the phdi GHCR, set disable_ecr to true (default is false)
-#   # disable_ecr = true
+  ## The following variables will need to be configured depending on your requirements
+  
+  # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
+  disable_ecr = false
 
-#   # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true)
-#   # This requires an internet gateway to be present in the VPC.
-#   internal = var.internal
+  ## If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true when not set)
+  ## This requires an internet gateway to be present in the VPC.
+  internal = var.internal
 
-#   # If the intent is to enable https and port 443, pass the arn of the cert in AWS certificate manager. This cert will be applied to the load balancer. (default is "")
-#   certificate_arn = data.aws_acm_certificate.this.arn
+  ## If the intent is to enable https and port 443, pass the arn of the cert in AWS certificate manager. This cert will be applied to the load balancer. (default is "" when not set)
+  certificate_arn = data.aws_acm_certificate.this.arn
 
-#   # If the intent is to disable authentication, set ecr_viewer_app_env to "test" (default is "prod")
-#   ecr_viewer_app_env = "test"
+  ## To disable autoscaling, set enable_autoscaling to false (default is true when not set)
+  enable_autoscaling = true
 
-#   # To disable autoscaling, set enable_autoscaling to false (default is true)
-#   # enable_autoscaling = false
+  ## If the intent is to disable authentication, set nbs_auth to false (default is true when not set)
+  nbs_auth = false
 
-#   # If intent is to use a metadata database for polutating the ecr-viewer library, setup the database data object to connect to the database (supported databases are postgres and sqlserver)
-#   # Postgresql database example
-#   # If the secrets manager secret is not available or doesn't exist, the value will be false
-#   # secrets_manager_postgresql_connection_string_name = ""
-#   # If the secrets manager secret exists, the value will be the name of the secret
-#   secrets_manager_postgresql_connection_string_name = "${local.vpc_name}_postgresql_connection_string"
+  ## If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
+  # Postgresql database example (default is "" when not set)
+  secrets_manager_postgresql_connection_string_name = module.db.secrets_manager_postgresql_connection_string_name
 
-#   # SqlServer database example
-#   # If the secrets manager secret is not available or doesn't exist, the value will be false
-#   # secrets_manager_sqlserver_user_name = var.database_type == "sqlserver" ? var.secrets_manager_sqlserver_user_name : ""
-#   # secrets_manager_sqlserver_password_name = var.database_type == "sqlserver" ? var.secrets_manager_sqlserver_password_name : ""
-#   # secrets_manager_sqlserver_host_name = var.database_type == "sqlserver" ? var.secrets_manager_sqlserver_host_name : ""
-#   # If the secrets manager secret exists, the value will be the name of the secret
-#   # secrets_manager_sqlserver_user_name = "${local.vpc_name}-ecr-viewer-sqlserver-user-name-12345"
-#   # secrets_manager_sqlserver_password_name = "${local.vpc_name}-ecr-viewer-sqlserver-password-12345"
-#   # secrets_manager_sqlserver_host_name = "${local.vpc_name}-ecr-viewer-sqlserver-host-12345"
-#   dibbs_config_name = "AWS_PG_NON_INTEGRATED"
-# }
+  ## SqlServer database example (default values are "" when not set)
+  # secrets_manager_sqlserver_user_name = module.db.secrets_manager_sqlserver_user_name
+  # secrets_manager_sqlserver_password_name = module.db.secrets_manager_sqlserver_password_name
+  # secrets_manager_sqlserver_host_name = module.db.secrets_manager_sqlserver_host_name
+
+  ## dibbs_config_name can be a value found here under CONFIG_NAME: https://github.com/CDCgov/dibbs-ecr-viewer/blob/main/containers/ecr-viewer/environment.d.ts
+  ## This is used to configure the ecr-viewer application. (default is "" when not set)
+  dibbs_config_name = "AWS_PG_NON_INTEGRATED"
+}

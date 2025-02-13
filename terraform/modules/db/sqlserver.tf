@@ -55,7 +55,7 @@ resource "aws_security_group" "sqlserver" {
 
 resource "aws_secretsmanager_secret" "sqlserver_password" {
   count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-password"
+  name        = "${local.vpc_name}-sqlserver-password-${random_string.secret_ident[0].result}"
   description = "SqlServer password for the ecr-viewer"
 }
 
@@ -67,7 +67,7 @@ resource "aws_secretsmanager_secret_version" "sqlserver_password" {
 
 resource "aws_secretsmanager_secret" "sqlserver_user" {
   count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-user"
+  name        = "${local.vpc_name}-sqlserver-user-${random_string.secret_ident[0].result}"
   description = "SqlServer user for the ecr-viewer"
 }
 
@@ -79,7 +79,7 @@ resource "aws_secretsmanager_secret_version" "sqlserver_user" {
 
 resource "aws_secretsmanager_secret" "sqlserver_host" {
   count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-host"
+  name        = "${local.vpc_name}-sqlserver-host-${random_string.secret_ident[0].result}"
   description = "SqlServer host for the ecr-viewer"
 }
 
