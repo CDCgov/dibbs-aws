@@ -37,7 +37,7 @@ module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
   # version = "0.3.0"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=8e56bee62210c8e8d24f82ed20da272a6fd475d6"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=e8feb01b60013f632eeca2deff093cc9103eb44e"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -50,6 +50,9 @@ module "ecs" {
   phdi_version = var.phdi_version
 
   # The following variables will need to be configured depending on your requirements
+
+  # If the intent is to use a database for the ecr-viewer library, set the database_type to either "postgresql" or "sqlserver" (default is "postgresql" when not set)
+  database_type = var.database_type
 
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
   disable_ecr = false
