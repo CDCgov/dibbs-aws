@@ -50,7 +50,7 @@ module "ecs" {
   phdi_version = var.phdi_version
 
   ## The following variables will need to be configured depending on your requirements
-  
+
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
   disable_ecr = false
 

@@ -29,9 +29,9 @@ resource "aws_security_group" "db_setup" {
 
   # Allow inbound traffic on port 5432 for PostgreSQL from within the VPC
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }
 
@@ -46,16 +46,16 @@ resource "aws_security_group" "db_setup" {
 }
 
 resource "aws_instance" "postgresql_setup" {
-  count                           = var.database_type == "postgresql" && var.ssh_key_name != "" ? 1 : 0
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id     = var.public_subnet_ids[0]
-  vpc_security_group_ids = [aws_security_group.db_setup.id]
+  count                       = var.database_type == "postgresql" && var.ssh_key_name != "" ? 1 : 0
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = "t3.micro"
+  subnet_id                   = var.public_subnet_ids[0]
+  vpc_security_group_ids      = [aws_security_group.db_setup.id]
   associate_public_ip_address = true
-  key_name = var.ssh_key_name
+  key_name                    = var.ssh_key_name
 
   provisioner "file" {
-    content = <<-EOF
+    content     = <<-EOF
       DATABASE_URL=postgres://${aws_db_instance.postgresql[0].username}:${random_password.database.result}@${aws_db_instance.postgresql[0].address}:${aws_db_instance.postgresql[0].port}/${aws_db_instance.postgresql[0].db_name}
       SQL_FILE=core.sql
     EOF
@@ -67,9 +67,9 @@ resource "aws_instance" "postgresql_setup" {
       host     = self.public_ip
     }
   }
-  
+
   provisioner "file" {
-    content = <<-EOF
+    content     = <<-EOF
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
       CREATE TABLE ecr_data (
@@ -107,7 +107,7 @@ resource "aws_instance" "postgresql_setup" {
   }
 
   provisioner "file" {
-    content = <<-EOF
+    content     = <<-EOF
       #!/bin/bash
       # Load environment variables from .env file
       if [ -f .env ]; then
@@ -122,7 +122,7 @@ resource "aws_instance" "postgresql_setup" {
       user     = "ubuntu"
       password = self.password_data
       host     = self.public_ip
-    } 
+    }
   }
 
   provisioner "remote-exec" {

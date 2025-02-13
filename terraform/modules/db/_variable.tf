@@ -44,7 +44,7 @@ variable "cidr" {
 }
 
 variable "ssh_key_name" {
-  type = string
+  type        = string
   description = "The name of the SSH key to use for the instances"
-  default = ""  
+  default     = ""
 }
