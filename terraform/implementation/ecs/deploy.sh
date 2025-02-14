@@ -11,6 +11,7 @@ BUCKET="${BUCKET:-}"
 DYNAMODB_TABLE="${DYNAMODB_TABLE:-}"
 REGION="${REGION:-}"
 CI=false
+UPGRADE=false
 
 # parse command line arguments
 while [[ $# -gt 0 ]]
@@ -36,6 +37,10 @@ do
         -region|--region|-r)
         REGION="$2"
         shift
+        shift
+        ;;
+        -upgrade|--upgrade)
+        UPGRADE=true
         shift
         ;;
         -ci|--ci)
@@ -109,13 +114,21 @@ echo "Region: $REGION"
 cat "$WORKSPACE.tfvars"
 echo ""
 
-terraform init \
-    -var-file="$WORKSPACE.tfvars" \
-    -backend-config "bucket=$BUCKET" \
-    -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
-    -backend-config "region=$REGION" \
-    || (echo "terraform init failed, exiting..." && exit 1)
-
+if [ "$UPGRADE" = true ]; then
+    terraform init -upgrade \
+        -var-file="$WORKSPACE.tfvars" \
+        -backend-config "bucket=$BUCKET" \
+        -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
+        -backend-config "region=$REGION" \
+        || (echo "terraform init failed, exiting..." && exit 1)
+else
+    terraform init \
+        -var-file="$WORKSPACE.tfvars" \
+        -backend-config "bucket=$BUCKET" \
+        -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
+        -backend-config "region=$REGION" \
+        || (echo "terraform init failed, exiting..." && exit 1)
+fi
 
 # Check if workspace exists
 if terraform workspace list | grep -q "$WORKSPACE"; then

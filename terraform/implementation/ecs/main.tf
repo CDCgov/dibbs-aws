@@ -31,13 +31,14 @@ module "db" {
   tags               = local.tags
   private_subnet_ids = flatten(module.vpc.private_subnets)
   public_subnet_ids  = flatten(module.vpc.public_subnets)
+  ssh_key_name       = var.ssh_key_name
 }
 
 module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
   # version = "0.3.0"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=e8feb01b60013f632eeca2deff093cc9103eb44e"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=dd1971d726e682275a00cac0f5e0ccd962e33e4d"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -72,12 +73,12 @@ module "ecs" {
 
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
-  secrets_manager_postgresql_connection_string_name = module.db.secrets_manager_postgresql_connection_string_name
+  secrets_manager_postgresql_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
 
   # SqlServer database example (default values are "" when not set)
-  # secrets_manager_sqlserver_user_name = module.db.secrets_manager_sqlserver_user_name
-  # secrets_manager_sqlserver_password_name = module.db.secrets_manager_sqlserver_password_name
-  # secrets_manager_sqlserver_host_name = module.db.secrets_manager_sqlserver_host_name
+  # secrets_manager_sqlserver_user_version = module.db.secrets_manager_sqlserver_user_version
+  # secrets_manager_sqlserver_password_version = module.db.secrets_manager_sqlserver_password_version
+  # secrets_manager_sqlserver_host_version = module.db.secrets_manager_sqlserver_host_version
 
   # dibbs_config_name can be a value found here under CONFIG_NAME: https://github.com/CDCgov/dibbs-ecr-viewer/blob/main/containers/ecr-viewer/environment.d.ts
   # This is used to configure the ecr-viewer application. (default is "" when not set)

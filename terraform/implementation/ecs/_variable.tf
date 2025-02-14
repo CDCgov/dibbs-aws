@@ -58,3 +58,9 @@ variable "vpc_cidr" {
   type        = string
   default     = "176.24.0.0/16"
 }
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key to use for the instances"
+  type        = string
+  default     = ""
+}

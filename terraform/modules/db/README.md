@@ -4,7 +4,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | =5.56.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.86.0 |
 | <a name="requirement_http"></a> [http](#requirement\_http) | 3.4.5 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6.3 |
 
@@ -12,7 +12,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | =5.56.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.86.0 |
 | <a name="provider_http"></a> [http](#provider\_http) | 3.4.5 |
 | <a name="provider_random"></a> [random](#provider\_random) | ~> 3.6.3 |
 
@@ -24,29 +24,29 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_db_instance.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_instance) | resource |
-| [aws_db_instance.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_instance) | resource |
-| [aws_db_parameter_group.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_parameter_group) | resource |
-| [aws_db_parameter_group.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_parameter_group) | resource |
-| [aws_db_subnet_group.db_setup](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_subnet_group) | resource |
-| [aws_db_subnet_group.this](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/db_subnet_group) | resource |
-| [aws_instance.postgresql_setup](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/instance) | resource |
-| [aws_secretsmanager_secret.postgresql_connection_string](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret.sqlserver_host](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret.sqlserver_password](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret.sqlserver_user](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret_version.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_secretsmanager_secret_version.sqlserver_host](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_secretsmanager_secret_version.sqlserver_password](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_secretsmanager_secret_version.sqlserver_user](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_security_group.db_setup](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/security_group) | resource |
-| [aws_security_group.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/security_group) | resource |
-| [aws_security_group.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/resources/security_group) | resource |
+| [aws_db_instance.postgresql](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) | resource |
+| [aws_db_instance.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance) | resource |
+| [aws_db_parameter_group.postgresql](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) | resource |
+| [aws_db_parameter_group.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) | resource |
+| [aws_db_subnet_group.db_setup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
+| [aws_db_subnet_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
+| [aws_instance.postgresql_setup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_secretsmanager_secret.postgresql_connection_string](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret.sqlserver_host](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret.sqlserver_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret.sqlserver_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.postgresql](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_secretsmanager_secret_version.sqlserver_host](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_secretsmanager_secret_version.sqlserver_password](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_secretsmanager_secret_version.sqlserver_user](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_security_group.db_setup](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.postgresql](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [random_password.database](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [random_string.secret_ident](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
-| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/ami) | data source |
-| [aws_rds_engine_version.postgresql](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/rds_engine_version) | data source |
-| [aws_rds_engine_version.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/5.56.1/docs/data-sources/rds_engine_version) | data source |
+| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_rds_engine_version.postgresql](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/rds_engine_version) | data source |
+| [aws_rds_engine_version.sqlserver](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/rds_engine_version) | data source |
 | [http_http.myip](https://registry.terraform.io/providers/hashicorp/http/3.4.5/docs/data-sources/http) | data source |
 
 ## Inputs
@@ -67,8 +67,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_secrets_manager_postgresql_connection_string_name"></a> [secrets\_manager\_postgresql\_connection\_string\_name](#output\_secrets\_manager\_postgresql\_connection\_string\_name) | n/a |
-| <a name="output_secrets_manager_sqlserver_host_name"></a> [secrets\_manager\_sqlserver\_host\_name](#output\_secrets\_manager\_sqlserver\_host\_name) | n/a |
-| <a name="output_secrets_manager_sqlserver_password_name"></a> [secrets\_manager\_sqlserver\_password\_name](#output\_secrets\_manager\_sqlserver\_password\_name) | n/a |
-| <a name="output_secrets_manager_sqlserver_user_name"></a> [secrets\_manager\_sqlserver\_user\_name](#output\_secrets\_manager\_sqlserver\_user\_name) | n/a |
+| <a name="output_secrets_manager_postgresql_connection_string_version"></a> [secrets\_manager\_postgresql\_connection\_string\_version](#output\_secrets\_manager\_postgresql\_connection\_string\_version) | n/a |
+| <a name="output_secrets_manager_sqlserver_host_version"></a> [secrets\_manager\_sqlserver\_host\_version](#output\_secrets\_manager\_sqlserver\_host\_version) | n/a |
+| <a name="output_secrets_manager_sqlserver_password_version"></a> [secrets\_manager\_sqlserver\_password\_version](#output\_secrets\_manager\_sqlserver\_password\_version) | n/a |
+| <a name="output_secrets_manager_sqlserver_user_version"></a> [secrets\_manager\_sqlserver\_user\_version](#output\_secrets\_manager\_sqlserver\_user\_version) | n/a |
 <!-- END_TF_DOCS -->

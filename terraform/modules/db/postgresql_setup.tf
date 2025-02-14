@@ -139,4 +139,5 @@ resource "aws_instance" "postgresql_setup" {
       host     = self.public_ip
     }
   }
+  depends_on = [aws_db_instance.postgresql]
 }

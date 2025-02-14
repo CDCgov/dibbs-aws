@@ -62,6 +62,7 @@ data "aws_iam_policy_document" "wildcard" {
       "ec2:DescribePrefixLists",
       "ec2:DescribeAddressesAttribute",
       "ec2:DescribeFlowLogs",
+      "ec2:DescribeImages",
       "ec2:DescribeInternetGateways",
       "ec2:DescribeNatGateways",
       "ec2:DescribeNetworkAcls",
@@ -82,6 +83,7 @@ data "aws_iam_policy_document" "wildcard" {
       "elasticloadbalancing:DescribeTargetGroupAttributes",
       "elasticloadbalancing:DescribeTargetGroups",
       "iam:ListPolicies",
+      "rds:DescribeDBEngineVersions",
       "route53:CreateHostedZone",
       "secretsmanager:GetSecretValue",
     ]
@@ -100,7 +102,6 @@ data "aws_iam_policy_document" "scoped_one" {
       "appmesh:DescribeVirtualNode",
       "appmesh:ListTagsForResource",
       "ec2:DescribeVpcAttribute",
-      "ec2:DescribeImages",
       "ecr:DescribeRepositories",
       "ecr:ListTagsForResource",
       "ecs:DescribeClusters",
@@ -116,7 +117,6 @@ data "aws_iam_policy_document" "scoped_one" {
       "logs:ListAttachedRolePolicies",
       "logs:ListTagsLogGroup",
       "logs:ListTagsForResource",
-      "rds:DescribeDBEngineVersions",
       "servicediscovery:GetNamespace",
       "servicediscovery:GetOperation",
       "servicediscovery:ListTagsForResource",
@@ -206,6 +206,9 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:CreateLogDelivery",
       "logs:CreateLogGroup",
       "logs:TagResource",
+      "rds:CreateDBParameterGroup",
+      "rds:CreateDBSubnetGroup",
+      "secretmanager:CreateSecret",
       "servicediscovery:CreatePrivateDnsNamespace",
     ]
     resources = [
@@ -230,6 +233,9 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.project_owner_workspace}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.project_owner_workspace}*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.project_owner_workspace}:log-stream:",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg*",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp*",
+      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
     ]
     condition {

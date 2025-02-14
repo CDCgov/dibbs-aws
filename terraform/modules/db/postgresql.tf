@@ -18,6 +18,7 @@ resource "aws_db_instance" "postgresql" {
   skip_final_snapshot             = true
   db_subnet_group_name            = aws_db_subnet_group.this.name
   vpc_security_group_ids          = [aws_security_group.postgresql.id]
+  depends_on                      = [aws_secretsmanager_secret.postgresql_connection_string]
 }
 
 # Create a parameter group to configure Postgres RDS parameters
