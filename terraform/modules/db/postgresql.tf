@@ -65,6 +65,7 @@ resource "aws_secretsmanager_secret" "postgresql_connection_string" {
   count       = var.database_type == "postgresql" ? 1 : 0
   name        = "${local.vpc_name}-postgresql-connection-string-${random_string.secret_ident[0].result}"
   description = "Postgresql connection string for the ecr-viewer"
+  tags = var.tags
 }
 
 resource "aws_secretsmanager_secret_version" "postgresql" {

@@ -93,6 +93,7 @@ cat "$WORKSPACE.tfvars"
 
 if [ "$USE_S3_BACKEND" == "true" ]; then
     terraform init \
+        -upgrade \
         -var-file="$WORKSPACE.tfvars" \
         -backend-config "encrypt=true" \
         -backend-config "key=setup_tfstate" \

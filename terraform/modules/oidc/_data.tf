@@ -76,6 +76,7 @@ data "aws_iam_policy_document" "wildcard" {
       "ecs:DeregisterTaskDefinition",
       "ecs:DescribeTaskDefinition",
       "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeListenerAttributes",
       "elasticloadbalancing:DescribeLoadBalancerAttributes",
       "elasticloadbalancing:DescribeLoadBalancers",
       "elasticloadbalancing:DescribeRules",
@@ -84,6 +85,9 @@ data "aws_iam_policy_document" "wildcard" {
       "elasticloadbalancing:DescribeTargetGroups",
       "iam:ListPolicies",
       "rds:DescribeDBEngineVersions",
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBParameterGroups",
+      "rds:ListTagsForResource",
       "route53:CreateHostedZone",
       "secretsmanager:GetSecretValue",
     ]
@@ -117,6 +121,7 @@ data "aws_iam_policy_document" "scoped_one" {
       "logs:ListAttachedRolePolicies",
       "logs:ListTagsLogGroup",
       "logs:ListTagsForResource",
+      "rds:DescribeDBParameters",
       "servicediscovery:GetNamespace",
       "servicediscovery:GetOperation",
       "servicediscovery:ListTagsForResource",
@@ -161,6 +166,14 @@ data "aws_iam_policy_document" "scoped_two" {
       "ec2:CreateSubnet",
       "ec2:DeleteNetworkAclEntry",
       "iam:PassRole",
+      "rds:CreateDBParameterGroup",
+      "rds:CreateDBSubnetGroup",
+      "rds:AddTagsToResource",
+      "rds:ModifyDBParameterGroup",
+      "secretsmanager:CreateSecret",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:GetResourcePolicy",
+      "secretsmanager:TagResource",
     ]
     resources = [
       "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
@@ -175,6 +188,9 @@ data "aws_iam_policy_document" "scoped_two" {
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.project_owner_workspace}*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:*",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",
+      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret*",
     ]
   }
 }
@@ -206,9 +222,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:CreateLogDelivery",
       "logs:CreateLogGroup",
       "logs:TagResource",
-      "rds:CreateDBParameterGroup",
-      "rds:CreateDBSubnetGroup",
-      "secretmanager:CreateSecret",
+      "rds:CreateDBInstance",
       "servicediscovery:CreatePrivateDnsNamespace",
     ]
     resources = [
@@ -233,9 +247,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.project_owner_workspace}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.project_owner_workspace}*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.project_owner_workspace}:log-stream:",
-      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg*",
-      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp*",
-      "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret*",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:db:${local.project_owner_workspace}",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
     ]
     condition {
@@ -270,6 +282,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "elasticloadbalancing:ModifyTargetGroupAttributes",
       "elasticloadbalancing:RemoveTags",
       "elasticloadbalancing:ModifyRule",
+      "elasticloadbalancing:ModifyListenerAttributes",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
       "ecs:TagResource",
@@ -356,6 +369,8 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "iam:DeleteRole",
       "iam:DeletePolicy",
       "logs:DeleteLogGroup",
+      "rds:DeleteDBSubnetGroup",
+      "secretsmanager:DeleteSecret",
       "servicediscovery:DeleteNamespace",
     ]
     resources = [
@@ -381,6 +396,8 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.project_owner_workspace}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.project_owner_workspace}*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.project_owner_workspace}:log-stream:",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",
+      "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:secret:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:namespace/*",
     ]
     condition {

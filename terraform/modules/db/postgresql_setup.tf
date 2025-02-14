@@ -18,6 +18,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_db_subnet_group" "db_setup" {
   name       = "${local.vpc_name}-db-setup-group-${terraform.workspace}"
   subnet_ids = var.public_subnet_ids
+  tags = var.tags
 }
 
 data "http" "myip" {
@@ -139,5 +140,8 @@ resource "aws_instance" "postgresql_setup" {
       host     = self.public_ip
     }
   }
+
+  tags = var.tags
+
   depends_on = [aws_db_instance.postgresql]
 }
