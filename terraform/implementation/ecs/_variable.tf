@@ -20,7 +20,7 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "v2.0.0"
+  default     = "v2.0.0-beta"
 }
 
 variable "database_type" {

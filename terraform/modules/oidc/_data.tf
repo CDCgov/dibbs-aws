@@ -174,6 +174,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "rds:ModifyDBParameterGroup",
       "rds:CreateDBInstance",
       "secretsmanager:CreateSecret",
+      "secretsmanager:DeleteSecret",
       "secretsmanager:DescribeSecret",
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:TagResource",
@@ -374,7 +375,6 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "logs:DeleteLogGroup",
       "rds:DeleteDBSubnetGroup",
       "rds:DeleteDBInstance",
-      "secretsmanager:DeleteSecret",
       "servicediscovery:DeleteNamespace",
     ]
     resources = [

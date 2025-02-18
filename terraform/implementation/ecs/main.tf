@@ -27,12 +27,13 @@ module "db" {
   cidr               = var.vpc_cidr
   owner              = var.owner
   project            = var.project
-  database_type      = var.database_type
   tags               = local.tags
   private_subnet_ids = flatten(module.vpc.private_subnets)
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   # set the ssh key name to launch an ec2 instance for database setup, unset to skip that step or to destroy the ec2 instance after setup
   ssh_key_name       = "alis1"
+  # determines which database is launched, required for the ec2 instance to know which database to setup
+  database_type      = var.database_type
 }
 
 module "ecs" {
