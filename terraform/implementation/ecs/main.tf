@@ -31,14 +31,15 @@ module "db" {
   tags               = local.tags
   private_subnet_ids = flatten(module.vpc.private_subnets)
   public_subnet_ids  = flatten(module.vpc.public_subnets)
-  ssh_key_name       = var.ssh_key_name
+  # set the ssh key name to launch an ec2 instance for database setup, unset to skip that step or to destroy the ec2 instance after setup
+  ssh_key_name       = "alis1"
 }
 
 module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
   # version = "0.3.0"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=dd1971d726e682275a00cac0f5e0ccd962e33e4d"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=8661e530be78829244210fd4100b36dc2db2e656"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
