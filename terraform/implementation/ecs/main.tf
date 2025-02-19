@@ -1,5 +1,5 @@
 data "aws_acm_certificate" "this" {
-  domain   = "streamline.dibbs.cloud"
+  domain   = "*.dibbs.cloud"
   types    = ["AMAZON_ISSUED"] # or ["ISSUED"] or ["PRIVATE"]
   statuses = ["ISSUED"]
 }
