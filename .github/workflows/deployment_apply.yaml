@@ -17,7 +17,7 @@ on:
         type: string
 
 concurrency:
-  group: ${{ github.event.inputs.workspace }}-terraform
+  group: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}-terraform
   cancel-in-progress: false
 
 permissions:

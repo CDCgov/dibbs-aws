@@ -57,3 +57,9 @@ variable "dynamodb_table_arn" {
   description = "The ARN of the DynamoDB table for state"
   default     = ""
 }
+
+variable "resource_tag_to_match" {
+  type        = string
+  description = "The parameter to match for permissions"
+  default     = ""
+}

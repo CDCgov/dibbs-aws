@@ -272,7 +272,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
     ]
     condition {
       test     = "StringEquals"
-      variable = "aws:RequestTag/workspace"
+      variable = "aws:RequestTag/${var.resource_tag_to_match}"
       values = [
         var.project,
         var.owner,
@@ -348,7 +348,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
     ]
     condition {
       test     = "StringEquals"
-      variable = "aws:ResourceTag/workspace"
+      variable = "aws:ResourceTag/${var.resource_tag_to_match}"
       values = [
         var.project,
         var.owner,
@@ -423,7 +423,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
     ]
     condition {
       test     = "StringEquals"
-      variable = "aws:ResourceTag/workspace"
+      variable = "aws:ResourceTag/${var.resource_tag_to_match}"
       values = [
         var.project,
         var.owner,

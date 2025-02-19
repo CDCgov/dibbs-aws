@@ -11,9 +11,13 @@ on:
         options:
           - dev
           - prod
+      id:
+        description: 'The id of the environment (PR number, etc.)'
+        required: true
+        type: string
 
 concurrency:
-  group: ${{ github.event.inputs.workspace }}-terraform
+  group: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}-terraform
   cancel-in-progress: false
 
 permissions:
@@ -66,12 +70,16 @@ jobs:
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ github.event.inputs.workspace }}
+          SSH_KEY_NAME: "GITHUB_ACTIONS"
+          ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
+          WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
           echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
           echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
+          echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           terraform init \
             -var-file="$WORKSPACE.tfvars" \
             -backend-config "bucket=$BUCKET" \

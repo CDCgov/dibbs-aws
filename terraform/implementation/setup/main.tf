@@ -24,7 +24,10 @@ module "oidc_dev" {
   owner   = var.owner
   project = var.project
 
-  # This variable must match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
+  # resource_tag_to_match can be "owner", "project", or "workspace"
+  resource_tag_to_match = "owner"
+
+  # If resource_tag_to_match is "workspace", then this variable must match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
   workspace = "dev"
 
   # state_bucket_arn   = module.tfstate.aws_s3_bucket.tfstate.arn
@@ -45,7 +48,10 @@ module "oidc_prod" {
   owner   = var.owner
   project = var.project
 
-  # This variable must match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
+  # resource_tag_to_match can be "owner", "project", or "workspace"
+  resource_tag_to_match = "owner"
+
+  # If resource_tag_to_match is "workspace", then this variable must exactly match the name of the terraform workspace that you'll be using for your ECS module call in the /ecs module
   workspace = "prod"
 
   # state_bucket_arn   = module.tfstate.aws_s3_bucket.tfstate.arn
