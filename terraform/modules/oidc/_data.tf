@@ -98,6 +98,9 @@ data "aws_iam_policy_document" "wildcard" {
       "route53:CreateHostedZone",
       "route53:GetHostedZone",
       "route53:ListTagsForResource",
+      "route53:ChangeResourceRecordSets",
+      "route53:GetChange",
+      "route53:ListResourceRecordSets",
       "secretsmanager:GetSecretValue",
     ]
     resources = [
@@ -303,6 +306,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "elasticloadbalancing:RemoveTags",
       "elasticloadbalancing:ModifyRule",
       "elasticloadbalancing:ModifyListenerAttributes",
+      "elasticloadbalancing:ModifyListener",
       "ecs:RegisterTaskDefinition",
       "ecs:UpdateService",
       "ecs:TagResource",

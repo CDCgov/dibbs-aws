@@ -1,0 +1,85 @@
+name: Terraform Destroy
+run-name: Terraform destroy ${{ inputs.workspace }} by @${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      workspace:
+        description: 'The workspace to terraform against (starts with "dev")'
+        required: true
+        type: string
+        default: 'dev'
+      id:
+        description: 'The id of the environment (PR number, etc.)'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.event.inputs.workspace }}-${{ github.event.inputs.id }}-terraform
+  cancel-in-progress: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  check_workspace:
+    name: Check Workspace
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Workspace
+        run: |
+          # check that the workspace starts with "dev"
+          if [[ ! ${{ github.event.inputs.workspace }} =~ ^dev ]]; then
+            echo "Workspace must start with 'dev'."
+            exit 1
+          fi
+
+  terraform:
+    name: Run Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        # this may need to be updated if you change the directory you are working with
+        # ./terraform/implementation/dev || ./terraform/implementation/prod for example
+        # this practice is recommended to keep the terraform code organized while reducing the risk of conflicts
+        working-directory: ./terraform/implementation/ecs
+    steps:
+      - name: Check Out Changes
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
+          role-session-name: ${{ github.event.inputs.workspace }}-${{ github.event.inputs.id }}-terraform
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.shutdown == true }}
+        env:
+          BUCKET: ${{ secrets.TFSTATE_BUCKET }}
+          DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
+          OWNER: ${{ vars.OWNER }}
+          PROJECT: ${{ vars.PROJECT }}
+          REGION: ${{ vars.AWS_REGION }}
+          WORKSPACE: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}
+        shell: bash
+        run: |
+          echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
+          echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
+          echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          terraform init \
+            -var-file="$WORKSPACE.tfvars" \
+            -backend-config "bucket=$BUCKET" \
+            -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
+            -backend-config "region=$REGION" \
+            || (echo "terraform init failed, exiting..." && exit 1)
+          terraform workspace select "$WORKSPACE"
+          terraform destroy -auto-approve -var-file="$WORKSPACE.tfvars"
