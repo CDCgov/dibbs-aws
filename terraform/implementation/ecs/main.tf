@@ -40,7 +40,7 @@ module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
   # version = "0.3.0"
   # source = "../../../../terraform-aws-dibbs-ecr-viewer"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=8661e530be78829244210fd4100b36dc2db2e656"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=8c917c28140e7ba79fc163602fe94f604fbb435b"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -85,4 +85,16 @@ module "ecs" {
   # dibbs_config_name can be a value found here under CONFIG_NAME: https://github.com/CDCgov/dibbs-ecr-viewer/blob/main/containers/ecr-viewer/environment.d.ts
   # This is used to configure the ecr-viewer application. (default is "" when not set)
   dibbs_config_name = "AWS_PG_NON_INTEGRATED"
+}
+
+resource "aws_route53_zone" "primary" {
+  name = "${terraform.workspace}.dibbs.cloud"
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = var.route53_hosted_zone_id
+  name    = "${terraform.workspace}.dibbs.cloud"
+  type    = "CNAME"
+  ttl     = 60
+  records = [module.ecs.alb_dns_name]
 }

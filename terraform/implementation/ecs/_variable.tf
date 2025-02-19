@@ -64,3 +64,9 @@ variable "ssh_key_name" {
   type        = string
   default     = ""
 }
+
+variable "route53_hosted_zone_id" {
+  description = "The Route53 hosted zone ID"
+  type        = string
+  default     = ""
+}
