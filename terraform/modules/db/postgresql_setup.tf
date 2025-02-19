@@ -28,7 +28,7 @@ data "http" "myip" {
 resource "aws_security_group" "db_setup" {
   vpc_id = var.vpc_id
 
-  # Allow inbound traffic on port 5432 for PostgreSQL from within the VPC
+  # Allow inbound traffic on port 22 to SSH from the user's IP address
   ingress {
     from_port   = 22
     to_port     = 22
