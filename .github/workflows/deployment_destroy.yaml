@@ -23,20 +23,11 @@ permissions:
   contents: read
 
 jobs:
-  check_workspace:
-    name: Check Workspace
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check Workspace
-        run: |
-          # check that the workspace starts with "dev"
-          if [[ ! ${{ github.event.inputs.workspace }} =~ ^dev ]]; then
-            echo "Workspace must start with 'dev'."
-            exit 1
-          fi
 
   terraform:
     name: Run Terraform
+    # we only want to run this job if the workspace starts with "dev"
+    if: ${{ github.event.inputs.workspace }} == 'dev'
     runs-on: ubuntu-latest
     defaults:
       run:

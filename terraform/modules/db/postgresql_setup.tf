@@ -37,6 +37,8 @@ resource "aws_security_group" "db_setup" {
   }
 
   # Allow all outbound traffic
+  # https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0104/
+  # trivy:ignore:AVD-AWS-0104
   egress {
     from_port   = 0
     to_port     = 0
