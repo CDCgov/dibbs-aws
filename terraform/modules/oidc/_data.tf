@@ -96,6 +96,8 @@ data "aws_iam_policy_document" "wildcard" {
       "rds:ListTagsForResource",
       "rds:DescribeDBInstances",
       "route53:CreateHostedZone",
+      "route53:GetHostedZone",
+      "route53:ListTagsForResource",
       "secretsmanager:GetSecretValue",
     ]
     resources = [
@@ -144,8 +146,8 @@ data "aws_iam_policy_document" "scoped_one" {
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}",
       "arn:aws:iam::aws:policy/service-role/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:*",
@@ -205,7 +207,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:key-pair/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:natgateway/*",
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
-      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",

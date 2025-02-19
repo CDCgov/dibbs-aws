@@ -31,9 +31,9 @@ module "db" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   # set the ssh key name to launch an ec2 instance for database setup, unset to skip that step or to destroy the ec2 instance after setup
-  ssh_key_name       = var.ssh_key_name
+  ssh_key_name = var.ssh_key_name
   # determines which database is launched, required for the ec2 instance to know which database to setup
-  database_type      = var.database_type
+  database_type = var.database_type
 }
 
 module "ecs" {
@@ -87,11 +87,7 @@ module "ecs" {
   dibbs_config_name = "AWS_PG_NON_INTEGRATED"
 }
 
-resource "aws_route53_zone" "primary" {
-  name = "${terraform.workspace}.dibbs.cloud"
-}
-
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "alb" {
   zone_id = var.route53_hosted_zone_id
   name    = "${terraform.workspace}.dibbs.cloud"
   type    = "CNAME"

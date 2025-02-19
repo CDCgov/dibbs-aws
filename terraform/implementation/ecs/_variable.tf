@@ -69,4 +69,5 @@ variable "route53_hosted_zone_id" {
   description = "The Route53 hosted zone ID"
   type        = string
   default     = ""
+  sensitive   = true
 }

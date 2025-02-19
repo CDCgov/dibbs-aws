@@ -16,5 +16,5 @@ resource "random_string" "secret_ident" {
 resource "aws_db_subnet_group" "this" {
   name       = "${local.vpc_name}-db-subnet-group-${terraform.workspace}"
   subnet_ids = var.private_subnet_ids
-  tags = var.tags
+  tags       = var.tags
 }

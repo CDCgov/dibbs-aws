@@ -17,13 +17,14 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_db"></a> [db](#module\_db) | ../../modules/db | n/a |
-| <a name="module_ecs"></a> [ecs](#module\_ecs) | ../../../../terraform-aws-dibbs-ecr-viewer | n/a |
+| <a name="module_ecs"></a> [ecs](#module\_ecs) | git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git | 8c917c28140e7ba79fc163602fe94f604fbb435b |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.16.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [aws_route53_record.alb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
 | [aws_acm_certificate.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/acm_certificate) | data source |
 
 ## Inputs
@@ -34,11 +35,12 @@
 | <a name="input_database_type"></a> [database\_type](#input\_database\_type) | The type of database to use (postgresql or sqlserver) | `string` | `"postgresql"` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example). | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the infrastructure | `string` | `"skylight"` | no |
-| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"v2.0.0-Beta"` | no |
+| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"v2.0.0-beta"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The private subnets | `list(string)` | <pre>[<br>  "176.24.1.0/24",<br>  "176.24.3.0/24"<br>]</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `string` | `"dibbs"` | no |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | The public subnets | `list(string)` | <pre>[<br>  "176.24.2.0/24",<br>  "176.24.4.0/24"<br>]</pre> | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS region | `string` | `"us-east-1"` | no |
+| <a name="input_route53_hosted_zone_id"></a> [route53\_hosted\_zone\_id](#input\_route53\_hosted\_zone\_id) | The Route53 hosted zone ID | `string` | `""` | no |
 | <a name="input_ssh_key_name"></a> [ssh\_key\_name](#input\_ssh\_key\_name) | The name of the SSH key to use for the instances | `string` | `""` | no |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | The CIDR block for the VPC | `string` | `"176.24.0.0/16"` | no |
 

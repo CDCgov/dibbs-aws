@@ -18,7 +18,7 @@ resource "aws_db_instance" "sqlserver" {
   db_subnet_group_name            = aws_db_subnet_group.this.name
   vpc_security_group_ids          = [aws_security_group.sqlserver.id]
   license_model                   = "license-included"
-  tags = var.tags
+  tags                            = var.tags
 }
 
 # Create a parameter group to configure SqlServer RDS parameters
