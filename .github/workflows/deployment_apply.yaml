@@ -74,7 +74,7 @@ jobs:
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          SSH_KEY_NAME: GITHUB_ACTIONS
+          SSH_KEY_NAME: "GITHUB_ACTIONS"
           ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
           WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
         shell: bash
