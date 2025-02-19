@@ -26,6 +26,7 @@ permissions:
 
 env:
   workspace: ${{ github.event.inputs.workspace }}
+  id: 42
 
 jobs:
   terraform:
@@ -74,7 +75,7 @@ jobs:
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
+          WORKSPACE: ${{ env.workspace }}${{ env.id }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
