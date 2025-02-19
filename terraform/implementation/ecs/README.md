@@ -17,7 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_db"></a> [db](#module\_db) | ../../modules/db | n/a |
-| <a name="module_ecs"></a> [ecs](#module\_ecs) | git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git | 8c917c28140e7ba79fc163602fe94f604fbb435b |
+| <a name="module_ecs"></a> [ecs](#module\_ecs) | git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git | d5ae09385982d349d4229538d6412e34baae5ad8 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.16.0 |
 
 ## Resources
