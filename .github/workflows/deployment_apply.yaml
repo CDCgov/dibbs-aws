@@ -59,6 +59,10 @@ jobs:
           role-session-name: githubDeploymentWorkflow
           aws-region: ${{ vars.AWS_REGION }}
 
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH }}
+
       - name: Terraform
         env:
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
