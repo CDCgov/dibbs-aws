@@ -62,5 +62,5 @@ variable "vpc_cidr" {
 variable "ssh_key_name" {
   description = "The name of the SSH key to use for the instances"
   type        = string
-  default     = "GITHUB_ACTIONS"
+  default     = ""
 }

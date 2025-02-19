@@ -11,6 +11,10 @@ on:
         options:
           - dev
           - prod
+      id:
+        description: 'The id of the environment (PR number, etc.)'
+        required: true
+        type: string
 
 concurrency:
   group: ${{ github.event.inputs.workspace }}-terraform
@@ -44,7 +48,7 @@ jobs:
           terraform_version: "1.9.8"
 
       - name: configure aws credentials
-        if: ${{ github.event.inputs.workspace }} == 'prod'
+        if: ${{ env.workspace }} == 'prod'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -52,7 +56,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: configure aws credentials
-        if: ${{ github.event.inputs.workspace }} == 'dev'
+        if: ${{ env.workspace }} == 'dev'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
@@ -70,7 +74,7 @@ jobs:
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ env.workspace }}
+          WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
