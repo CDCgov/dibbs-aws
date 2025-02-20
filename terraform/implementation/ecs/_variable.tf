@@ -7,7 +7,7 @@ variable "availability_zones" {
 variable "internal" {
   description = "Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example)."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "owner" {
@@ -20,7 +20,13 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "v1.7.6"
+  default     = "v2.0.0-beta"
+}
+
+variable "database_type" {
+  description = "The type of database to use (postgresql or sqlserver)"
+  type        = string
+  default     = "postgresql"
 }
 
 variable "private_subnets" {
@@ -51,4 +57,17 @@ variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
   default     = "176.24.0.0/16"
+}
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key to use for the instances"
+  type        = string
+  default     = ""
+}
+
+variable "route53_hosted_zone_id" {
+  description = "The Route53 hosted zone ID"
+  type        = string
+  default     = ""
+  sensitive   = true
 }

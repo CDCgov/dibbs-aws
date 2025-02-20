@@ -13,7 +13,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "=5.70.0"
+      version = "~> 5.86.0"
     }
   }
 }
@@ -93,6 +93,7 @@ cat "$WORKSPACE.tfvars"
 
 if [ "$USE_S3_BACKEND" == "true" ]; then
     terraform init \
+        -upgrade \
         -var-file="$WORKSPACE.tfvars" \
         -backend-config "encrypt=true" \
         -backend-config "key=setup_tfstate" \

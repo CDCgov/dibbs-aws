@@ -9,11 +9,15 @@ on:
         required: true
         type: choice
         options:
-          - ""
+          - dev
           - prod
+      id:
+        description: 'The id of the environment (PR number, etc.)'
+        required: true
+        type: string
 
 concurrency:
-  group: ${{ github.event.inputs.workspace }}-terraform
+  group: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}-terraform
   cancel-in-progress: false
 
 permissions:
@@ -22,7 +26,6 @@ permissions:
 
 env:
   workspace: ${{ github.event.inputs.workspace }}
-  terraform_action: plan
 
 jobs:
   terraform:
@@ -45,31 +48,43 @@ jobs:
           terraform_version: "1.9.8"
 
       - name: configure aws credentials
+        if: ${{ github.event.inputs.workspace }} == 'prod'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           role-session-name: githubDeploymentWorkflow
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: configure aws credentials
+        if: ${{ github.event.inputs.workspace }} == 'dev'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
+          role-session-name: githubDeploymentWorkflow
+          aws-region: ${{ vars.AWS_REGION }}
+
       - name: Terraform
         env:
-          ACTION: ${{ env.terraform_action }}
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ env.workspace }}
+          SSH_KEY_NAME: "GITHUB_ACTIONS"
+          ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
+          WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
           echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
           echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
+          echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           terraform init \
             -var-file="$WORKSPACE.tfvars" \
             -backend-config "bucket=$BUCKET" \
             -backend-config "dynamodb_table=$DYNAMODB_TABLE" \
             -backend-config "region=$REGION" \
             || (echo "terraform init failed, exiting..." && exit 1)
-          terraform workspace select "$WORKSPACE"
+          terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
           terraform plan -var-file="$WORKSPACE.tfvars"

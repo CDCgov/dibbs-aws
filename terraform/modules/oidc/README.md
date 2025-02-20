@@ -4,14 +4,14 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.9.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.56.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.86.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.6.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.56.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.86.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | ~> 3.6.3 |
 
 ## Modules
@@ -50,6 +50,7 @@ No modules.
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the project | `string` | `"skylight"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The name of the project | `string` | `"dibbs"` | no |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region where resources are created | `string` | `""` | no |
+| <a name="input_resource_tag_to_match"></a> [resource\_tag\_to\_match](#input\_resource\_tag\_to\_match) | The parameter to match for permissions | `string` | `""` | no |
 | <a name="input_state_bucket_arn"></a> [state\_bucket\_arn](#input\_state\_bucket\_arn) | The ARN of the S3 bucket for state | `string` | `""` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of the VPC | `string` | `""` | no |
 | <a name="input_workspace"></a> [workspace](#input\_workspace) | terraform workspace that OIDC will have permissions to | `string` | `""` | no |
