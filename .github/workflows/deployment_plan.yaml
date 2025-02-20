@@ -1,5 +1,5 @@
 name: Terraform Plan
-run-name: Terraform plan ${{ inputs.workspace }} by @${{ github.actor }}
+run-name: Terraform plan ${{ inputs.workspace }}${{ inputs.id }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -12,25 +12,23 @@ on:
           - dev
           - prod
       id:
-        description: 'The id of the environment (PR number, etc.)'
+        description: 'Unique id for environment (optional, PR number, issue number etc.)'
         required: true
         type: string
 
 concurrency:
-  group: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}-terraform
+  group: ${{ inputs.workspace }}${{ inputs.id }}-terraform
   cancel-in-progress: false
 
 permissions:
   id-token: write
   contents: read
 
-env:
-  workspace: ${{ github.event.inputs.workspace }}
-
 jobs:
   terraform:
     name: Run Terraform
     runs-on: ubuntu-latest
+    if: ${{ inputs.workspace }} == 'dev' || ${{ inputs.workspace }} == 'prod'
     defaults:
       run:
         shell: bash
@@ -48,7 +46,7 @@ jobs:
           terraform_version: "1.9.8"
 
       - name: configure aws credentials
-        if: ${{ github.event.inputs.workspace }} == 'prod'
+        if: ${{ inputs.workspace }} == 'prod'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -56,7 +54,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: configure aws credentials
-        if: ${{ github.event.inputs.workspace }} == 'dev'
+        if: ${{ inputs.workspace }} == 'dev'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
@@ -72,7 +70,7 @@ jobs:
           REGION: ${{ vars.AWS_REGION }}
           SSH_KEY_NAME: "GITHUB_ACTIONS"
           ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
-          WORKSPACE: ${{ env.workspace }}${{ github.event.inputs.id }}
+          WORKSPACE: ${{ inputs.workspace }}${{ inputs.id }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars

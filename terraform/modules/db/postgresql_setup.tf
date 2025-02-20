@@ -46,6 +46,11 @@ resource "aws_security_group" "db_setup" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   tags = var.tags
+
+  # by ignoring ingress changes, we don't update the ingress with our new ip address, we only care the first time
+  lifecycle {
+    ignore_changes = ["ingress"]
+  }
 }
 
 resource "aws_instance" "postgresql_setup" {
@@ -147,4 +152,9 @@ resource "aws_instance" "postgresql_setup" {
   tags = merge(var.tags, { Name = local.vpc_name })
 
   depends_on = [aws_db_instance.postgresql]
+
+  # by ignoring associate_public_ip_address changes, we don't trigger a new instance meaning that the instance will only be created once
+  lifecycle {
+    ignore_changes = [associate_public_ip_address]
+  }
 }
