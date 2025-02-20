@@ -84,7 +84,7 @@ jobs:
           ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
           WORKSPACE: ${{ env.workspace }}${{ inputs.id }}
           DIBBS_ECR_VIEWER_VERSION: ${{ inputs.dibbs-ecr-viewer-version }}
-          shell: bash
+        shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
           echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
