@@ -134,6 +134,7 @@ resource "aws_instance" "postgresql_setup" {
       "sudo apt install -y postgresql-client",
       "chmod +x postgresql_setup.sh",
       "./postgresql_setup.sh",
+      "sudo shutdown now"
     ]
     connection {
       type     = "ssh"
