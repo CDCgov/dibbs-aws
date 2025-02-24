@@ -118,6 +118,7 @@ data "aws_iam_policy_document" "scoped_one" {
       "appmesh:DescribeVirtualNode",
       "appmesh:ListTagsForResource",
       "ec2:DescribeVpcAttribute",
+      "ec2:DisassociateAddress",
       "ecr:DescribeRepositories",
       "ecr:ListTagsForResource",
       "ecs:DescribeClusters",
@@ -366,7 +367,6 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
 data "aws_iam_policy_document" "resource_tags_delete_actions" {
   statement {
     actions = [
-      "ec2:DisassociateAddress",
       "appmesh:DeleteMesh",
       "appmesh:DeleteVirtualNode",
       "ec2:DeleteFlowLogs",
@@ -395,6 +395,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "logs:DeleteLogGroup",
       "rds:DeleteDBSubnetGroup",
       "rds:DeleteDBInstance",
+      "rds:DeleteDBParameterGroup",
       "servicediscovery:DeleteNamespace",
     ]
     resources = [
@@ -422,6 +423,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:db:${local.vpc_id}",
+      "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:${local.vpc_id}",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:secret:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:namespace/*",
     ]

@@ -1,21 +1,22 @@
 name: Terraform Destroy
-run-name: Terraform destroy ${{ inputs.workspace }} by @${{ github.actor }}
+run-name: Terraform destroy ${{ inputs.workspace }}${{ inputs.id }} by @${{ github.actor }}
 
 on:
   workflow_dispatch:
     inputs:
       workspace:
-        description: 'The workspace to terraform against (starts with "dev")'
+        description: 'The workspace to terraform against (dev is the only valid option)'
         required: true
-        type: string
-        default: 'dev'
+        type: choice
+        options:
+          - dev
       id:
-        description: 'The id of the environment (PR number, etc.)'
+        description: 'Unique id for environment (optional, PR number, issue number etc.)'
         required: true
         type: string
 
 concurrency:
-  group: ${{ github.event.inputs.workspace }}-${{ github.event.inputs.id }}-terraform
+  group: ${{ inputs.workspace }}${{ inputs.id }}-terraform
   cancel-in-progress: false
 
 permissions:
@@ -23,12 +24,10 @@ permissions:
   contents: read
 
 jobs:
-
   terraform:
     name: Run Terraform
-    # we only want to run this job if the workspace starts with "dev"
-    if: ${{ github.event.inputs.workspace }} == 'dev'
     runs-on: ubuntu-latest
+    if: ${{ inputs.workspace }}${{ inputs.id }} == 'dev${{ inputs.id }}'
     defaults:
       run:
         shell: bash
@@ -49,23 +48,24 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_DEV_ROLE_ARN }}
-          role-session-name: ${{ github.event.inputs.workspace }}-${{ github.event.inputs.id }}-terraform
+          role-session-name: ${{ inputs.workspace }}-${{ inputs.id }}-terraform
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Terraform Destroy
-        if: ${{ github.event.inputs.shutdown == true }}
         env:
           BUCKET: ${{ secrets.TFSTATE_BUCKET }}
           DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
           OWNER: ${{ vars.OWNER }}
           PROJECT: ${{ vars.PROJECT }}
           REGION: ${{ vars.AWS_REGION }}
-          WORKSPACE: ${{ github.event.inputs.workspace }}${{ github.event.inputs.id }}
+          WORKSPACE: ${{ inputs.workspace }}${{ inputs.id }}
+          ROUTE53_HOSTED_ZONE_ID: ${{ secrets.ROUTE53_HOSTED_ZONE_ID }}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
           echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
           echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
+          echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           terraform init \
             -var-file="$WORKSPACE.tfvars" \
             -backend-config "bucket=$BUCKET" \
