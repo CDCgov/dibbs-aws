@@ -49,7 +49,7 @@ resource "aws_security_group" "db_setup" {
 
   # by ignoring ingress changes, we don't update the ingress with our new ip address, we only care the first time
   lifecycle {
-    ignore_changes = ["ingress"]
+    ignore_changes = [ingress]
   }
 }
 
