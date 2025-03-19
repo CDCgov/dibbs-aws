@@ -10,17 +10,20 @@
   - [2.6 Additional Standard Notices](#26-additional-standard-notices)
 - [3. Architectural Design](#3-architectural-design)
 - [4. Getting Started](#4-getting-started)
-  - [4.1 Requirements](#41-requirements)
+  - [4.1.0 Requirements](#410-requirements)
+  - [4.1.1 Terraform documentation](#411-terraform-documentation)
   - [4.2 Helper Scripts](#42-helper-scripts)
   - [4.3 Modules used in this repository](#43-modules-used-in-this-repository)
-  - [4.4 Run terraform manually](#44-run-terraform-manually)
+  - [4.4 Development Workflow](#44-development-workflow)
   
 
 # 1. Overview
 
-The Data Integration Building Blocks (DIBBs) project is an effort to help state, local, territorial, and tribal public health departments better make sense of and utilize their data. You can read more about the project on the [main DIBBs repository](https://github.com/CDCgov/phdi/blob/main/README.md).
+The Data Integration Building Blocks (DIBBs) project is an effort to help state, local, territorial, and tribal public health departments better make sense of and utilize their data. You can read more about the project on the [main DIBBs eCR Viewer repository](https://github.com/CDCgov/dibbs-ecr-viewer/blob/main/README.md).
 
-This repository is specifically to develop an AWS "starter kit" for the DIBBs project. This will enable our jurisdictional partners to build from this repository to provision their own AWS infrastructure.
+This repository is specifically to develop an AWS "starter kit" for the DIBBs project. This will enable our jurisdictional partners to build from this repository to provision their own AWS infrastructure. 
+
+This repository is actively used by the DIBBs eCR Viewer team to deploy and test their application in AWS.
 
 + [Return to Table of Contents](#table-of-contents)
 
@@ -101,29 +104,36 @@ This section will assist engineers with executing Infrastructure as Code (IaC) f
 
 [Return to Table of Contents](#table-of-contents)
 
-## 4.1 Requirements
+## 4.1.0 Requirements
 **Engineers will need following tools installed on their local machine:**
-* Terraform version 1.0.0+  [_See_ Hashicorp installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+* Terraform version 1.0.0+  [Hashicorp installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+  * [Terraform Documentation](#411-terraform-documentation)
+* AWS CLI version 2+ [AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
+* AWS Profile Access
+
+_**Note**_: Engineers *must* have access and permissions to create AWS resources
+
+## 4.1.1 Terraform documentation
 * If you havn't used terraform before, and have the will to learn, please visit these resources before continuing.
   - Terraform Documentation: The official Terraform documentation is an exhaustive resource that covers everything from installation to advanced topics. https://developer.hashicorp.com/terraform/docs
   - Terraform/AWS Intro: HashiCorp provides an official tutorial that covers the basics of Terraform and helps you get started with deploying infrastructure into AWS. https://developer.hashicorp.com/terraform/tutorials/aws-get-started
   - Terraform AWS Provider Documentation: If you're using Terraform with AWS, this documentation provides detailed information on the available resources and data sources. https://registry.terraform.io/providers/hashicorp/aws/latest/docs
   - Terraform module published by the dibbs-ecr-viewer DevOps teams this repo uses: https://registry.terraform.io/modules/CDCgov/dibbs-ecr-viewer/aws/latest
-* AWS CLI version 2+ [_See_ AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
-* AWS Profile Access \
--- _*Note*_: Engineers *must* have access and permissions to create AWS resources
 
 [Return to Table of Contents](#table-of-contents)
 
 ## 4.2 Helper Scripts
 
 **If you are familiar with terraform, have setup a backend, understand terraform deployment workflows, know how to validate terraform, or are otherwise opinionated about how you want to run things, feel free to skip this section**
-- We have several helper scripts that will assist you with setting up your AWS backend and running your ECS module locally. 
-- These scripts are located in the _/terraform/utilities_ folder, the _/terraform/implementation/setup_ folder and the _/terraform/implementation/ecs_ folder.
-- The *utilities* folder contains scripts that will assist in generating docs, formatting and linting terraform code.
-- The _setup.sh_ script will assist you with creating the terraform state and .env files to be used later, also sets up OIDC for your GitHub workflows. 
-- The _deploy.sh_ script will assist you with deploying your ECS module.
-- You can review these scripts to see what they do and how they work. It is not recommended to run these scripts without understanding what they do or to use them in automating your terraform deployments.
+- We have several helper scripts that will assist you with setting up your AWS backend and deploying your AWS resources. 
+- These scripts are located in the **terraform/utilities** folder, the **terraform/implementation/setup** folder and the **terraform/implementation/ecs** folder.
+- The **utilities** folder contains scripts that will assist in generating terraform docs, formatting and linting terraform code.
+- The **setup.sh** script will assist you with creating the terraform state and .env files to be used later, also sets up OIDC for your GitHub workflows. 
+- The **deploy.sh** script will assist you with deploying your ECS module from your development machine.
+
+_**Note**_: It is not recommended to run these scripts without reviewing them and understanding their limitations.
+
+_**Note**_: It is not recommended to use these scripts to automate your terraform deployments, please see the [GitHub workflows](https://github.com/CDCgov/dibbs-aws/tree/main/.github/workflows) for examples on how to do that.
 
 **Terraform validation and docs with `./utils.sh`**
 * In your terminal, navigate to the _/terraform/utilities_ folder.
@@ -149,11 +159,12 @@ The setup.sh script will create the following files:
 - _terraform.state_
 
 **Deploy Your ECS Module with `./deploy`**
-* It is highly recommended to create a new directory per environment that is launched, to do so run `cp terraform/implementation/ecs terraform/implementation/{insertEnvironmentName}`.
+* It is highly recommended to create a new directory per environment that is launched, to do so run `cp terraform/implementation/ecs terraform/implementation/<ENVIRONMENT>`.
   * The benefits of doing this reduces the likelyhood of conflicts and allows each environment to run different versions of the same module.
-* To run your ECS Module Changes in your local terminal, navigate to your working directory, ` cd terraform/implementation/ecs/` or `cd terraform/implementation/{insertEnvironmentName}`
-* In your terminal run the deploy script for your designated environment `./deploy.sh -e {insertEnvironmentName}`.\
-_**Note**_: The _-e_ tag stands for environment and you can specify `dev`, `stage`, `prod`, this can match your environment naming convention.
+* To run your ECS Module Changes in your local terminal, navigate to your working directory, ` cd terraform/implementation/ecs/` or `cd terraform/implementation/<ENVIRONMENT>`
+* In your terminal run the deploy script for your designated environment `./deploy.sh -e <ENVIRONMENT>`.
+
+_**Note**_: The _-e_ tag stands for environment and you can specify `dev`, `test`, `prod`, this can match your `<ENVIRONMENT>` naming convention.
 or whatever environment your team desires.
 
 - [Return to Table of Contents](#table-of-contents)
@@ -161,28 +172,27 @@ or whatever environment your team desires.
 ## 4.3 Modules used in this repository
 
 **Modules pulled from the Terraform Registry**
-- [terraform-aws-dibbs-ecr-viewer](https://registry.terraform.io/modules/CDCgov/dibbs-ecr-viewer/aws/latest)
-- [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest)
+- [terraform-aws-dibbs-ecr-viewer](https://registry.terraform.io/modules/CDCgov/dibbs-ecr-viewer/aws/latest) - This module is used to deploy the eCR Viewer application to AWS.
+- [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module is used to deploy the VPC for the ECS module.
 
 **Local modules**
 - [oidc](./terraform/modules/oidc/README.md) - OIDC module, used to setup OIDC for GitHub workflows
 - [tfstate](./terraform/modules/tfstate/README.md) - TFState module, used to setup the terraform state backend and lock table
 - [db](./terraform/modules/db/README.md) - Database module, used to setup the database for the ECS module
 
-## 4.4 Run terraform manually
+## 4.4 Development Workflow
 
 **Use the dibbs-aws repository**
 
-- Select to create your own repo from this template, or fork it to your own repository.
-- Clone the repository to your local machine.
-- Make a new branch for your changes: `git checkout -b setup-dibbs-aws-backend-and-services`.
-- Make any changes required by your team to the terraform configurations.
-- Run `git status` to see what changes have changed.
-- Add and commit changes to your working branch.
-- Push your changes to your github repository.
-- Open a Pull Request so that your team can review your changes and testing can be done.
-- Make any changes required by your team.
-- Once your changes are approved, merge your changes into the main branch.
+1. Select to create your own repo from this template, or fork it to your own repository.
+1. Clone the repository to your local machine.
+2. Make a new branch for your changes: `git checkout -b <BRANCH>`.
+3. Make any changes required by your team to the terraform configurations.
+4. Add and commit changes to your working branch: `git add . && git commit -m "Your message here"`.
+5. Push your changes to your github repository: `git push origin <BRANCH>`.
+6. Open a Pull Request so that your team can review your changes and testing can be done.
+7. Go back to step 4 until your changes are approved.
+8. Once your changes are approved, merge your changes into the main branch.
 
 **Terrform Commands**
 
