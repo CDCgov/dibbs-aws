@@ -76,6 +76,10 @@ resource "aws_instance" "postgresql_setup" {
     }
   }
 
+  # provisioner "local-exec" {
+  #   command = "wget https://raw.githubusercontent.com/CDCgov/dibbs-ecr-viewer/refs/tags/v3.0.0-Beta1/containers/ecr-viewer/sql/core.sql -O core.sql"
+  # }
+
   provisioner "file" {
     content     = <<-EOF
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
