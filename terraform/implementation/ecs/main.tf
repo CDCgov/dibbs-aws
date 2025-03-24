@@ -37,7 +37,7 @@ module "db" {
 }
 
 module "ecs" {
-  source  = "https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=22c90f20cb5288df10482b8f8587e93f4f7aad6e"
+  source  = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=shanice/add-env-variable"
   #version = "0.4.0"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
