@@ -49,7 +49,7 @@ resource "aws_security_group" "db_setup" {
 
   # by ignoring ingress changes, we don't update the ingress with our new ip address, we only care the first time
   lifecycle {
-    ignore_changes = ["ingress"]
+    ignore_changes = [ingress]
   }
 }
 
@@ -76,11 +76,17 @@ resource "aws_instance" "postgresql_setup" {
     }
   }
 
+  # provisioner "local-exec" {
+  #   command = "wget https://raw.githubusercontent.com/CDCgov/dibbs-ecr-viewer/refs/tags/v3.0.0-Beta1/containers/ecr-viewer/sql/core.sql -O core.sql"
+  # }
+
   provisioner "file" {
     content     = <<-EOF
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-      CREATE TABLE ecr_data (
+      CREATE SCHEMA ecr_viewer;
+
+      CREATE TABLE ecr_viewer.ecr_data (
         eICR_ID VARCHAR(200) PRIMARY KEY,
         set_id VARCHAR(255),
         eicr_version_number VARCHAR(50),
@@ -93,15 +99,15 @@ resource "aws_instance" "postgresql_setup" {
         report_date DATE
       );
 
-      CREATE TABLE ecr_rr_conditions (
+      CREATE TABLE ecr_viewer.ecr_rr_conditions (
           uuid VARCHAR(200) PRIMARY KEY,
-          eICR_ID VARCHAR(200) NOT NULL REFERENCES ecr_data(eICR_ID),
+          eICR_ID VARCHAR(200) NOT NULL REFERENCES ecr_viewer.ecr_data(eICR_ID),
           condition VARCHAR
       );
 
-      CREATE TABLE ecr_rr_rule_summaries (
+      CREATE TABLE ecr_viewer.ecr_rr_rule_summaries (
           uuid VARCHAR(200) PRIMARY KEY,
-          ecr_rr_conditions_id VARCHAR(200) REFERENCES ecr_rr_conditions(uuid),
+          ecr_rr_conditions_id VARCHAR(200) REFERENCES ecr_viewer.ecr_rr_conditions(uuid),
           rule_summary VARCHAR
       );
     EOF
@@ -153,8 +159,11 @@ resource "aws_instance" "postgresql_setup" {
 
   depends_on = [aws_db_instance.postgresql]
 
+  timeouts {
+    create = "10m"
+  }
   # by ignoring associate_public_ip_address changes, we don't trigger a new instance meaning that the instance will only be created once
   lifecycle {
-    ignore_changes = [associate_public_ip_address]
+    ignore_changes = [associate_public_ip_address, key_name]
   }
 }

@@ -38,7 +38,7 @@ module "db" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.4.0"
+  version = "0.5.0"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -68,9 +68,6 @@ module "ecs" {
   # To disable autoscaling, set enable_autoscaling to false (default is true when not set)
   enable_autoscaling = true
 
-  # If the intent is to disable authentication, set nbs_auth to false (default is true when not set)
-  nbs_auth = false
-
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
   secrets_manager_postgresql_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
@@ -82,7 +79,15 @@ module "ecs" {
 
   # dibbs_config_name can be a value found here under CONFIG_NAME: https://github.com/CDCgov/dibbs-ecr-viewer/blob/main/containers/ecr-viewer/environment.d.ts
   # This is used to configure the ecr-viewer application. (default is "" when not set)
-  dibbs_config_name = "AWS_PG_NON_INTEGRATED"
+  dibbs_config_name = var.dibbs_config_name
+
+  # non integrated auth provider example (default values are "" when not set)
+  auth_provider                              = var.auth_provider
+  auth_client_id                             = var.auth_client_id
+  auth_issuer                                = var.auth_issuer
+  auth_url                                   = var.auth_url
+  secrets_manager_auth_secret_version        = var.secrets_manager_auth_secret_version
+  secrets_manager_auth_client_secret_version = var.secrets_manager_auth_client_secret_version
 }
 
 resource "aws_route53_record" "alb" {
