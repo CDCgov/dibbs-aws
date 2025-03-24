@@ -37,8 +37,8 @@ module "db" {
 }
 
 module "ecs" {
-  source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.5.0"
+  source  = "https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=22c90f20cb5288df10482b8f8587e93f4f7aad6e"
+  #version = "0.4.0"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
