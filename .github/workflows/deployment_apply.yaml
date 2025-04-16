@@ -27,6 +27,7 @@ on:
         options: # not supported yet: AWS_SQLSERVER_NON_INTEGRATED
           - AWS_PG_NON_INTEGRATED
           - AWS_INTEGRATED
+          - AWS_PG_DUAL
       dibbs-ecr-viewer-auth-provider:
         description: 'Sets AUTH_PROVIDER on dibbs-ecr-viewer'
         required: true
@@ -126,7 +127,7 @@ jobs:
           echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           echo "phdi_version = \"$DIBBS_ECR_VIEWER_VERSION\"" >> $WORKSPACE.tfvars
           echo "dibbs_config_name = \"$DIBBS_CONFIG_NAME\"" >> $WORKSPACE.tfvars
-          if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ]; then
+          if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" || $DIBBS_CONFIG_NAME == "AWS_PG_DUAL"]; then
             echo "auth_provider = \"$AUTH_PROVIDER\"" >> $WORKSPACE.tfvars
             echo "auth_client_id = \"$AUTH_CLIENT_ID\"" >> $WORKSPACE.tfvars
             echo "auth_issuer = \"$AUTH_ISSUER\"" >> $WORKSPACE.tfvars
