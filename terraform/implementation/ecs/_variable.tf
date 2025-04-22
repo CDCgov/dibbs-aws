@@ -20,7 +20,7 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "3.0.0-Beta"
+  default     = "3.1.0"
 }
 
 variable "dibbs_config_name" {
