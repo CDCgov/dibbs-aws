@@ -12,14 +12,14 @@ on:
           - dev
           - prod
       id:
-        description: 'Unique id for environment (between 0 and 255)'
+        description: 'Unique id for environment (optional, PR number, issue number etc.)'
         required: true
-        type: number
+        type: string
       dibbs-ecr-viewer-version:
         description: 'dibbs-ecr-viewer docker image tag'
         required: true
         type: string
-        default: "3.1.0"
+        default: "v2.0.0-beta"
       dibbs-ecr-viewer-config-name:
         description: 'Sets CONFIG_NAME on dibbs-ecr-viewer'
         required: true
@@ -117,15 +117,11 @@ jobs:
           WORKSPACE: ${{ env.workspace }}${{ inputs.id }}
           DIBBS_ECR_VIEWER_VERSION: ${{ inputs.dibbs-ecr-viewer-version }}
           DIBBS_CONFIG_NAME: ${{ inputs.dibbs-ecr-viewer-config-name }}
-          VPC_CIDR: "176.${{ inputs.id }}.0.0/16"
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
           echo "project = \"$PROJECT\"" >> $WORKSPACE.tfvars
           echo "region = \"$REGION\"" >> $WORKSPACE.tfvars
-          echo "private_subnets = [\"176.${{ inputs.id }}.1.0/24\",\"176.${{ inputs.id }}.3.0/24\"]" >> $WORKSPACE.tfvars
-          echo "public_subnets = [\"176.${{ inputs.id }}.2.0/24\",\"176.${{ inputs.id }}.4.0/24\"]" >> $WORKSPACE.tfvars
-          echo "vpc_cidr = \"$VPC_CIDR\"" >> $WORKSPACE.tfvars
           echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
           echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           echo "phdi_version = \"$DIBBS_ECR_VIEWER_VERSION\"" >> $WORKSPACE.tfvars
