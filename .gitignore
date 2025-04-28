@@ -27,3 +27,5 @@ credentials.json
 .bash_profile
 awscli-bundle/
 .todo
+
+terraform/implementation/ecs/tmp*
