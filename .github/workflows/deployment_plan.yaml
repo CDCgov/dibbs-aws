@@ -134,6 +134,9 @@ jobs:
             echo "auth_url = \"https://$WORKSPACE.dibbs.cloud/ecr-viewer/api/auth\"" >> $WORKSPACE.tfvars
             echo "secrets_manager_auth_secret_version = \"$AUTH_SECRET\"" >> $WORKSPACE.tfvars
             echo "secrets_manager_auth_client_secret_version = \"$AUTH_CLIENT_SECRET\"" >> $WORKSPACE.tfvars
+          elif [ $DIBBS_CONFIG_NAME == "AWS_INTEGRATED" ]; then
+            echo "secrets_manager_auth_secret_version = \"$AUTH_SECRET\"" >> $WORKSPACE.tfvars
+            echo "secrets_manager_auth_client_secret_version = \"$AUTH_CLIENT_SECRET\"" >> $WORKSPACE.tfvars
           fi
           terraform init \
             -var-file="$WORKSPACE.tfvars" \
