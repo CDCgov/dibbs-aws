@@ -19,15 +19,15 @@ on:
         description: 'dibbs-ecr-viewer docker image tag'
         required: true
         type: string
-        default: "v2.0.0-beta"
+        default: "3.3.1"
       dibbs-ecr-viewer-config-name:
         description: 'Sets CONFIG_NAME on dibbs-ecr-viewer'
         required: true
         type: choice
         options: # not supported yet: AWS_SQLSERVER_NON_INTEGRATED, AWS_SQLSERVER_DUAL
           - AWS_PG_NON_INTEGRATED
-          - AWS_INTEGRATED
           - AWS_PG_DUAL
+          - AWS_INTEGRATED
       dibbs-ecr-viewer-auth-provider:
         description: 'Sets AUTH_PROVIDER on dibbs-ecr-viewer'
         required: true
@@ -132,6 +132,9 @@ jobs:
             echo "auth_client_id = \"$AUTH_CLIENT_ID\"" >> $WORKSPACE.tfvars
             echo "auth_issuer = \"$AUTH_ISSUER\"" >> $WORKSPACE.tfvars
             echo "auth_url = \"https://$WORKSPACE.dibbs.cloud/ecr-viewer/api/auth\"" >> $WORKSPACE.tfvars
+            echo "secrets_manager_auth_secret_version = \"$AUTH_SECRET\"" >> $WORKSPACE.tfvars
+            echo "secrets_manager_auth_client_secret_version = \"$AUTH_CLIENT_SECRET\"" >> $WORKSPACE.tfvars
+          elif [ $DIBBS_CONFIG_NAME == "AWS_INTEGRATED" ]; then
             echo "secrets_manager_auth_secret_version = \"$AUTH_SECRET\"" >> $WORKSPACE.tfvars
             echo "secrets_manager_auth_client_secret_version = \"$AUTH_CLIENT_SECRET\"" >> $WORKSPACE.tfvars
           fi
