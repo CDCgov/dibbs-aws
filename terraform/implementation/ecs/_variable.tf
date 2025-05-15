@@ -20,7 +20,7 @@ variable "owner" {
 variable "phdi_version" {
   description = "PHDI container image version"
   type        = string
-  default     = "3.1.0"
+  default     = "3.4.0"
 }
 
 variable "dibbs_config_name" {
@@ -63,12 +63,6 @@ variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
   default     = "176.24.0.0/16"
-}
-
-variable "ssh_key_name" {
-  description = "The name of the SSH key to use for the instances"
-  type        = string
-  default     = ""
 }
 
 variable "route53_hosted_zone_id" {
