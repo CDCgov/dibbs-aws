@@ -17,7 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_db"></a> [db](#module\_db) | ../../modules/db | n/a |
-| <a name="module_ecs"></a> [ecs](#module\_ecs) | git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git | alis/nbs_pub_key_update |
+| <a name="module_ecs"></a> [ecs](#module\_ecs) | CDCgov/dibbs-ecr-viewer/aws | 0.6.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 5.16.0 |
 
 ## Resources
@@ -46,7 +46,7 @@
 | <a name="input_dibbs_config_name"></a> [dibbs\_config\_name](#input\_dibbs\_config\_name) | The name of the DIBBS configuration | `string` | `"AWS_PG_NON_INTEGRATED"` | no |
 | <a name="input_internal"></a> [internal](#input\_internal) | Flag to determine if the several AWS resources are public (intended for external access, public internet) or private (only intended to be accessed within your AWS VPC or avaiable with other means, a transit gateway for example). | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | The owner of the infrastructure | `string` | `"skylight"` | no |
-| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"3.1.0"` | no |
+| <a name="input_phdi_version"></a> [phdi\_version](#input\_phdi\_version) | PHDI container image version | `string` | `"3.4.0"` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | The private subnets | `list(string)` | <pre>[<br>  "176.24.1.0/24",<br>  "176.24.3.0/24"<br>]</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | The project name | `string` | `"dibbs"` | no |
 | <a name="input_public_subnets"></a> [public\_subnets](#input\_public\_subnets) | The public subnets | `list(string)` | <pre>[<br>  "176.24.2.0/24",<br>  "176.24.4.0/24"<br>]</pre> | no |
