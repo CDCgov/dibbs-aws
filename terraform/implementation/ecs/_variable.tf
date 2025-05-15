@@ -65,12 +65,6 @@ variable "vpc_cidr" {
   default     = "176.24.0.0/16"
 }
 
-variable "ssh_key_name" {
-  description = "The name of the SSH key to use for the instances"
-  type        = string
-  default     = ""
-}
-
 variable "route53_hosted_zone_id" {
   description = "The Route53 hosted zone ID"
   type        = string

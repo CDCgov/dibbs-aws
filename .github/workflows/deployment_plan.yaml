@@ -19,7 +19,7 @@ on:
         description: 'dibbs-ecr-viewer docker image tag'
         required: true
         type: string
-        default: "3.3.1"
+        default: "3.4.0"
       dibbs-ecr-viewer-config-name:
         description: 'Sets CONFIG_NAME on dibbs-ecr-viewer'
         required: true
