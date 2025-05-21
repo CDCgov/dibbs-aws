@@ -249,6 +249,8 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "elasticloadbalancing:CreateLoadBalancer",
       "elasticloadbalancing:CreateRule",
       "elasticloadbalancing:CreateTargetGroup",
+      "kms:CreateKey",
+      "kms:TagResource",
       "iam:CreatePolicy",
       "iam:CreateRole",
       "logs:CreateLogDelivery",
@@ -276,6 +278,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:listener/app/${local.vpc_id}/*",
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:loadbalancer/app/${local.vpc_id}/*",
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:targetgroup/${local.vpc_id}*/*",
+      "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
@@ -448,5 +451,3 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
     }
   }
 }
-
-# runs the containers in a predefined 
