@@ -35,10 +35,10 @@ module "db" {
 
 module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
-  # version = "0.6.0"
+  # version = "0.7.0"
   # github branch source
   # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/to17/logging"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/to17/kms_fixes"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -89,8 +89,8 @@ module "ecs" {
   secrets_manager_auth_secret_version        = var.secrets_manager_auth_secret_version
   secrets_manager_auth_client_secret_version = var.secrets_manager_auth_client_secret_version
 
-  ecr_viewer_auth_pub_key = var.nbs_pub_key
-  # ecr_viewer_auth_api_pub_key = var.nbs_priv_key
+  ecr_viewer_auth_pub_key     = var.nbs_pub_key
+  ecr_viewer_auth_api_pub_key = var.nbs_pub_key
 
   override_autoscaling = {
     fhir-converter = {

@@ -5,23 +5,23 @@ on:
   workflow_dispatch:
     inputs:
       workspace:
-        description: 'The workspace to terraform against'
+        description: "The workspace to terraform against"
         required: true
         type: choice
         options:
           - dev
           - prod
       id:
-        description: 'Unique id for environment (optional, PR number, issue number etc.)'
+        description: "Unique id for environment (optional, PR number, issue number etc.)"
         required: true
         type: string
       dibbs-ecr-viewer-version:
-        description: 'dibbs-ecr-viewer docker image tag'
+        description: "dibbs-ecr-viewer docker image tag"
         required: true
         type: string
-        default: "3.4.0"
+        default: "4.0.0"
       dibbs-ecr-viewer-config-name:
-        description: 'Sets CONFIG_NAME on dibbs-ecr-viewer'
+        description: "Sets CONFIG_NAME on dibbs-ecr-viewer"
         required: true
         type: choice
         options: # not supported yet: AWS_SQLSERVER_NON_INTEGRATED, AWS_SQLSERVER_DUAL
@@ -29,7 +29,7 @@ on:
           - AWS_PG_DUAL
           - AWS_INTEGRATED
       dibbs-ecr-viewer-auth-provider:
-        description: 'Sets AUTH_PROVIDER on dibbs-ecr-viewer'
+        description: "Sets AUTH_PROVIDER on dibbs-ecr-viewer"
         required: true
         type: choice
         options:

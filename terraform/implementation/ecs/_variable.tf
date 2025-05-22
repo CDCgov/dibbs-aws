@@ -18,9 +18,9 @@ variable "owner" {
 
 # Manually update to set the version you want to run
 variable "phdi_version" {
-  description = "PHDI container image version"
+  description = "dibbs-ecr-viewer container image version"
   type        = string
-  default     = "3.4.0"
+  default     = "4.0.0"
 }
 
 variable "dibbs_config_name" {
