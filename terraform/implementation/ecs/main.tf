@@ -34,10 +34,11 @@ module "db" {
 }
 
 module "ecs" {
-  source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.7.1"
+  # source  = "CDCgov/dibbs-ecr-viewer/aws"
+  # version = "0.7.1"
   # github branch source
   # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/to17/db_type"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -50,10 +51,6 @@ module "ecs" {
   phdi_version = var.phdi_version
 
   # The following variables will need to be configured depending on your requirements
-
-  # If the intent is to use a database for the ecr-viewer library, set the database_type to either "postgresql" or "sqlserver" (default is "postgresql" when not set)
-  database_type = var.database_type
-
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
   disable_ecr = false
 
@@ -69,7 +66,7 @@ module "ecs" {
 
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
-  secrets_manager_postgresql_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
+  secrets_manager_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
 
   # SqlServer database example (default values are "" when not set)
   # secrets_manager_sqlserver_user_version = module.db.secrets_manager_sqlserver_user_version
