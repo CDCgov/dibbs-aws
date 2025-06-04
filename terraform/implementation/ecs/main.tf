@@ -38,7 +38,7 @@ module "ecs" {
   # version = "0.7.1"
   # github branch source
   # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/to17/db_type"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=main"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)

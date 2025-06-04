@@ -20,7 +20,7 @@ variable "owner" {
 variable "phdi_version" {
   description = "dibbs-ecr-viewer container image version"
   type        = string
-  default     = "4.0.0"
+  default     = "5.0.0"
 }
 
 variable "dibbs_config_name" {
