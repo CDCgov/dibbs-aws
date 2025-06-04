@@ -18,9 +18,9 @@ variable "owner" {
 
 # Manually update to set the version you want to run
 variable "phdi_version" {
-  description = "PHDI container image version"
+  description = "dibbs-ecr-viewer container image version"
   type        = string
-  default     = "3.1.0"
+  default     = "5.0.0"
 }
 
 variable "dibbs_config_name" {
@@ -63,12 +63,6 @@ variable "vpc_cidr" {
   description = "The CIDR block for the VPC"
   type        = string
   default     = "176.24.0.0/16"
-}
-
-variable "ssh_key_name" {
-  description = "The name of the SSH key to use for the instances"
-  type        = string
-  default     = ""
 }
 
 variable "route53_hosted_zone_id" {
@@ -114,4 +108,25 @@ variable "secrets_manager_auth_client_secret_version" {
   type        = string
   default     = ""
   sensitive   = true
+}
+
+variable "nbs_pub_key" {
+  type        = string
+  description = "The public key used to validate the incoming authenication for the eCR Viewer."
+  default     = <<EOT
+-----BEGIN PUBLIC KEY-----
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAnlA1YmmbydxQdBh7DAq0
+wUfsjR25eWZOB995mHclT3C46oLat3YLu70akLfoMXd9YcJe0d4q3sP7tS1J4QDO
+IkfapvK3ClDJR2VUERTzR9yQ+1B1Sd+MSful/V3aP9L6wPRAJmsmziizUBz+X0oN
+WTkGP/xi0F/IlyBfh2sk89JKKmgXSFbgDTD7+8L5WeRY5koR0KfDJLBcyerrcIPW
+1FyD8RbkUH78yJXc+/ThXKBNpsDTvV0k/4zqLSADIEmhQFkW8oYOfF4ufBGSnGdZ
+gPoWbKHtlK+m1sFWMq0hAtJsNKsJQocPAEO2NIxRCX4k6X9HfvCYVniDI4OdVz0V
+jTF+galQDAybgtYc9ZN8ROpePDVkCANHzniBJFOwzv2yekreqdX7M399uLB+ztDX
+Iz2RpZbGkgspl4TWvvB+eN64DJykmExImIw1nFc/6AVd3jhKSnCrckpGV3XaF8lW
+WMA6au0RXjmRa4YxO/uQbFZeFkM7aQtQK/CxqdBfG0SACcIMwU2S7Kb5+c9Hs687
+LI8j7j0oVyCiAyJ44Mi70i4A2GedyM6kzdixTmszin+c4tT8mYjmEMpJle6GLBIa
+aqEy3CVEqecFIo4ypfoo4GjTqvv/JjtxwBl1FPC+HzFkOjSoLbrDmn64NnQhXlC9
+kd+ONf43CmqDSTa3atSFq4sCAwEAAQ==
+-----END PUBLIC KEY-----
+EOT
 }
