@@ -62,6 +62,13 @@ jobs:
     steps:
       - name: Check Out Changes
         uses: actions/checkout@v4
+        if: ${{ github.event.client_payload.tf_branch != '' }}
+        with:
+          ref: ${{ github.event.client_payload.tf_branch }}
+
+      - name: Check Out Changes (default branch)
+        uses: actions/checkout@v4
+        if: ${{ github.event.client_payload.tf_branch == '' }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
