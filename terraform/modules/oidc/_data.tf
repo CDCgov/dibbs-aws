@@ -28,6 +28,7 @@ data "aws_iam_policy_document" "github_assume_role" {
 
 # tfstate and storage policy
 # trivy:ignore:AVD-AWS-0057
+# trivy:ignore:AVD-AWS-0345
 data "aws_iam_policy_document" "storage" {
   statement {
     actions = [
@@ -94,6 +95,14 @@ data "aws_iam_policy_document" "wildcard" {
       "elasticloadbalancing:DescribeTargetGroups",
       "iam:ListPolicies",
       "iam:GetRolePolicy",
+      "kms:CreateKey",
+      "kms:DescribeKey",
+      "kms:EnableKeyRotation",
+      "kms:GetKeyRotationStatus",
+      "kms:GetKeyPolicy",
+      "kms:ListResourceTags",
+      "kms:ScheduleKeyDeletion",
+      "kms:TagResource",
       "rds:DescribeDBEngineVersions",
       "rds:DescribeDBSubnetGroups",
       "rds:DescribeDBParameterGroups",
@@ -188,6 +197,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "ec2:TerminateInstances",
       "ec2:DeleteRoute",
       "iam:PassRole",
+      "iam:CreatePolicyVersion",
       "rds:CreateDBParameterGroup",
       "rds:CreateDBSubnetGroup",
       "rds:AddTagsToResource",
@@ -217,6 +227,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:natgateway/*",
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}",
+      "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",
@@ -447,5 +458,3 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
     }
   }
 }
-
-# runs the containers in a predefined 

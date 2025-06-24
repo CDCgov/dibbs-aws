@@ -4,6 +4,6 @@ locals {
   sqlserver_engine_version  = "16.00.4165.4.v1"
   sqlserver_instance_class  = "db.t3.micro"
   postgresql_engine         = "postgres"
-  postgresql_engine_version = "16.4"
+  postgresql_engine_version = "16.8"
   postgresql_instance_class = "db.t3.micro"
 }
