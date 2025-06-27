@@ -411,6 +411,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "iam:DeleteRole",
       "iam:DeleteRolePolicy",
       "iam:DeletePolicy",
+      "iam:DeletePolicyVersion",
       "logs:DeleteLogGroup",
       "rds:DeleteDBSubnetGroup",
       "rds:DeleteDBInstance",
