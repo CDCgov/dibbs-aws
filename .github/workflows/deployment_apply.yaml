@@ -2,6 +2,8 @@ name: Terraform Apply
 run-name: Terraform apply ${{ inputs.workspace }}${{ inputs.id }}:${{ inputs.dibbs-ecr-viewer-version }} by @${{ github.actor }}
 
 on:
+  repository_dispatch:
+    types: [trigger-dev-deploy]
   workflow_dispatch:
     inputs:
       workspace:
@@ -11,6 +13,11 @@ on:
         options:
           - dev
           - prod
+      tf_branch:
+        description: "The branch to use for the terraform code (optional, defaults to main)"
+        required: false
+        type: string
+        default: main
       id:
         description: "Unique id for environment (between 0 and 255)"
         required: true
@@ -62,13 +69,8 @@ jobs:
     steps:
       - name: Check Out Changes
         uses: actions/checkout@v4
-        if: ${{ github.event.client_payload.tf_branch != '' }}
         with:
-          ref: ${{ github.event.client_payload.tf_branch }}
-
-      - name: Check Out Changes (default branch)
-        uses: actions/checkout@v4
-        if: ${{ github.event.client_payload.tf_branch == '' }}
+          ref: ${{ inputs.tf_branch }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
