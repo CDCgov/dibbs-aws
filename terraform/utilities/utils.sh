@@ -3,4 +3,4 @@
 ./tffmt.sh
 ./tfdocs.sh
 ./tflint.sh
-
+./tfgraph.sh

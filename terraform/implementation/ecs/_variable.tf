@@ -110,6 +110,13 @@ variable "secrets_manager_auth_client_secret_version" {
   sensitive   = true
 }
 
+variable "secrets_manager_metadata_database_migration_secret_version" {
+  description = "The secret containing the db migration secret. This is used by eCR viewer to allow database migrations."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
 variable "nbs_pub_key" {
   type        = string
   description = "The public key used to validate the incoming authenication for the eCR Viewer."

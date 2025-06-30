@@ -35,9 +35,8 @@ module "db" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.8.3"
-  # github branch source
-  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
+  version = "0.8.5"
+  # github branch sourcep  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -77,12 +76,13 @@ module "ecs" {
   dibbs_config_name = var.dibbs_config_name
 
   # non integrated auth provider example (default values are "" when not set)
-  auth_provider                              = var.auth_provider
-  auth_client_id                             = var.auth_client_id
-  auth_issuer                                = var.auth_issuer
-  auth_url                                   = var.auth_url
-  secrets_manager_auth_secret_version        = var.secrets_manager_auth_secret_version
-  secrets_manager_auth_client_secret_version = var.secrets_manager_auth_client_secret_version
+  auth_provider                                              = var.auth_provider
+  auth_client_id                                             = var.auth_client_id
+  auth_issuer                                                = var.auth_issuer
+  auth_url                                                   = var.auth_url
+  secrets_manager_auth_secret_version                        = var.secrets_manager_auth_secret_version
+  secrets_manager_auth_client_secret_version                 = var.secrets_manager_auth_client_secret_version
+  secrets_manager_metadata_database_migration_secret_version = var.secrets_manager_metadata_database_migration_secret_version
 
   ecr_viewer_auth_pub_key     = var.nbs_pub_key
   ecr_viewer_auth_api_pub_key = var.nbs_pub_key

@@ -5,13 +5,13 @@ on:
   workflow_dispatch:
     inputs:
       workspace:
-        description: 'The workspace to terraform against (dev is the only valid option)'
+        description: "The workspace to terraform against (dev is the only valid option)"
         required: true
         type: choice
         options:
           - dev
       id:
-        description: 'Unique id for environment (optional, PR number, issue number etc.)'
+        description: "Unique id for environment (optional, PR number, issue number etc.)"
         required: true
         type: string
 
