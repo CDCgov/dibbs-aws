@@ -131,9 +131,9 @@ jobs:
           echo "dibbs_config_name = \"$DIBBS_CONFIG_NAME\"" >> $WORKSPACE.tfvars
           echo "secrets_manager_metadata_database_migration_secret_version = \"$METADATA_DATABASE_MIGRATION_SECRET\"" >> $WORKSPACE.tfvars
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
-            database_type="postgresql"
+            echo "database_type=postgresql" >> $WORKSPACE.tfvars
           elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
-            database_type="sqlserver"
+            echo "database_type=sqlserver" >> $WORKSPACE.tfvars
           fi
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "auth_provider = \"$AUTH_PROVIDER\"" >> $WORKSPACE.tfvars
