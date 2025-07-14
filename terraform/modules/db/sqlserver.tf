@@ -6,6 +6,7 @@ data "aws_rds_engine_version" "sqlserver" {
 resource "aws_db_instance" "sqlserver" {
   count                           = var.database_type == "sqlserver" ? 1 : 0
   allocated_storage               = "20"
+  db_name                         = "ecr_viewer_db"
   identifier                      = "${local.vpc_name}-${var.database_type}-ecr-viewer"
   engine                          = data.aws_rds_engine_version.sqlserver.engine
   engine_version                  = data.aws_rds_engine_version.sqlserver.version_actual
