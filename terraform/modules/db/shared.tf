@@ -6,7 +6,7 @@ resource "random_password" "database" {
 }
 
 resource "random_string" "secret_ident" {
-  count   = var.database_type == "postgresql" ? 1 : 0
+  count   = var.database_type == "postgresql" || var.database_type == "sqlserver" ? 1 : 0
   length  = 5
   special = false
   upper   = true
