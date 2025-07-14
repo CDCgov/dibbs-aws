@@ -71,8 +71,6 @@ jobs:
     steps:
       - name: Check Out Changes
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.tf_branch }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
