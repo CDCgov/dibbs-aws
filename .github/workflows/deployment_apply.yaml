@@ -13,11 +13,6 @@ on:
         options:
           - dev
           - prod
-      tf_branch:
-        description: "The branch to use for the terraform code (optional, defaults to main)"
-        required: false
-        type: string
-        default: main
       id:
         description: "Unique id for environment (between 0 and 255)"
         required: true
