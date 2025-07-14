@@ -64,7 +64,7 @@ module "ecs" {
 
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
-  secrets_manager_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
+  secrets_manager_connection_string_version = var.database_type == "postgresql" || var.database_type == "sqlserver" ? module.db.secrets_manager_database_connection_string_version : ""
 
   # SqlServer database example (default values are "" when not set)
   # secrets_manager_sqlserver_user_version = module.db.secrets_manager_sqlserver_user_version
