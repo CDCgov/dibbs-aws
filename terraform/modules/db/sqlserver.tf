@@ -6,7 +6,6 @@ data "aws_rds_engine_version" "sqlserver" {
 resource "aws_db_instance" "sqlserver" {
   count                           = var.database_type == "sqlserver" ? 1 : 0
   allocated_storage               = "20"
-  db_name                         = "ecr_viewer_db"
   identifier                      = "${local.vpc_name}-${var.database_type}-ecr-viewer"
   engine                          = data.aws_rds_engine_version.sqlserver.engine
   engine_version                  = data.aws_rds_engine_version.sqlserver.version_actual
@@ -66,6 +65,7 @@ resource "aws_secretsmanager_secret_version" "sqlserver" {
   count     = var.database_type == "sqlserver" ? 1 : 0
   secret_id = aws_secretsmanager_secret.sqlserver_connection_string[0].id
   secret_string = jsonencode({
-    connection_string = "Server=${aws_db_instance.sqlserver[0].endpoint};Database=${aws_db_instance.sqlserver[0].db_name};User Id=${aws_db_instance.sqlserver[0].username};Password=${aws_db_instance.sqlserver[0].password};"
+    connection_string = "jdbc:sqlserver://${aws_db_instance.sqlserver[0].endpoint};encrypt=true;user=${aws_db_instance.sqlserver[0].username};password=${aws_db_instance.sqlserver[0].password};"
   })
+  # connection_string = "Server=${aws_db_instance.sqlserver[0].endpoint};User Id=${aws_db_instance.sqlserver[0].username};Password=${aws_db_instance.sqlserver[0].password};"
 }
