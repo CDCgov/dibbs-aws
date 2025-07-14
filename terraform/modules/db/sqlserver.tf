@@ -64,5 +64,5 @@ resource "aws_secretsmanager_secret" "sqlserver_connection_string" {
 resource "aws_secretsmanager_secret_version" "sqlserver" {
   count         = var.database_type == "sqlserver" ? 1 : 0
   secret_id     = aws_secretsmanager_secret.sqlserver_connection_string[0].id
-  secret_string = "Server=${aws_db_instance.sqlserver[0].endpoint};User Id=${aws_db_instance.sqlserver[0].username};Password=${aws_db_instance.sqlserver[0].password};"
+  secret_string = "Server=${aws_db_instance.sqlserver[0].address};User Id=${aws_db_instance.sqlserver[0].username};Password=${aws_db_instance.sqlserver[0].password};"
 }
