@@ -137,3 +137,19 @@ kd+ONf43CmqDSTa3atSFq4sCAwEAAQ==
 -----END PUBLIC KEY-----
 EOT
 }
+
+variable "nbs_api_pub_key" {
+  type        = string
+  description = "The public key used to validate the incoming authentication for the NBS API."
+  default     = <<EOT
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAx3T+Ui1q1MJV1fui19V5
+S/xJFlx9KkQ+2uu3O7h8y5+UcND6YLAbWb51hwFhRMMUKFhOG+Aw1X1fjGoZoeEF
+ziqZ5sE4dROxo/LDWyd3Ma6wB+nl+2on7Z85G5WjYfEQFqpLvITakQHNfoYCcdZR
+ZnKqLJBGO4HiDKsgI6O/tm8jAhbvzhBxCBnUW0G9yLuxnpgZStN54nINLhDcnbvK
+nR9YI7zv3l9DkGPg27ElvE8jKAHlzei3XFUDhByGSfs2x/bWE1Yy4BGybY6E428U
+8zP84/TSv5LoDJrz+vu7n7Z2WsNLojNo9ynVNqbkoIhGwJmPUekEaXhcPC3ji/U4
+ZwIDAQAB
+-----END PUBLIC KEY-----
+EOT
+}

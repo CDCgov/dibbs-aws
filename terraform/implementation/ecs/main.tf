@@ -85,7 +85,7 @@ module "ecs" {
   secrets_manager_metadata_database_migration_secret_version = var.secrets_manager_metadata_database_migration_secret_version
 
   ecr_viewer_auth_pub_key     = var.nbs_pub_key
-  ecr_viewer_auth_api_pub_key = var.nbs_pub_key
+  ecr_viewer_auth_api_pub_key = var.nbs_api_pub_key
 
   override_autoscaling = {
     fhir-converter = {
