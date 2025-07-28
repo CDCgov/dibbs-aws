@@ -24,9 +24,11 @@ on:
         description: "Sets CONFIG_NAME on dibbs-ecr-viewer"
         required: true
         type: choice
-        options: # not supported yet: AWS_SQLSERVER_NON_INTEGRATED, AWS_SQLSERVER_DUAL
+        options:
           - AWS_PG_NON_INTEGRATED
           - AWS_PG_DUAL
+          - AWS_SQLSERVER_NON_INTEGRATED
+          - AWS_SQLSERVER_DUAL
           - AWS_INTEGRATED
       dibbs-ecr-viewer-auth-provider:
         description: "Sets AUTH_PROVIDER on dibbs-ecr-viewer"
@@ -128,7 +130,12 @@ jobs:
           echo "phdi_version = \"$DIBBS_ECR_VIEWER_VERSION\"" >> $WORKSPACE.tfvars
           echo "dibbs_config_name = \"$DIBBS_CONFIG_NAME\"" >> $WORKSPACE.tfvars
           echo "secrets_manager_metadata_database_migration_secret_version = \"$METADATA_DATABASE_MIGRATION_SECRET\"" >> $WORKSPACE.tfvars
-          if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
+          if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
+            echo "database_type = \"postgresql\"" >> $WORKSPACE.tfvars
+          elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
+            echo "database_type = \"sqlserver\"" >> $WORKSPACE.tfvars
+          fi
+          if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "auth_provider = \"$AUTH_PROVIDER\"" >> $WORKSPACE.tfvars
             echo "auth_client_id = \"$AUTH_CLIENT_ID\"" >> $WORKSPACE.tfvars
             echo "auth_issuer = \"$AUTH_ISSUER\"" >> $WORKSPACE.tfvars

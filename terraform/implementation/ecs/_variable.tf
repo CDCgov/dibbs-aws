@@ -30,9 +30,9 @@ variable "dibbs_config_name" {
 }
 
 variable "database_type" {
-  description = "The type of database to use (postgresql or sqlserver)"
+  description = "The type of database to use (postgresql or sqlserver or '')"
   type        = string
-  default     = "postgresql"
+  default     = ""
 }
 
 variable "private_subnets" {

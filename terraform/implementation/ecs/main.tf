@@ -35,8 +35,9 @@ module "db" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.8.5"
-  # github branch sourcep  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=<BRANCH_NAME>"
+  version = "0.8.6"
+  # github branch source 
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/remove_validation_service"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -64,7 +65,7 @@ module "ecs" {
 
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
-  secrets_manager_connection_string_version = module.db.secrets_manager_postgresql_connection_string_version
+  secrets_manager_connection_string_version = var.database_type == "postgresql" || var.database_type == "sqlserver" ? module.db.secrets_manager_database_connection_string_version : ""
 
   # SqlServer database example (default values are "" when not set)
   # secrets_manager_sqlserver_user_version = module.db.secrets_manager_sqlserver_user_version

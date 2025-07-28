@@ -54,38 +54,15 @@ resource "aws_security_group" "sqlserver" {
   tags = var.tags
 }
 
-resource "aws_secretsmanager_secret" "sqlserver_password" {
+resource "aws_secretsmanager_secret" "sqlserver_connection_string" {
   count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-password-${random_string.secret_ident[0].result}"
-  description = "SqlServer password for the ecr-viewer"
+  name        = "${local.vpc_name}-sqlserver-connection-string-${random_string.secret_ident[0].result}"
+  description = "SqlServer connection string for the ecr-viewer"
+  tags        = var.tags
 }
 
-resource "aws_secretsmanager_secret_version" "sqlserver_password" {
+resource "aws_secretsmanager_secret_version" "sqlserver" {
   count         = var.database_type == "sqlserver" ? 1 : 0
-  secret_id     = aws_secretsmanager_secret.sqlserver_password[0].id
-  secret_string = random_password.database.result
-}
-
-resource "aws_secretsmanager_secret" "sqlserver_user" {
-  count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-user-${random_string.secret_ident[0].result}"
-  description = "SqlServer user for the ecr-viewer"
-}
-
-resource "aws_secretsmanager_secret_version" "sqlserver_user" {
-  count         = var.database_type == "sqlserver" ? 1 : 0
-  secret_id     = aws_secretsmanager_secret.sqlserver_user[0].id
-  secret_string = "sa"
-}
-
-resource "aws_secretsmanager_secret" "sqlserver_host" {
-  count       = var.database_type == "sqlserver" ? 1 : 0
-  name        = "${local.vpc_name}-sqlserver-host-${random_string.secret_ident[0].result}"
-  description = "SqlServer host for the ecr-viewer"
-}
-
-resource "aws_secretsmanager_secret_version" "sqlserver_host" {
-  count         = var.database_type == "sqlserver" ? 1 : 0
-  secret_id     = aws_secretsmanager_secret.sqlserver_host[0].id
-  secret_string = "${aws_db_instance.sqlserver[0].address}:${aws_db_instance.sqlserver[0].port}"
+  secret_id     = aws_secretsmanager_secret.sqlserver_connection_string[0].id
+  secret_string = "Server=${aws_db_instance.sqlserver[0].address};User Id=${aws_db_instance.sqlserver[0].username};Password=${aws_db_instance.sqlserver[0].password};"
 }
