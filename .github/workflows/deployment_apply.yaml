@@ -159,4 +159,4 @@ jobs:
             -backend-config "region=$REGION" \
             || (echo "terraform init failed, exiting..." && exit 1)
           terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
-          terraform apply -auto-approve -var-file="$WORKSPACE.tfvars"
+          terraform destroy -auto-approve -var-file="$WORKSPACE.tfvars"
