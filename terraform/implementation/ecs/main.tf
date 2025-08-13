@@ -34,10 +34,10 @@ module "db" {
 }
 
 module "ecs" {
-  # source  = "CDCgov/dibbs-ecr-viewer/aws"
-  # version = "0.8.6"
+  source  = "CDCgov/dibbs-ecr-viewer/aws"
+  version = "0.8.7"
   # github branch source 
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/albfix"
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/albfix"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
