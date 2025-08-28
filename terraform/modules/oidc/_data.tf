@@ -259,6 +259,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "elasticloadbalancing:CreateLoadBalancer",
       "elasticloadbalancing:CreateRule",
       "elasticloadbalancing:CreateTargetGroup",
+      "elasticloadbalancing:ModifyLoadBalancerAttributes",
       "iam:CreatePolicy",
       "iam:CreateRole",
       "logs:CreateLogDelivery",
