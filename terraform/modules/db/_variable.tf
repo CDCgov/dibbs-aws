@@ -26,6 +26,11 @@ variable "private_subnet_ids" {
   description = "List of private subnet IDs"
 }
 
+variable "public_subnet_ids" {
+  type        = list(string)
+  description = "List of public subnet IDs"
+}
+
 variable "database_type" {
   description = "The type of database to use (postgresql or sqlserver)"
   type        = string
@@ -35,5 +40,11 @@ variable "database_type" {
 variable "cidr" {
   type        = string
   description = "The CIDR block for the VPC"
+  default     = ""
+}
+
+variable "ssh_key_name" {
+  type        = string
+  description = "The name of the SSH key to use for the instances"
   default     = ""
 }
