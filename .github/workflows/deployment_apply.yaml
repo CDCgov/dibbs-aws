@@ -138,8 +138,10 @@ jobs:
           echo "secrets_manager_metadata_database_migration_secret_version = \"$METADATA_DATABASE_MIGRATION_SECRET\"" >> $WORKSPACE.tfvars
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
             echo "database_type = \"postgresql\"" >> $WORKSPACE.tfvars
+            echo "database_exists = \"\$(terraform state list | grep -c 'module.db.aws_db_instance.postgresql[0]')\"" >> $WORKSPACE.tfvars
           elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "database_type = \"sqlserver\"" >> $WORKSPACE.tfvars
+            echo "database_exists = \"\$(terraform state list | grep -c 'module.db.aws_db_instance.sqlserver[0]')\"" >> $WORKSPACE.tfvars
           fi
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "auth_provider = \"$AUTH_PROVIDER\"" >> $WORKSPACE.tfvars
@@ -151,6 +153,9 @@ jobs:
           elif [ $DIBBS_CONFIG_NAME == "AWS_INTEGRATED" ]; then
             echo "secrets_manager_auth_secret_version = \"$AUTH_SECRET\"" >> $WORKSPACE.tfvars
             echo "secrets_manager_auth_client_secret_version = \"$AUTH_CLIENT_SECRET\"" >> $WORKSPACE.tfvars
+          fi
+          if [ $database_exists == "0" ]; then
+            echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
           fi
           terraform init \
             -var-file="$WORKSPACE.tfvars" \
