@@ -155,6 +155,7 @@ jobs:
             || (echo "terraform init failed, exiting..." && exit 1)
           terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
+            echo "Checking for existing postgresql database in terraform state"
             database_exists=$(terraform state list | grep -c 'module.db.aws_db_instance.postgresql')
             echo "database_type = \"postgresql\"" >> $WORKSPACE.tfvars
             echo "database_exists = \"$database_exists\"" >> $WORKSPACE.tfvars
@@ -163,6 +164,7 @@ jobs:
               echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
             fi
           elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
+            echo "Checking for existing sqlserver database in terraform state"
             database_exists=$(terraform state list | grep -c 'module.db.aws_db_instance.sqlserver')
             echo "database_type = \"sqlserver\"" >> $WORKSPACE.tfvars
             echo "database_exists = \"$database_exists\"" >> $WORKSPACE.tfvars
