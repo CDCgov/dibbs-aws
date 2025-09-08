@@ -29,6 +29,8 @@ module "db" {
   project            = var.project
   tags               = local.tags
   private_subnet_ids = flatten(module.vpc.private_subnets)
+  public_subnet_ids  = flatten(module.vpc.public_subnets)
+  ssh_key_name       = var.ssh_key_name
   # determines which database is launched, required for the ec2 instance to know which database to setup
   database_type = var.database_type
 }

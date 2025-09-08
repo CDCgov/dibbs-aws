@@ -137,3 +137,9 @@ kd+ONf43CmqDSTa3atSFq4sCAwEAAQ==
 -----END PUBLIC KEY-----
 EOT
 }
+
+variable "ssh_key_name" {
+  description = "The name of the SSH key to use for the instances"
+  type        = string
+  default     = ""
+}
