@@ -158,7 +158,7 @@ resource "aws_instance" "sqlserver_setup" {
 
   provisioner "file" {
     content     = <<-EOF
-      DATABASE_URL=postgres://${aws_db_instance.postgresql[0].username}:${random_password.database.result}@${aws_db_instance.postgresql[0].address}:${aws_db_instance.postgresql[0].port}/${aws_db_instance.postgresql[0].db_name}
+      DATABASE_URL=sqlserver://${aws_db_instance.sqlserver[0].username}:${random_password.database.result}@${aws_db_instance.sqlserver[0].address}:${aws_db_instance.sqlserver[0].port};database=${aws_db_instance.sqlserver[0].db_name};encrypt=true;trustServerCertificate=true
       SQL_FILE=sqlserver.sql
     EOF
     destination = ".env"
