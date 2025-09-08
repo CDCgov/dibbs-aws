@@ -159,6 +159,7 @@ jobs:
             echo "database_type = \"postgresql\"" >> $WORKSPACE.tfvars
             echo "database_exists = \"$database_exists\"" >> $WORKSPACE.tfvars
             if [ $database_exists -eq 0 ]; then
+              echo "postgresql database is new, adding ssh key name to tfvars"
               echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
             fi
           elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
@@ -166,6 +167,7 @@ jobs:
             echo "database_type = \"sqlserver\"" >> $WORKSPACE.tfvars
             echo "database_exists = \"$database_exists\"" >> $WORKSPACE.tfvars
             if [ $database_exists -eq 0 ]; then
+              echo "sqlserver database is new, adding ssh key name to tfvars"
               echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
             fi
           fi
