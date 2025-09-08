@@ -156,16 +156,17 @@ jobs:
           terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
             echo "Checking for existing postgresql database in terraform state"
-            database_count=$(terraform state list | grep 'module.db.aws_db_instance.postgresql' | wc -l)
-            if [ $database_count -eq 0 ]; then
+            # if grep returns 0, update the return to be "zero", if it returns 1, update to be "one"
+            state_list=$(terraform state list)
+            if [ $(echo "$state_list" | grep -c 'module.db.aws_db_instance.postgresql') -eq 0 ]; then
               echo "postgresql database is new, adding ssh key name to tfvars"
               echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
             fi
             echo "database_type = \"postgresql\"" >> $WORKSPACE.tfvars
           elif [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "Checking for existing sqlserver database in terraform state"
-            database_count=$(terraform state list | grep 'module.db.aws_db_instance.sqlserver' | wc -l)
-            if [ $database_count -eq 0 ]; then
+            state_list=$(terraform state list)
+            if [ $(echo "$state_list" | grep -c 'module.db.aws_db_instance.sqlserver') -eq 0 ]; then
               echo "sqlserver database is new, adding ssh key name to tfvars"
               echo "ssh_key_name = \"$SSH_KEY_NAME\"" >> $WORKSPACE.tfvars
             fi
