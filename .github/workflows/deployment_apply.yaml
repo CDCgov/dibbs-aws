@@ -154,7 +154,7 @@ jobs:
             -backend-config "region=$REGION" \
             || (echo "terraform init failed, exiting..." && exit 1)
           terraform workspace new "$WORKSPACE" || terraform workspace select "$WORKSPACE"
-          state_list=$(terraform state list || true)
+          state_list=$(terraform state list)
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ]; then
             if [ $(echo "$state_list" | grep -c 'module.db.aws_db_instance.postgresql') -eq 0 ]; then
               echo "postgresql database is new, adding ssh key name to tfvars"
