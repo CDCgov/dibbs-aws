@@ -321,7 +321,7 @@ resource "aws_instance" "sqlserver_setup" {
       "sudo curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb",
       "sudo dpkg -i packages-microsoft-prod.deb",
       "sudo apt-get update",
-      "sudo apt-get install -y mssql-tools18 unixodbc-dev",
+      "sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev",
       "chmod +x sqlserver_setup.sh",
       "./sqlserver_setup.sh",
       "sudo shutdown now"
