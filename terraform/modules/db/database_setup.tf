@@ -72,31 +72,33 @@ resource "aws_instance" "postgresql_setup" {
   }
 
   provisioner "file" {
+    # content     = <<-EOF
+    #   CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+    #   CREATE SCHEMA ecr_viewer;
+    #   CREATE TABLE ecr_viewer.ecr_data (
+    #     eicr_id VARCHAR(200) PRIMARY KEY,
+    #     set_id VARCHAR(255),
+    #     eicr_version_number VARCHAR(50),
+    #     data_source VARCHAR(2), -- S3 or DB
+    #     fhir_reference_link VARCHAR(500), -- Link to the ecr fhir bundle
+    #     patient_name_first VARCHAR(100),
+    #     patient_name_last VARCHAR(100),
+    #     patient_birth_date DATE,
+    #     date_created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    #     report_date DATE
+    #   );
+    #   CREATE TABLE ecr_viewer.ecr_rr_conditions (
+    #       uuid VARCHAR(200) PRIMARY KEY,
+    #       eicr_id VARCHAR(200) NOT NULL REFERENCES ecr_viewer.ecr_data(eicr_id),
+    #       condition VARCHAR
+    #   );
+    #   CREATE TABLE ecr_viewer.ecr_rr_rule_summaries (
+    #       uuid VARCHAR(200) PRIMARY KEY,
+    #       ecr_rr_conditions_id VARCHAR(200) REFERENCES ecr_viewer.ecr_rr_conditions(uuid),
+    #       rule_summary VARCHAR
+    #   );
+    # EOF
     content     = <<-EOF
-      CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-      CREATE SCHEMA ecr_viewer;
-      CREATE TABLE ecr_viewer.ecr_data (
-        eicr_id VARCHAR(200) PRIMARY KEY,
-        set_id VARCHAR(255),
-        eicr_version_number VARCHAR(50),
-        data_source VARCHAR(2), -- S3 or DB
-        fhir_reference_link VARCHAR(500), -- Link to the ecr fhir bundle
-        patient_name_first VARCHAR(100),
-        patient_name_last VARCHAR(100),
-        patient_birth_date DATE,
-        date_created TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        report_date DATE
-      );
-      CREATE TABLE ecr_viewer.ecr_rr_conditions (
-          uuid VARCHAR(200) PRIMARY KEY,
-          eicr_id VARCHAR(200) NOT NULL REFERENCES ecr_viewer.ecr_data(eicr_id),
-          condition VARCHAR
-      );
-      CREATE TABLE ecr_viewer.ecr_rr_rule_summaries (
-          uuid VARCHAR(200) PRIMARY KEY,
-          ecr_rr_conditions_id VARCHAR(200) REFERENCES ecr_viewer.ecr_rr_conditions(uuid),
-          rule_summary VARCHAR
-      );
     EOF
     destination = "postgresql.sql"
     connection {
@@ -158,7 +160,11 @@ resource "aws_instance" "sqlserver_setup" {
 
   provisioner "file" {
     content     = <<-EOF
-      DATABASE_URL=postgres://${aws_db_instance.postgresql[0].username}:${random_password.database.result}@${aws_db_instance.postgresql[0].address}:${aws_db_instance.postgresql[0].port}/${aws_db_instance.postgresql[0].db_name}
+      DATABASE_URL=sqlserver://${aws_db_instance.sqlserver[0].username}:${random_password.database.result}@${aws_db_instance.sqlserver[0].address}:${aws_db_instance.sqlserver[0].port};database=${aws_db_instance.sqlserver[0].db_name};encrypt=true;trustServerCertificate=true
+      DATABASE_HOST=${aws_db_instance.sqlserver[0].address}
+      DATABASE_USER=${aws_db_instance.sqlserver[0].username}
+      DATABASE_PASSWORD=${random_password.database.result}
+      DATABASE_NAME=ecr_viewer_db
       SQL_FILE=sqlserver.sql
     EOF
     destination = ".env"
@@ -172,7 +178,17 @@ resource "aws_instance" "sqlserver_setup" {
 
   provisioner "file" {
     content     = <<-EOF
-      CREATE SCHEMA ecr_viewer
+      IF NOT EXISTS (
+          SELECT *
+          FROM sys.databases
+          WHERE name = 'ecr_viewer_db'
+          )
+      BEGIN
+          CREATE DATABASE ecr_viewer_db
+      END
+      GO
+      
+      CREATE SCHEMA ecr_viewer;
 
       CREATE TABLE ecr_viewer.ecr_data
       (
@@ -283,15 +299,6 @@ resource "aws_instance" "sqlserver_setup" {
   }
 
   provisioner "file" {
-    # content     = <<-EOF
-    #   #!/bin/bash
-    #   # Load environment variables from .env file
-    #   if [ -f .env ]; then
-    #       export $(cat .env | xargs)
-    #   fi
-    #   # Run the SQL file
-    #   psql $DATABASE_URL -f $SQL_FILE
-    # EOF
     content     = <<-EOF
       #!/bin/bash
       # Load environment variables from .env file
@@ -299,7 +306,7 @@ resource "aws_instance" "sqlserver_setup" {
           export $(cat .env | xargs)
       fi
       # Run the SQL file
-      psql $DATABASE_URL -f $SQL_FILE
+      sqlcmd -S $DATABASE_HOST -U $DATABASE_USER -P $DATABASE_PASSWORD -d $DATABASE_NAME -i $SQL_FILE
     EOF
     destination = "sqlserver_setup.sh"
     connection {
@@ -311,15 +318,15 @@ resource "aws_instance" "sqlserver_setup" {
   }
 
   provisioner "remote-exec" {
-    # inline = [
-    #   "sudo apt update",
-    #   "sudo apt install -y postgresql-client",
-    #   "chmod +x postgresql_setup.sh",
-    #   "./postgresql_setup.sh",
-    #   "sudo shutdown now"
-    # ]
     inline = [
       "sudo apt update",
+      "sudo curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb",
+      "sudo dpkg -i packages-microsoft-prod.deb",
+      "sudo apt-get update",
+      "sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev",
+      "chmod +x sqlserver_setup.sh",
+      "./sqlserver_setup.sh",
+      "sudo shutdown now"
     ]
     connection {
       type     = "ssh"

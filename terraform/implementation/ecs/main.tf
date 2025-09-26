@@ -53,7 +53,7 @@ module "ecs" {
 
   # The following variables will need to be configured depending on your requirements
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
-  disable_ecr = false
+  disable_ecr = true
 
   # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true when not set)
   # This requires an internet gateway to be present in the VPC.
