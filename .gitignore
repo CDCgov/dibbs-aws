@@ -29,3 +29,6 @@ awscli-bundle/
 .todo
 
 terraform/implementation/ecs/tmp*
+
+#JetBrains IDE
+.idea
