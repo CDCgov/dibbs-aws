@@ -39,6 +39,11 @@ on:
         options:
           - ad
           - none
+      auth_session_duration_min:
+        description: "Duration before auto signout in minutes, defaults to 30 if not set"
+        required: true
+        type: number
+        default: 30
 
 concurrency:
   group: ${{ inputs.workspace }}${{ inputs.id }}-terraform
@@ -124,6 +129,7 @@ jobs:
           DIBBS_CONFIG_NAME: ${{ inputs.dibbs-ecr-viewer-config-name }}
           METADATA_DATABASE_MIGRATION_SECRET: ${{ secrets.METADATA_DATABASE_MIGRATION_SECRET }}
           VPC_CIDR: "176.${{ inputs.id }}.0.0/16"
+          AUTH_SESSION_DURATION_MIN: ${{inputs.auth_session_duration_min}}
         shell: bash
         run: |
           echo "owner = \"$OWNER\"" >> $WORKSPACE.tfvars
@@ -135,6 +141,7 @@ jobs:
           echo "route53_hosted_zone_id = \"$ROUTE53_HOSTED_ZONE_ID\"" >> $WORKSPACE.tfvars
           echo "phdi_version = \"$DIBBS_ECR_VIEWER_VERSION\"" >> $WORKSPACE.tfvars
           echo "dibbs_config_name = \"$DIBBS_CONFIG_NAME\"" >> $WORKSPACE.tfvars
+          echo "auth_session_duration_min = \"$AUTH_SESSION_DURATION_MIN\"" >> $WORKSPACE.tfvars
           echo "secrets_manager_metadata_database_migration_secret_version = \"$METADATA_DATABASE_MIGRATION_SECRET\"" >> $WORKSPACE.tfvars
           if [ $DIBBS_CONFIG_NAME == "AWS_PG_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_NON_INTEGRATED" ] || [ $DIBBS_CONFIG_NAME == "AWS_PG_DUAL" ] || [ $DIBBS_CONFIG_NAME == "AWS_SQLSERVER_DUAL" ]; then
             echo "auth_provider = \"$AUTH_PROVIDER\"" >> $WORKSPACE.tfvars

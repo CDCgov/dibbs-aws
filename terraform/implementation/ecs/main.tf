@@ -37,9 +37,9 @@ module "db" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.8.7"
+  version = "0.8.8"
   # github branch source 
-  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/albfix"
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=gordon/session-duration-env-var"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -83,6 +83,7 @@ module "ecs" {
   auth_client_id                                             = var.auth_client_id
   auth_issuer                                                = var.auth_issuer
   auth_url                                                   = var.auth_url
+  auth_session_duration_min                                  = var.auth_session_duration_min
   secrets_manager_auth_secret_version                        = var.secrets_manager_auth_secret_version
   secrets_manager_auth_client_secret_version                 = var.secrets_manager_auth_client_secret_version
   secrets_manager_metadata_database_migration_secret_version = var.secrets_manager_metadata_database_migration_secret_version
