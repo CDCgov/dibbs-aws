@@ -36,10 +36,10 @@ module "db" {
 }
 
 module "ecs" {
-  source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.8.8"
+  # source  = "CDCgov/dibbs-ecr-viewer/aws"
+  # version = "0.8.8"
   # github branch source 
-  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=gordon/session-duration-env-var"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/rorf"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
