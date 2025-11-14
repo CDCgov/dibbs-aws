@@ -37,9 +37,9 @@ module "db" {
 
 module "ecs" {
   source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "0.8.8"
+  version = "0.9.0"
   # github branch source 
-  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=gordon/session-duration-env-var"
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/rorf"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -53,7 +53,7 @@ module "ecs" {
 
   # The following variables will need to be configured depending on your requirements
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
-  disable_ecr = true
+  disable_ecr = false
 
   # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true when not set)
   # This requires an internet gateway to be present in the VPC.
