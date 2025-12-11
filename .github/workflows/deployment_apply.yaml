@@ -21,7 +21,7 @@ on:
         description: "dibbs-ecr-viewer docker image tag"
         required: true
         type: string
-        default: "8.2.1"
+        default: "8.3.2"
       dibbs-ecr-viewer-config-name:
         description: "Sets CONFIG_NAME on dibbs-ecr-viewer"
         required: true
