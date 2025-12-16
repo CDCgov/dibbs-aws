@@ -39,7 +39,7 @@ module "ecs" {
   # source  = "CDCgov/dibbs-ecr-viewer/aws"
   # version = "0.9.0"
   # github branch source 
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/alb_timeout"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=shanice/add_variable_ECR_PROCESSING_TIMEOUT"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
