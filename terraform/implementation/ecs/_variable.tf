@@ -149,9 +149,3 @@ variable "ssh_key_name" {
   type        = string
   default     = ""
 }
-
-variable "ecr_processing_timeout" {
-   type        = string
-  description = "Set processing timeout length in ms,if not set defaults to 900000ms (15min)"
-  default     = "" 
-}
