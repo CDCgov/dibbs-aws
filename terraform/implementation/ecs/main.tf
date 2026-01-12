@@ -78,6 +78,7 @@ module "ecs" {
   # This is used to configure the ecr-viewer application. (default is "" when not set)
   dibbs_config_name = var.dibbs_config_name
 
+  ecr_processing_timeout = 300000
   # non integrated auth provider example (default values are "" when not set)
   auth_provider                                              = var.auth_provider
   auth_client_id                                             = var.auth_client_id
