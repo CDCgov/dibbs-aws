@@ -375,6 +375,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:targetgroup/${local.vpc_id}*/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
+      "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
     ]
