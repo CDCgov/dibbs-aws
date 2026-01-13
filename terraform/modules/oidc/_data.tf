@@ -256,6 +256,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "ec2:CreateRoute",
       "ec2:CreateTags",
       "ec2:CreateVpc",
+      "ec2:CreateTags",
       "ecs:CreateCluster",
       "ecs:CreateService",
       "ecr:CreateRepository",
