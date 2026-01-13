@@ -23,7 +23,7 @@ module "vpc" {
 module "replication" {
   source = "../../modules/replication"
   providers = {
-    aws.replication = aws.replication
+    aws = aws.replication
   }
   s3_replication_bucket_name = "${local.vpc_name}-replication"
 }
