@@ -45,6 +45,7 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
+  replication_region = "us-west-2"
 
   owner        = var.owner
   project      = var.project
@@ -69,7 +70,6 @@ module "ecs" {
   # Postgresql database example (default is "" when not set)
   secrets_manager_connection_string_version = var.database_type == "postgresql" || var.database_type == "sqlserver" ? module.db.secrets_manager_database_connection_string_version : ""
 
-  replication_region = "us-west-2"
   # SqlServer database example (default values are "" when not set)
   # secrets_manager_sqlserver_user_version = module.db.secrets_manager_sqlserver_user_version
   # secrets_manager_sqlserver_password_version = module.db.secrets_manager_sqlserver_password_version
