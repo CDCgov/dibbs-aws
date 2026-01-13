@@ -200,6 +200,8 @@ data "aws_iam_policy_document" "scoped_two" {
       "ec2:DeleteRoute",
       "iam:PassRole",
       "iam:CreatePolicyVersion",
+      "iam:TagPolicy",
+      "iam:UntagRole",
       "rds:CreateDBParameterGroup",
       "rds:CreateDBSubnetGroup",
       "rds:AddTagsToResource",
@@ -267,6 +269,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:CreateLogDelivery",
       "logs:CreateLogGroup",
       "logs:TagResource",
+      "logs:UntagResource",
       "servicediscovery:CreatePrivateDnsNamespace",
     ]
     resources = [
@@ -311,6 +314,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
   statement {
     actions = [
       "appmesh:TagResource",
+      "appmesh:UntagResource",
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupIngress",
@@ -342,6 +346,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "ecr:BatchCheckLayerAvailability",
       "ecr:TagResource",
       "ecr:UntagResource",
+      "kms:UntagResource",
       "iam:AttachRolePolicy",
       "iam:TagRole",
       "iam:TagPolicy",
@@ -349,6 +354,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "logs:PutRetentionPolicy",
       "logs:UntagResource",
       "servicediscovery:TagResource",
+      "servicediscovery:UntagResource"
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
