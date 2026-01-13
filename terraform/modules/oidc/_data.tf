@@ -313,6 +313,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
 data "aws_iam_policy_document" "resource_tags_update_actions" {
   statement {
     actions = [
+      "application-autoscaling:UntagResource",
       "appmesh:TagResource",
       "appmesh:UntagResource",
       "ec2:AttachInternetGateway",
@@ -357,6 +358,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "servicediscovery:UntagResource"
     ]
     resources = [
+      "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
