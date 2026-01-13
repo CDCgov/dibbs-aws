@@ -1,8 +1,9 @@
 locals {
   vpc_name = "${var.project}-${var.owner}-${terraform.workspace}"
   tags = {
-    project   = var.project
-    owner     = var.owner
-    workspace = terraform.workspace
+    owner       = var.owner
+    workspace   = terraform.workspace
+    project     = var.project
+    environment = terraform.workspace
   }
 }
