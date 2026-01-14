@@ -54,8 +54,8 @@ module "ecs" {
   vpc_id             = module.vpc.vpc_id
   region             = var.region
 
-  s3_replication_bucket_arn  = module.replication.s3_replication_bucket_arn
-  s3_replication_bucket_name = module.replication.s3_replication_bucket_name
+  # s3_replication_bucket_arn  = module.replication.s3_replication_bucket_arn
+  # s3_replication_bucket_name = module.replication.s3_replication_bucket_name
 
   owner        = var.owner
   project      = var.project
