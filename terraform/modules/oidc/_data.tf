@@ -200,6 +200,8 @@ data "aws_iam_policy_document" "scoped_two" {
       "ec2:DeleteRoute",
       "iam:PassRole",
       "iam:CreatePolicyVersion",
+      "iam:TagPolicy",
+      "iam:UntagRole",
       "rds:CreateDBParameterGroup",
       "rds:CreateDBSubnetGroup",
       "rds:AddTagsToResource",
@@ -267,6 +269,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:CreateLogDelivery",
       "logs:CreateLogGroup",
       "logs:TagResource",
+      "logs:UntagResource",
       "servicediscovery:CreatePrivateDnsNamespace",
     ]
     resources = [
@@ -310,7 +313,9 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
 data "aws_iam_policy_document" "resource_tags_update_actions" {
   statement {
     actions = [
+      "application-autoscaling:UntagResource",
       "appmesh:TagResource",
+      "appmesh:UntagResource",
       "ec2:AttachInternetGateway",
       "ec2:AuthorizeSecurityGroupEgress",
       "ec2:AuthorizeSecurityGroupIngress",
@@ -342,6 +347,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "ecr:BatchCheckLayerAvailability",
       "ecr:TagResource",
       "ecr:UntagResource",
+      "kms:UntagResource",
       "iam:AttachRolePolicy",
       "iam:TagRole",
       "iam:TagPolicy",
@@ -349,8 +355,10 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "logs:PutRetentionPolicy",
       "logs:UntagResource",
       "servicediscovery:TagResource",
+      "servicediscovery:UntagResource"
     ]
     resources = [
+      "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc/${local.vpc_id}",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
@@ -369,6 +377,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:targetgroup/${local.vpc_id}*/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
+      "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
     ]
