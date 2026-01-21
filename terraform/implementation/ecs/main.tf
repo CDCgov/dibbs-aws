@@ -20,14 +20,6 @@ module "vpc" {
   tags               = local.tags
 }
 
-module "replication" {
-  source = "../../modules/replication"
-  providers = {
-    aws = aws.replication
-  }
-  s3_replication_bucket_name = "${local.vpc_name}-replication"
-}
-
 module "db" {
   source = "../../modules/db"
 
@@ -53,9 +45,6 @@ module "ecs" {
   private_subnet_ids = flatten(module.vpc.private_subnets)
   vpc_id             = module.vpc.vpc_id
   region             = var.region
-
-  # s3_replication_bucket_arn  = module.replication.s3_replication_bucket_arn
-  # s3_replication_bucket_name = module.replication.s3_replication_bucket_name
 
   owner        = var.owner
   project      = var.project

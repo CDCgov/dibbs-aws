@@ -2,7 +2,6 @@
 
 terraform-docs markdown table --output-file README.md --output-mode inject ../modules/db
 terraform-docs markdown table --output-file README.md --output-mode inject ../modules/oidc
-terraform-docs markdown table --output-file READMD.md --output-mode inject ../modules/replication
 terraform-docs markdown table --output-file README.md --output-mode inject ../modules/tfstate
 terraform-docs markdown table --output-file README.md --output-mode inject ../implementation/ecs
 terraform-docs markdown table --output-file README.md --output-mode inject ../implementation/setup

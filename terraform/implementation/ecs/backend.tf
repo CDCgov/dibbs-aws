@@ -26,8 +26,3 @@ provider "aws" {
     }
   }
 }
-
-provider "aws" {
-  alias  = "replication"
-  region = "us-west-2"
-}
