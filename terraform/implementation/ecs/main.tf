@@ -36,10 +36,10 @@ module "db" {
 }
 
 module "ecs" {
-  # source  = "CDCgov/dibbs-ecr-viewer/aws"
-  # version = "0.11.1"
+  source  = "CDCgov/dibbs-ecr-viewer/aws"
+  version = "0.12.0"
   # github branch source 
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/report_items"
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/report_items"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -55,7 +55,7 @@ module "ecs" {
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
   disable_ecr = false
 
-  # If the intent is to make the ecr-viewer availabble on the public internet, set internal to false (default is true when not set)
+  # If the intent is to make the ecr-viewer available on the public internet, set internal to false (default is true when not set)
   # This requires an internet gateway to be present in the VPC.
   internal = var.internal
 
@@ -64,6 +64,9 @@ module "ecs" {
 
   # To disable autoscaling, set enable_autoscaling to false (default is true when not set)
   enable_autoscaling = true
+
+  # If the intent is to enable alb deletion protection, set false (default is true when not set)
+  # enable_alb_deletion_protection = false
 
   # If intent is to use a metadata database for the ecr-viewer library, provider the required secrets manager names
   # Postgresql database example (default is "" when not set)
@@ -101,6 +104,8 @@ module "ecs" {
       target_memory = 70
     }
   }
+
+  cw_retention_in_days = 30
 }
 
 resource "aws_route53_record" "alb" {
