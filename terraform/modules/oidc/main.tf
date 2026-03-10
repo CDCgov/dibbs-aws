@@ -50,5 +50,6 @@ resource "aws_iam_role" "github" {
     aws_iam_policy.resource_tags_delete_actions.arn,
     aws_iam_policy.storage.arn,
   ]
+  force_detach_policies = true
   assume_role_policy = data.aws_iam_policy_document.github_assume_role.json
 }

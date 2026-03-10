@@ -58,6 +58,7 @@ data "aws_iam_policy_document" "wildcard" {
       "application-autoscaling:DescribeScalableTargets",
       "application-autoscaling:DescribeScalingPolicies",
       "application-autoscaling:ListTagsForResource",
+      "ce:UpdateCostAllocationTagsStatus",
       "ec2:CreateVpcPeeringConnection",
       "ec2:DescribeAddresses",
       "ec2:DescribeInstanceCreditSpecifications",
@@ -94,16 +95,20 @@ data "aws_iam_policy_document" "wildcard" {
       "elasticloadbalancing:DescribeTags",
       "elasticloadbalancing:DescribeTargetGroupAttributes",
       "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:SetWebACL",
       "iam:ListPolicies",
       "iam:GetRolePolicy",
       "kms:CreateKey",
+      "kms:CreateAlias",
       "kms:DescribeKey",
       "kms:EnableKeyRotation",
       "kms:GetKeyRotationStatus",
       "kms:GetKeyPolicy",
       "kms:ListResourceTags",
+      "kms:ListAliases",
       "kms:ScheduleKeyDeletion",
       "kms:TagResource",
+      "kms:DeleteAlias",
       "rds:DescribeDBEngineVersions",
       "rds:DescribeDBSubnetGroups",
       "rds:DescribeDBParameterGroups",
@@ -116,6 +121,9 @@ data "aws_iam_policy_document" "wildcard" {
       "route53:GetChange",
       "route53:ListResourceRecordSets",
       "secretsmanager:GetSecretValue",
+      "wafv2:ListTagsForResource",
+      "wafv2:UpdateWebACL",
+      "wafv2:GetWebACLForResource",
     ]
     resources = [
       "*"
@@ -153,6 +161,10 @@ data "aws_iam_policy_document" "scoped_one" {
       "servicediscovery:GetNamespace",
       "servicediscovery:GetOperation",
       "servicediscovery:ListTagsForResource",
+      "SNS:GetTopicAttributes",
+      "SNS:ListTagsForResource",
+      "wafv2:GetIPSet",
+      "wafv2:GetWebACL",
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
@@ -172,6 +184,9 @@ data "aws_iam_policy_document" "scoped_one" {
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
+      "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/webacl/*/*",
     ]
   }
 }
@@ -202,6 +217,7 @@ data "aws_iam_policy_document" "scoped_two" {
       "iam:CreatePolicyVersion",
       "iam:TagPolicy",
       "iam:UntagRole",
+      "logs:AssociateKmsKey",
       "rds:CreateDBParameterGroup",
       "rds:CreateDBSubnetGroup",
       "rds:AddTagsToResource",
@@ -213,6 +229,9 @@ data "aws_iam_policy_document" "scoped_two" {
       "secretsmanager:GetResourcePolicy",
       "secretsmanager:TagResource",
       "secretsmanager:PutSecretValue",
+      "SNS:TagResource",
+      "SNS:SetTopicAttributes",
+      "wafv2:CreateWebACL",
     ]
     resources = [
       "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
@@ -230,13 +249,18 @@ data "aws_iam_policy_document" "scoped_two" {
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:key-pair/*",
       "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:natgateway/*",
       "arn:aws:ecr:${var.region}:${data.aws_caller_identity.current.account_id}:repository/*",
+      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
-      "arn:aws:ec2:${var.region}:${data.aws_caller_identity.current.account_id}:vpc-endpoint/*",
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:subgrp:*",
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:db:${local.vpc_id}",
       "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret*",
+      "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/webacl/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/managedruleset/*/*"
     ]
   }
 }
@@ -259,6 +283,9 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "ecs:CreateCluster",
       "ecs:CreateService",
       "ecr:CreateRepository",
+      "ecr:CompleteLayerUpload",
+      "ecr:UploadLayerPart",
+      "ecr:InitiateLayerUpload",
       "elasticloadbalancing:CreateListener",
       "elasticloadbalancing:CreateLoadBalancer",
       "elasticloadbalancing:CreateRule",
@@ -271,6 +298,8 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:TagResource",
       "logs:UntagResource",
       "servicediscovery:CreatePrivateDnsNamespace",
+      "SNS:CreateTopic",
+      "wafv2:CreateIPSet",
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
@@ -294,8 +323,12 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "arn:aws:elasticloadbalancing:${var.region}:${data.aws_caller_identity.current.account_id}:targetgroup/${local.vpc_id}*/*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${local.vpc_id}*",
       "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/${local.vpc_id}*",
+      "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
+      "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/managedruleset/*/*"
     ]
     condition {
       test     = "StringEquals"
@@ -347,15 +380,20 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "ecr:BatchCheckLayerAvailability",
       "ecr:TagResource",
       "ecr:UntagResource",
+      "kms:PutKeyPolicy",
       "kms:UntagResource",
+      "kms:RetireGrant",
       "iam:AttachRolePolicy",
       "iam:TagRole",
       "iam:TagPolicy",
       "iam:UntagPolicy",
       "logs:PutRetentionPolicy",
       "logs:UntagResource",
+      "logs:DisassociateKmsKey",
       "servicediscovery:TagResource",
-      "servicediscovery:UntagResource"
+      "servicediscovery:UntagResource",
+      "wafv2:TagResource",
+      "wafv2:AssociateWebACL",
     ]
     resources = [
       "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",
@@ -380,6 +418,10 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "arn:aws:kms:${var.region}:${data.aws_caller_identity.current.account_id}:key/*",
       "arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/${local.vpc_id}:log-stream:",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:*/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/webacl/*/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/managedruleset/*/*"
     ]
     condition {
       test     = "StringEquals"
@@ -431,6 +473,9 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "rds:DeleteDBInstance",
       "rds:DeleteDBParameterGroup",
       "servicediscovery:DeleteNamespace",
+      "SNS:DeleteTopic",
+      "wafv2:DeleteIPSet",
+      "wafv2:DeleteWebACL",
     ]
     resources = [
       "arn:aws:appmesh:${var.region}:${data.aws_caller_identity.current.account_id}:mesh/${local.vpc_id}",
@@ -461,6 +506,9 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "arn:aws:rds:${var.region}:${data.aws_caller_identity.current.account_id}:pg:${local.vpc_id}",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:secret:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:namespace/*",
+      "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*",
+      "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/webacl/*/*",
     ]
     condition {
       test     = "StringEquals"
