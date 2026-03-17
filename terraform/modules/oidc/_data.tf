@@ -394,6 +394,7 @@ data "aws_iam_policy_document" "resource_tags_update_actions" {
       "servicediscovery:UntagResource",
       "wafv2:TagResource",
       "wafv2:AssociateWebACL",
+      "wafv2:PutLoggingConfiguration",
     ]
     resources = [
       "arn:aws:application-autoscaling:${var.region}:${data.aws_caller_identity.current.account_id}:scalable-target/*",

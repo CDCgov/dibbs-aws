@@ -15,6 +15,9 @@
   - [4.2 Helper Scripts](#42-helper-scripts)
   - [4.3 Modules used in this repository](#43-modules-used-in-this-repository)
   - [4.4 Development Workflow](#44-development-workflow)
+  - [Before You Begin](#before-you-begin)
+  - [Quick Start](#quick-start)
+  - [Common Issues and Solutions](#common-issues-and-solutions)
   
 
 # 1. Overview
@@ -94,7 +97,7 @@ Please refer to [CDC's Template Repository](https://github.com/CDCgov/template) 
 # 3. Architectural Design
 The current architectural design for dibbs-aws is as follows:
 
-![Current DIBBS Architecture as of 6-24-2024](https://github.com/CDCgov/dibbs-aws/assets/29112142/7d43d3c1-5d61-41b8-a1c3-bb4884073825)
+![Current DIBBS Architecture as of 3-17-2026](architecture.png)
 
 + [Return to Table of Contents](#table-of-contents)
 
@@ -195,7 +198,7 @@ For non-interactive deployments, ensure you have a `.env` file with the required
 ## 4.3 Modules used in this repository
 
 **Remote sources:**
-- [terraform-aws-dibbs-ecr-viewer](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer) - This module deploys the eCR Viewer application to AWS. Currently using git source: `git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/feature/checkov-workflow`. See the [ECS module README](./terraform/implementation/ecs/README.md) for detailed configuration options.
+- [terraform-aws-dibbs-ecr-viewer](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer) - This module deploys the eCR Viewer application to AWS. See the [ECS module README](./terraform/implementation/ecs/README.md) for detailed configuration options.
 - [terraform-aws-modules/vpc/aws](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module provisions the VPC infrastructure for the ECS module.
 
 **Local modules:**
@@ -241,7 +244,7 @@ Ensure you have the following prerequisites before deploying:
 
 ## Quick Start
 
-Get started deploying this infrastructure in under 10 minutes:
+Get started deploying this infrastructure in under 60 minutes:
 
 ```bash
 # Clone the repository
@@ -267,10 +270,7 @@ For detailed step-by-step instructions, see [Section 4.2 Helper Scripts](#42-hel
 
 | Issue | Solution |
 |-------|----------|
-| Backend not initialized error | Run `setup.sh` first to initialize the S3 backend before deploying ECS |
 | OIDC token errors | Verify your GitHub repository name matches exactly (format: `org/repo`) and the OIDC role trust policy is configured correctly |
-| Database connection fails | Check that security group rules allow traffic from ECS task subnet to RDS, and that the database type in `tfvars` matches your configuration |
-| SSL certificate errors | Ensure the cert is issued by ACM (not imported) and in the same region as your deployment (typically `us-east-1` for ALB) |
 | Permission denied on scripts | Run `chmod +x terraform/implementation/setup/setup.sh` and `chmod +x terraform/implementation/ecs/deploy.sh` |
 | State lock error | Wait for any existing Terraform operations to complete, or remove the `.terraform.lock.hcl` file if stale |
 
