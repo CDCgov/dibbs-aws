@@ -118,22 +118,28 @@ _**Note**_: Engineers *must* have access and permissions to create AWS resources
   - Terraform Documentation: The official Terraform documentation is an exhaustive resource that covers everything from installation to advanced topics. https://developer.hashicorp.com/terraform/docs
   - Terraform/AWS Intro: HashiCorp provides an official tutorial that covers the basics of Terraform and helps you get started with deploying infrastructure into AWS. https://developer.hashicorp.com/terraform/tutorials/aws-get-started
   - Terraform AWS Provider Documentation: If you're using Terraform with AWS, this documentation provides detailed information on the available resources and data sources. https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-  - Terraform module published by the dibbs-ecr-viewer DevOps teams this repo uses: https://registry.terraform.io/modules/CDCgov/dibbs-ecr-viewer/aws/latest
+  - Terraform module (git source): The ECS module is sourced directly from the [terraform-aws-dibbs-ecr-viewer repository](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer). See Section 4.3 for details on current module sources.
 
 [Return to Table of Contents](#table-of-contents)
 
 ## 4.2 Helper Scripts
 
 **If you are familiar with terraform, have setup a backend, understand terraform deployment workflows, know how to validate terraform, or are otherwise opinionated about how you want to run things, feel free to skip this section**
-- We have several helper scripts that will assist you with setting up your AWS backend and deploying your AWS resources. 
+- We have several helper scripts that will assist you with setting up your AWS backend and deploying your AWS resources.
 - These scripts are located in the **terraform/utilities** folder, the **terraform/implementation/setup** folder and the **terraform/implementation/ecs** folder.
-- The **utilities** folder contains scripts that will assist in generating terraform docs, formatting and linting terraform code.
-- The **setup.sh** script will assist you with creating the terraform state and .env files to be used later, also sets up OIDC for your GitHub workflows. 
-- The **deploy.sh** script will assist you with deploying your ECS module from your development machine.
+
+| Folder | Purpose |
+|--------|---------|
+| `terraform/utilities` | Scripts for generating terraform docs, formatting and linting code |
+| `terraform/implementation/setup` | Creates the terraform backend (S3 state bucket, DynamoDB lock table) and OIDC configuration |
+| `terraform/implementation/ecs` | Deploys the ECS module (eCR Viewer application infrastructure) |
+
+- The **setup.sh** script creates the terraform state backend and .env files. It also sets up OIDC for GitHub workflows.
+- The **deploy.sh** script deploys your ECS module from your development machine.
 
 _**Note**_: It is not recommended to run these scripts without reviewing them and understanding their limitations.
 
-_**Note**_: It is not recommended to use these scripts to automate your terraform deployments, please see the [GitHub workflows](https://github.com/CDCgov/dibbs-aws/tree/main/.github/workflows) for examples on how to do that.
+_**Note**_: It is not recommended to use these scripts to automate your terraform deployments. Please see the [GitHub workflows](https://github.com/CDCgov/dibbs-aws/tree/main/.github/workflows) for examples of CI/CD deployment.
 
 **Terraform validation and docs with `./utils.sh`**
 * In your terminal, navigate to the _/terraform/utilities_ folder.
@@ -154,28 +160,45 @@ The `setup.sh` scripts will assist you with creating the terraform state and tfv
 
 The setup.sh script will create the following files:
 
-- _tfstate.tfvars_
-- _.env_
-- _terraform.state_
+- _tfstate.tfvars_ - Terraform variables for the state backend configuration
+- _.env_ - Environment variables used by deployment scripts
+- _terraform.state_ - Local terraform state file (if using local backend)
 
-**Deploy Your ECS Module with `./deploy`**
-* It is highly recommended to create a new directory per environment that is launched, to do so run `cp terraform/implementation/ecs terraform/implementation/<ENVIRONMENT>`.
-  * The benefits of doing this reduces the likelyhood of conflicts and allows each environment to run different versions of the same module.
-* To run your ECS Module Changes in your local terminal, navigate to your working directory, ` cd terraform/implementation/ecs/` or `cd terraform/implementation/<ENVIRONMENT>`
-* In your terminal run the deploy script for your designated environment `./deploy.sh -e <ENVIRONMENT>`.
+**Deploy Your ECS Module with `./deploy.sh`**
 
-_**Note**_: The _-e_ tag stands for environment and you can specify `dev`, `test`, `prod`, this can match your `<ENVIRONMENT>` naming convention.
-or whatever environment your team desires.
+It is highly recommended to create a new directory per environment that is launched. To do so, run:
+```bash
+cp -r terraform/implementation/ecs terraform/implementation/<ENVIRONMENT_NAME>
+```
+The benefits of doing this reduce the likelihood of conflicts and allow each environment to run different versions of the same module.
+
+To deploy your ECS Module from your local machine:
+
+1. Navigate to your working directory:
+   ```bash
+   cd terraform/implementation/ecs/
+   # or for a custom environment:
+   cd terraform/implementation/<ENVIRONMENT_NAME>
+   ```
+
+2. Run the deploy script for your designated environment:
+   ```bash
+   ./deploy.sh -e <ENVIRONMENT>
+   ```
+
+_**Note**_: The `-e` flag specifies the environment (e.g., `dev`, `test`, `prod`). This can match your `<ENVIRONMENT_NAME>` directory naming convention, or be any environment name your team desires.
+
+For non-interactive deployments, ensure you have a `.env` file with the required variables before running deploy.sh. See the [setup.sh](https://github.com/CDCgov/dibbs-aws/blob/main/terraform/implementation/setup/setup.sh) script for the expected format.
 
 - [Return to Table of Contents](#table-of-contents)
 
 ## 4.3 Modules used in this repository
 
-**Modules pulled from the Terraform Registry**
-- [terraform-aws-dibbs-ecr-viewer](https://registry.terraform.io/modules/CDCgov/dibbs-ecr-viewer/aws/latest) - This module is used to deploy the eCR Viewer application to AWS.
-- [vpc](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module is used to deploy the VPC for the ECS module.
+**Remote sources:**
+- [terraform-aws-dibbs-ecr-viewer](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer) - This module deploys the eCR Viewer application to AWS. Currently using git source: `git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/feature/checkov-workflow`. See the [ECS module README](./terraform/implementation/ecs/README.md) for detailed configuration options.
+- [terraform-aws-modules/vpc/aws](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module provisions the VPC infrastructure for the ECS module.
 
-**Local modules**
+**Local modules:**
 - [oidc](./terraform/modules/oidc/README.md) - OIDC module, used to setup OIDC for GitHub workflows
 - [tfstate](./terraform/modules/tfstate/README.md) - TFState module, used to setup the terraform state backend and lock table
 - [db](./terraform/modules/db/README.md) - Database module, used to setup the database for the ECS module
@@ -185,17 +208,72 @@ or whatever environment your team desires.
 **Use the dibbs-aws repository**
 
 1. Select to create your own repo from this template, or fork it to your own repository.
-1. Clone the repository to your local machine.
-2. Make a new branch for your changes: `git checkout -b <BRANCH>`.
-3. Make any changes required by your team to the terraform configurations.
-4. Add and commit changes to your working branch: `git add . && git commit -m "Your message here"`.
-5. Push your changes to your github repository: `git push origin <BRANCH>`.
-6. Open a Pull Request so that your team can review your changes and testing can be done.
-7. Go back to step 4 until your changes are approved.
-8. Once your changes are approved, merge your changes into the main branch.
+2. Clone the repository to your local machine.
+3. Make a new branch for your changes: `git checkout -b <BRANCH>`.
+4. Make any changes required by your team to the terraform configurations.
+5. Add and commit changes to your working branch: `git add . && git commit -m "Your message here"`.
+6. Push your changes to your github repository: `git push origin <BRANCH>`.
+7. Open a Pull Request so that your team can review your changes and testing can be done.
+8. Go back to step 4 until your changes are approved.
+9. Once your changes are approved, merge your changes into the main branch.
 
-**Terrform Commands**
+**Terraform Commands**
 
-- Please review these docs for specific help understanding and running terraform commands: [Terraform Commands](#41-requirements)
+For help with terraform commands, please visit the [official Terraform documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started).
 
-- [Return to Table of Contents](#table-of-contents)
+[Return to Table of Contents](#table-of-contents)
+
+---
+
+## Before You Begin
+
+Ensure you have the following prerequisites before deploying:
+
+- **AWS Account** with permissions for IAM, VPC, ECS, RDS, S3, DynamoDB, ACM, and Route 53
+- **Terraform** version 1.0.0+ installed locally
+- **AWS CLI** version 2+ configured with appropriate credentials
+- **GitHub repository** (for OIDC configuration if using CI/CD)
+- **SSL certificate** in AWS Certificate Manager (ACM) for your domain
+- **Route 53 hosted zone ID** (if using a custom domain)
+- For non-integrated auth: OAuth application credentials from your provider
+
+---
+
+## Quick Start
+
+Get started deploying this infrastructure in under 10 minutes:
+
+```bash
+# Clone the repository
+git clone https://github.com/CDCgov/dibbs-aws.git
+cd dibbs-aws
+
+# Step 1: Set up your AWS backend (one-time)
+cd terraform/implementation/setup
+./setup.sh
+
+# Step 2: Configure and deploy ECS
+cd ../ecs
+cp -r . ../my-environment  # Optional: create environment-specific copy
+cd ../my-environment
+./deploy.sh -e dev
+```
+
+For detailed step-by-step instructions, see [Section 4.2 Helper Scripts](#42-helper-scripts).
+
+---
+
+## Common Issues and Solutions
+
+| Issue | Solution |
+|-------|----------|
+| Backend not initialized error | Run `setup.sh` first to initialize the S3 backend before deploying ECS |
+| OIDC token errors | Verify your GitHub repository name matches exactly (format: `org/repo`) and the OIDC role trust policy is configured correctly |
+| Database connection fails | Check that security group rules allow traffic from ECS task subnet to RDS, and that the database type in `tfvars` matches your configuration |
+| SSL certificate errors | Ensure the cert is issued by ACM (not imported) and in the same region as your deployment (typically `us-east-1` for ALB) |
+| Permission denied on scripts | Run `chmod +x terraform/implementation/setup/setup.sh` and `chmod +x terraform/implementation/ecs/deploy.sh` |
+| State lock error | Wait for any existing Terraform operations to complete, or remove the `.terraform.lock.hcl` file if stale |
+
+---
+
+[Return to Table of Contents](#table-of-contents)
