@@ -18,6 +18,11 @@
   - [Before You Begin](#before-you-begin)
   - [Quick Start](#quick-start)
   - [Common Issues and Solutions](#common-issues-and-solutions)
+  - [Secrets Management](#secrets-management)
+    - [Options for Secrets Management](#options-for-secrets-management)
+      - [Option 1: AWS Secrets Manager](#option-1-aws-secrets-manager)
+      - [Option 2: GitHub Secrets](#option-2-github-secrets)
+      - [Option 3: Direct Variable Injection](#option-3-direct-variable-injection)
   
 
 # 1. Overview
@@ -273,6 +278,135 @@ For detailed step-by-step instructions, see [Section 4.2 Helper Scripts](#42-hel
 | OIDC token errors | Verify your GitHub repository name matches exactly (format: `org/repo`) and the OIDC role trust policy is configured correctly |
 | Permission denied on scripts | Run `chmod +x terraform/implementation/setup/setup.sh` and `chmod +x terraform/implementation/ecs/deploy.sh` |
 | State lock error | Wait for any existing Terraform operations to complete, or remove the `.terraform.lock.hcl` file if stale |
+
+---
+
+## Secrets Management
+
+When adopting this repository, you have multiple options for storing and managing secrets. This document outlines the available approaches and how they integrate with the infrastructure.
+
+---
+
+### Options for Secrets Management
+
+#### Option 1: AWS Secrets Manager
+
+AWS Secrets Manager is integrated into the Terraform code and provides secure storage for sensitive values within AWS. Secrets can be accessed by ECS tasks, Lambda functions, and other AWS services via IAM roles.
+
+**Use this approach if:**
+- Your application runs in AWS and needs runtime access to secrets
+- You want built-in secret rotation capabilities
+- You prefer centralized secrets management through AWS
+
+**How it works:**
+
+The database module automatically creates Secrets Manager resources for connection strings and can be used as an example, even if you don't plan to use this module:
+
+```hcl
+# From terraform/modules/db/postgresql.tf
+resource "aws_secretsmanager_secret" "postgresql_connection_string" {
+  name        = "${local.vpc_name}-postgresql-connection-string-${random_string.secret_ident[0].result}"
+  description = "Postgresql connection string for the ecr-viewer"
+}
+
+resource "aws_secretsmanager_secret_version" "postgresql" {
+  secret_id     = aws_secretsmanager_secret.postgresql_connection_string[0].id
+  secret_string = "postgres://${aws_db_instance.postgresql[0].username}:${random_password.database.result}@${aws_db_instance.postgresql[0].address}:${aws_db_instance.postgresql[0].port}/${aws_db_instance.postgresql[0].db_name}"
+}
+```
+
+**To use with your deployment:**
+
+```hcl
+# Reference the database connection string secret from the module
+module "db" {
+  source = "../../modules/db"
+  # ... other configuration ...
+}
+
+# Example: Create auth secrets directly in your deployment
+resource "aws_secretsmanager_secret" "auth_secret" {
+  name        = "auth_secret"
+  description = "auth secret string for the ecr-viewer"
+  tags        = var.tags
+}
+
+resource "aws_secretsmanager_secret_version" "auth_secret" {
+  secret_id     = aws_secretsmanager_secret.auth_secret.id
+  secret_string = var.auth_secret
+}
+
+module "ecs" {
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git"
+
+  # Use the database connection string secret from the db module
+  secrets_manager_connection_string_version = module.db.secrets_manager_database_connection_string_version
+
+  # For auth secrets, create your own Secrets Manager resources and reference them directly:
+  secrets_manager_auth_secret_version       = aws_secretsmanager_secret_version.auth_secret.secret_string
+}
+
+```
+
+---
+
+#### Option 2: GitHub Secrets
+
+GitHub Secrets store sensitive values in your GitHub repository and can be injected into CI/CD workflows as environment variables.
+
+**Use this approach if:**
+- You want to keep secrets within GitHub without AWS dependencies
+- Your workflow needs authentication provider credentials (OAuth, AD, Keycloak)
+- You prefer secrets management through GitHub's UI
+
+**How it works:**
+
+Configure secrets in your GitHub repository under **Settings > Secrets and variables > Actions**, then reference them in workflows:
+
+```yaml
+# .github/workflows/deployment_apply.yaml
+- name: Set auth secrets for AD
+  if: ${{ inputs.dibbs-ecr-viewer-auth-provider == 'ad' }}
+  run: |
+    echo "AUTH_CLIENT_ID=${{ secrets.AD_AUTH_CLIENT_ID }}" >> $GITHUB_ENV
+    echo "AUTH_ISSUER=${{ secrets.AD_AUTH_ISSUER }}" >> $GITHUB_ENV
+    echo "AUTH_SECRET=${{ secrets.AD_AUTH_SECRET }}" >> $GITHUB_ENV
+
+- name: Terraform
+  env:
+    BUCKET: ${{ secrets.TFSTATE_BUCKET }}
+    DYNAMODB_TABLE: ${{ secrets.TFSTATE_DYNAMODB_TABLE }}
+  shell: bash
+  run: |
+    # Secrets are available as environment variables
+```
+
+**Common secrets to configure:**
+
+| Secret Name | Description |
+|-------------|-------------|
+| `AWS_ROLE_ARN` | IAM role ARN for deployments via OIDC |
+| `TFSTATE_BUCKET` | S3 bucket name for Terraform state |
+| `TFSTATE_DYNAMODB_TABLE` | DynamoDB table for state locking |
+| `ROUTE53_HOSTED_ZONE_ID` | Route 53 hosted zone ID |
+| `AD_AUTH_*` or `KEYCLOAK_AUTH_*` | Authentication provider credentials |
+
+---
+
+#### Option 3: Direct Variable Injection
+
+You can also pass secrets directly as Terraform variables (not recommended for production).
+
+**Example tfvars file:**
+
+```hcl
+# secrets.tfvars (keep this file out of version control)
+auth_client_id                        = "your-client-id"
+auth_issuer                           = "https://example.com"
+auth_secret                           = "your-auth-secret"
+auth_client_secret                    = "your-client-secret"
+secrets_manager_auth_secret_version   = "arn:aws:secretsmanager:..."
+```
 
 ---
 
