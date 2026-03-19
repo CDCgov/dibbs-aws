@@ -1,7 +1,7 @@
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [1. Overview](#1-overview)
-- [2 Getting Started](#2-getting-started)
+- [2. Getting Started](#2-getting-started)
 - [3. Notices](#3-notices)
   - [3.1 Public Domain Standard Notice](#31-public-domain-standard-notice)
   - [3.2 License Standard Notice](#32-license-standard-notice)
@@ -21,7 +21,7 @@ This repository is actively used by the DIBBs eCR Viewer team to deploy and test
 
 [Return to Table of Contents](#table-of-contents)
 
-# 2 Getting Started
+# 2. Getting Started
 
 [Implementation Docs](docs/README.md)
 

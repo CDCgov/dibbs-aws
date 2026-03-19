@@ -121,7 +121,9 @@ For detailed step-by-step instructions, see [Section 4.2 Helper Scripts](#42-hel
 
 **Note**: It is not recommended to run these scripts without reviewing them and understanding their limitations.
 
-**Note**: It is not recommended to use these scripts to automate your terraform deployments. Please see the [GitHub workflows](https://github.com/CDCgov/dibbs-aws/tree/main/.github/workflows) for examples of CI/CD deployment.
+**Helper Scripts vs CI/CD:**
+- Use helper scripts (`./setup.sh`, `./deploy.sh`) for local development, testing, and interactive deployments from your machine
+- Use GitHub workflows (see [examples](https://github.com/CDCgov/dibbs-aws/tree/main/.github/workflows)) for automated CI/CD deployment to production environments
 
 **Terraform validation and docs with `./utils.sh`**
 * In your terminal, navigate to the _/terraform/utilities_ folder.
@@ -331,9 +333,9 @@ secrets_manager_auth_secret_version   = "arn:aws:secretsmanager:..."
 - [terraform-aws-modules/vpc/aws](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module provisions the VPC infrastructure for the ECS module.
 
 **Local modules:**
-- [oidc](./terraform/modules/oidc/README.md) - OIDC module, used to setup OIDC for GitHub workflows
-- [tfstate](./terraform/modules/tfstate/README.md) - TFState module, used to setup the terraform state backend and lock table
-- [db](./terraform/modules/db/README.md) - Database module, used to setup the database for the ECS module
+- [oidc](../modules/oidc/) - OIDC module, used to setup OIDC for GitHub workflows
+- [tfstate](../modules/tfstate/) - TFState module, used to setup the terraform state backend and lock table
+- [db](../modules/db/) - Database module, used to setup the database for the ECS module
 
 ---
 
