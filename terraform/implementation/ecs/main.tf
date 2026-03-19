@@ -36,10 +36,9 @@ module "db" {
 }
 
 module "ecs" {
-  # source  = "CDCgov/dibbs-ecr-viewer/aws"
-  # version = "1.0.0"
-  # github branch source 
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=alis/feature/checkov-workflow"
+  source  = "CDCgov/dibbs-ecr-viewer/aws"
+  version = "1.0.0"
+  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=v1.0.0"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)

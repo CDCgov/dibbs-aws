@@ -19,7 +19,7 @@
 
 The current architectural design for dibbs-aws is as follows:
 
-![Current DIBBS Architecture as of 3-17-2026](architecture.png)
+![Current DIBBS Architecture as of 3-19-2026](architecture.png)
 
 ---
 
@@ -50,7 +50,7 @@ If you havn't used terraform before, and have the will to learn, please visit th
 - Terraform Documentation: The official Terraform documentation is an exhaustive resource that covers everything from installation to advanced topics. https://developer.hashicorp.com/terraform/docs
 - Terraform/AWS Intro: HashiCorp provides an official tutorial that covers the basics of Terraform and helps you get started with deploying infrastructure into AWS. https://developer.hashicorp.com/terraform/tutorials/aws-get-started
 - Terraform AWS Provider Documentation: If you're using Terraform with AWS, this documentation provides detailed information on the available resources and data sources. https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-- Terraform module (git source): The ECS module is sourced directly from the [terraform-aws-dibbs-ecr-viewer repository](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer). See Section 4.3 for details on current module sources.
+- Terraform module (git source): The ECS module is sourced directly from the [terraform-aws-dibbs-ecr-viewer repository](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer). See the [ECS module README](../terraform/implementation/ecs/README.md) for details on current module sources.
 
 ---
 
@@ -96,7 +96,7 @@ cd ../my-environment
 ./deploy.sh -e dev
 ```
 
-For detailed step-by-step instructions, see [Section 4.2 Helper Scripts](#42-helper-scripts).
+For detailed step-by-step instructions, see [Helper Scripts](#helper-scripts).
 
 ---
 
