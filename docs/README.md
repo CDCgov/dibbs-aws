@@ -235,7 +235,8 @@ resource "aws_secretsmanager_secret_version" "auth_secret" {
 }
 
 module "ecs" {
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git"
+  source  = "CDCgov/dibbs-ecr-viewer/aws"
+  version = "1.0.0"
 
   # Use the database connection string secret from the db module
   secrets_manager_connection_string_version = module.db.secrets_manager_database_connection_string_version
