@@ -45,12 +45,12 @@ _**Note**_: Engineers *must* have access and permissions to create AWS resources
 ---
 
 ## Terraform documentation
-If you havn't used terraform before, and have the will to learn, please visit these resources before continuing.
+If you have not used terraform before, and have the will to learn, please visit these resources before continuing.
 
 - Terraform Documentation: The official Terraform documentation is an exhaustive resource that covers everything from installation to advanced topics. https://developer.hashicorp.com/terraform/docs
 - Terraform/AWS Intro: HashiCorp provides an official tutorial that covers the basics of Terraform and helps you get started with deploying infrastructure into AWS. https://developer.hashicorp.com/terraform/tutorials/aws-get-started
 - Terraform AWS Provider Documentation: If you're using Terraform with AWS, this documentation provides detailed information on the available resources and data sources. https://registry.terraform.io/providers/hashicorp/aws/latest/docs
-- Terraform module (git source): The ECS module is sourced directly from the [terraform-aws-dibbs-ecr-viewer repository](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer). See the [ECS module README](../terraform/implementation/ecs/README.md) for details on current module sources.
+- Terraform module (git source): The ECS module is sourced directly from the [terraform-aws-dibbs-ecr-viewer repository](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer). See the [ECS module README](terraform/implementation/ecs/README.md) for details on current module sources.
 
 ---
 
@@ -330,13 +330,13 @@ secrets_manager_auth_secret_version   = "arn:aws:secretsmanager:..."
 ## Modules used in this repository
 
 **Remote sources:**
-- [terraform-aws-dibbs-ecr-viewer](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer) - This module deploys the eCR Viewer application to AWS. See the [ECS module README](../terraform/implementation/ecs/README.md) for detailed configuration options.
+- [terraform-aws-dibbs-ecr-viewer](https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer) - This module deploys the eCR Viewer application to AWS. See the [ECS module README](terraform/implementation/ecs/README.md) for detailed configuration options.
 - [terraform-aws-modules/vpc/aws](https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest) - This module provisions the VPC infrastructure for the ECS module.
 
 **Local modules:**
-- [oidc](../modules/oidc/) - OIDC module, used to setup OIDC for GitHub workflows
-- [tfstate](../modules/tfstate/) - TFState module, used to setup the terraform state backend and lock table
-- [db](../modules/db/) - Database module, used to setup the database for the ECS module
+- [oidc](terraform/modules/oidc/README.md) - OIDC module, used to setup OIDC for GitHub workflows
+- [tfstate](terraform/modules/tfstate/README.md) - TFState module, used to setup the terraform state backend and lock table
+- [db](terraform/modules/db/README.md) - Database module, used to setup the database for the ECS module
 
 ---
 

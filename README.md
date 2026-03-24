@@ -23,7 +23,7 @@ This repository is actively used by the DIBBs eCR Viewer team to deploy and test
 
 # 2. Getting Started
 
-[Implementation Docs](docs/README.md)
+[Implementation Docs](IMPLEMENTATION.md)
 
 # 3. Notices
 
