@@ -5,8 +5,7 @@ data "aws_acm_certificate" "this" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.16.0"
+  source = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc.git?ref=9ffd9c66f3d7eb4b5bc2d7bc7d049f794b127693" # 5.16.0
 
   name            = local.vpc_name
   cidr            = var.vpc_cidr
@@ -36,9 +35,7 @@ module "db" {
 }
 
 module "ecs" {
-  source  = "CDCgov/dibbs-ecr-viewer/aws"
-  version = "1.0.0"
-  # source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=1.0.0"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=588457a2beaa1371c1e5f01c9ece9bf83d937b00"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
