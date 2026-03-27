@@ -35,7 +35,7 @@ module "db" {
 }
 
 module "ecs" {
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=588457a2beaa1371c1e5f01c9ece9bf83d937b00"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=8e1ee72d639a7def04d1d1c4e33b21cb73e0866b"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -60,6 +60,12 @@ module "ecs" {
 
   # To disable autoscaling, set enable_autoscaling to false (default is true when not set)
   enable_autoscaling = true
+
+  enable_alb_deletion_protection = false
+
+  cw_retention_in_days = 14
+  ecr_viewer_object_retention_days = 14
+  logging_object_retention_days = 14
 
   # If the intent is to enable alb deletion protection, set false (default is true when not set)
   # enable_alb_deletion_protection = false
@@ -100,8 +106,6 @@ module "ecs" {
       target_memory = 70
     }
   }
-
-  cw_retention_in_days = 30
 }
 
 resource "aws_route53_record" "alb" {

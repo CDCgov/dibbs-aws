@@ -10,7 +10,6 @@
     - [Options for Secrets Management](#options-for-secrets-management)
       - [Option 1: AWS Secrets Manager](#option-1-aws-secrets-manager)
       - [Option 2: GitHub Secrets](#option-2-github-secrets)
-      - [Option 3: Direct Variable Injection](#option-3-direct-variable-injection)
   - [Common Issues and Solutions](#common-issues-and-solutions)
   - [Modules used in this repository](#modules-used-in-this-repository)
   - [Development Workflow](#development-workflow)
@@ -292,28 +291,17 @@ Configure secrets in your GitHub repository under **Settings > Secrets and varia
 
 ---
 
-#### Option 3: Direct Variable Injection
-
-You can also pass secrets directly as Terraform variables (not recommended for production).
-
-**Example tfvars file:**
-
-```hcl
-# secrets.tfvars (keep this file out of version control)
-auth_client_id                        = "your-client-id"
-auth_issuer                           = "https://example.com"
-auth_secret                           = "your-auth-secret"
-auth_client_secret                    = "your-client-secret"
-secrets_manager_auth_secret_version   = "arn:aws:secretsmanager:..."
-```
-
----
-
 - [Return to Table of Contents](#table-of-contents)
 
 ---
 
 ## Common Issues and Solutions
+
+- [Checking DIBBS App Logs](https://github.com/CDCgov/dibbs-aws/wiki/Checking-DIBBS-App-Logs)
+
+
+- [Manually Removing a Terraform Lock](https://github.com/CDCgov/dibbs-aws/wiki/Manually-Remove-a-Terraform-Lock)
+
 
 | Issue | Solution |
 |-------|----------|
