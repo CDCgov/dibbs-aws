@@ -35,7 +35,7 @@ module "db" {
 }
 
 module "ecs" {
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=588457a2beaa1371c1e5f01c9ece9bf83d937b00"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=d5981b48695611abb1f8b006290353b6ad8f5fec"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
