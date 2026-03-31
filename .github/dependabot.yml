@@ -6,31 +6,18 @@
 version: 2
 updates:
   - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "terraform/implementation/ecs" # Location of package manifests
+    directory: "terraform/implementation" # Location of package manifests
     open-pull-requests-limit: 1
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "terraform/implementation/setup" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    # this checks the .github/workflows directory by default
+    # any other directory for github-actions seems broken at the moment
+    directory: "/"
     open-pull-requests-limit: 1
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "terraform/modules/db" # Location of package manifests
-    open-pull-requests-limit: 1
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "terraform/modules/oidc" # Location of package manifests
-    open-pull-requests-limit: 1
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "terraform/modules/tfstate" # Location of package manifests
-    open-pull-requests-limit: 1
-    schedule:
-      interval: "weekly"
+      day: "sunday"
+    reviewers:
+      - "rin-skylight"
