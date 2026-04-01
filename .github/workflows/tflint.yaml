@@ -18,7 +18,7 @@ jobs:
         dirs: [terraform/modules/oidc, terraform/modules/tfstate, terraform/implementation/setup, terraform/implementation/ecs]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         name: Checkout source code
 
       - uses: actions/cache@v4
