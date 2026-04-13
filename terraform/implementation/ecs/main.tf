@@ -100,8 +100,8 @@ module "ecs" {
     fhir-converter = {
       cpu           = 2048
       memory        = 4096
-      max_capacity  = 5
-      min_capacity  = 1
+      max_capacity  = 2
+      min_capacity  = 2
       target_cpu    = 60
       target_memory = 70
     }
