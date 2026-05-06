@@ -35,7 +35,7 @@ module "db" {
 }
 
 module "ecs" {
-  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=laura/ha-proxy"
+  source = "git::https://github.com/CDCgov/terraform-aws-dibbs-ecr-viewer.git?ref=ba64e72de946de9fda8406dcdee8294baf842ab6"
 
   public_subnet_ids  = flatten(module.vpc.public_subnets)
   private_subnet_ids = flatten(module.vpc.private_subnets)
@@ -104,8 +104,8 @@ module "ecs" {
     fhir-converter = {
       cpu           = 2048
       memory        = 4096
-      max_capacity  = 2
-      min_capacity  = 2
+      max_capacity  = 5
+      min_capacity  = 1
       target_cpu    = 60
       target_memory = 70
     }
