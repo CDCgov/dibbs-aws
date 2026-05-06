@@ -51,6 +51,8 @@ module "ecs" {
   # If intent is to pull from the dibbs-ecr-viewer GHCR, set disable_ecr to true (default is false when not set)
   disable_ecr = false
 
+  enable_enhanced_ecr_registry_scanning = true
+
   # If the intent is to make the ecr-viewer available on the public internet, set internal to false (default is true when not set)
   # This requires an internet gateway to be present in the VPC.
   internal = var.internal
@@ -64,7 +66,9 @@ module "ecs" {
   enable_alb_deletion_protection = false
 
   cw_retention_in_days = 14
+
   ecr_viewer_object_retention_days = 14
+
   logging_object_retention_days = 14
 
   # If the intent is to enable alb deletion protection, set false (default is true when not set)
