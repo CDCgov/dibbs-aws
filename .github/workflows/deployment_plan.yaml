@@ -3,6 +3,7 @@ run-name: Terraform plan ${{ inputs.workspace }}${{ inputs.id }} by @${{ github.
 
 on:
   workflow_dispatch:
+    # checkov:skip=CKV_GHA_7:This workflow can dynamically destroy ephemeral environments, copy and hard code for persistent environments
     inputs:
       workspace:
         description: "The workspace to terraform against"

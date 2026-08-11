@@ -2,9 +2,8 @@ name: Terraform Apply
 run-name: Terraform apply ${{ inputs.workspace }}${{ inputs.id }}:${{ inputs.dibbs-ecr-viewer-version }} by @${{ github.actor }}
 
 on:
-  repository_dispatch:
-    types: [trigger-dev-deploy]
   workflow_dispatch:
+    # checkov:skip=CKV_GHA_7:This workflow can dynamically create ephemeral environments, copy and hard code for persistent environments
     inputs:
       workspace:
         description: "The workspace to terraform against"

@@ -65,11 +65,9 @@ module "ecs" {
 
   enable_alb_deletion_protection = false
 
-  cw_retention_in_days = 14
-
+  cw_retention_in_days             = 14
   ecr_viewer_object_retention_days = 14
-
-  logging_object_retention_days = 14
+  logging_object_retention_days    = 14
 
   # If the intent is to enable alb deletion protection, set false (default is true when not set)
   # enable_alb_deletion_protection = false

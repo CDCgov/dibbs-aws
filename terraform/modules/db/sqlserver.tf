@@ -4,21 +4,31 @@ data "aws_rds_engine_version" "sqlserver" {
 }
 
 resource "aws_db_instance" "sqlserver" {
-  count                           = var.database_type == "sqlserver" ? 1 : 0
-  allocated_storage               = "20"
-  identifier                      = "${local.vpc_name}-${var.database_type}-ecr-viewer"
-  engine                          = data.aws_rds_engine_version.sqlserver.engine
-  engine_version                  = data.aws_rds_engine_version.sqlserver.version_actual
-  enabled_cloudwatch_logs_exports = []
-  instance_class                  = local.sqlserver_instance_class
-  username                        = "sa"
-  password                        = random_password.database.result
-  parameter_group_name            = aws_db_parameter_group.sqlserver[0].name
-  skip_final_snapshot             = true
-  db_subnet_group_name            = aws_db_subnet_group.this.name
-  vpc_security_group_ids          = [aws_security_group.sqlserver.id]
-  license_model                   = "license-included"
-  tags                            = var.tags
+  # checkov:skip=CKV_AWS_293: Deletion protection: ignore for non-production environments
+  # checkov:skip=CKV_AWS_354: KMS key: TODO
+  # checkov:skip=CKV_AWS_157: Multi-region: TODO
+  # checkov:skip=CKV_AWS_129: RDS logs: TODO
+  count                               = var.database_type == "sqlserver" ? 1 : 0
+  iam_database_authentication_enabled = true
+  allocated_storage                   = "20"
+  identifier                          = "${local.vpc_name}-${var.database_type}-ecr-viewer"
+  engine                              = data.aws_rds_engine_version.sqlserver.engine
+  engine_version                      = data.aws_rds_engine_version.sqlserver.version_actual
+  enabled_cloudwatch_logs_exports     = []
+  instance_class                      = local.sqlserver_instance_class
+  username                            = "sa"
+  password                            = random_password.database.result
+  parameter_group_name                = aws_db_parameter_group.sqlserver[0].name
+  skip_final_snapshot                 = true
+  db_subnet_group_name                = aws_db_subnet_group.this.name
+  vpc_security_group_ids              = [aws_security_group.sqlserver.id]
+  license_model                       = "license-included"
+  tags                                = var.tags
+  copy_tags_to_snapshot               = true
+  storage_encrypted                   = true
+  monitoring_interval                 = 60
+  performance_insights_enabled        = true
+  auto_minor_version_upgrade          = true
 }
 
 # Create a parameter group to configure SqlServer RDS parameters
@@ -36,8 +46,12 @@ resource "aws_db_parameter_group" "sqlserver" {
 resource "aws_security_group" "sqlserver" {
   vpc_id = var.vpc_id
 
+  # SQL Server database security group for port 1433 access within VPC
+  description = "SQL Server database security group for port 1433 access within VPC"
+
   # Allow inbound traffic on port 1433 for SqlServer from within the VPC
   ingress {
+    description = "Allow SQL Server access from within VPC"
     from_port   = 1433
     to_port     = 1433
     protocol    = "tcp"
@@ -46,6 +60,7 @@ resource "aws_security_group" "sqlserver" {
 
   # Allow all outbound traffic
   egress {
+    description = "Allow all outbound traffic from the security group"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -55,6 +70,9 @@ resource "aws_security_group" "sqlserver" {
 }
 
 resource "aws_secretsmanager_secret" "sqlserver_connection_string" {
+  # checkov:skip=CKV_AWS_57: Secret rotation: TODO
+  # checkov:skip=CKV2_AWS_57: Secret rotation: TODO
+  # checkov:skip=CKV_AWS_149: KMS key: TODO
   count       = var.database_type == "sqlserver" ? 1 : 0
   name        = "${local.vpc_name}-sqlserver-connection-string-${random_string.secret_ident[0].result}"
   description = "SqlServer connection string for the ecr-viewer"

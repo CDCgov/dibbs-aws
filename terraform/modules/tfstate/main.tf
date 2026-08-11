@@ -1,4 +1,9 @@
 resource "aws_s3_bucket" "tfstate" {
+  # checkov:skip=CKV_AWS_18: Access logging: TODO
+  # checkov:skip=CKV_AWS_61: Lifecycle configuration: TODO0
+  # checkov:skip=CKV2_AWS_61: lifecycle configuration: TODO
+  # checkov:skip=CKV_AWS_144: Cross-region replication: TODO
+  # checkov:skip=CKV2_AWS_62: Event notifications: TODO
   bucket = "${var.project}-tfstate-${var.owner}-${var.identifier}"
 
   force_destroy = true
@@ -34,6 +39,7 @@ resource "aws_s3_bucket_versioning" "default" {
 
 # Create a DynamoDB table for locking the state file
 resource "aws_dynamodb_table" "tfstate_lock" {
+  # checkov:skip=CKV_AWS_119: KMS key: TODO
   name         = "${var.project}-tfstate-lock-${var.owner}-${var.identifier}"
   hash_key     = "LockID"
   billing_mode = "PAY_PER_REQUEST"

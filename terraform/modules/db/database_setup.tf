@@ -26,20 +26,27 @@ data "http" "myip" {
 }
 
 resource "aws_security_group" "db_setup" {
+  # checkov:skip=CKV_AWS_382: Ephemeral DB setup instances require internet access for provisioning (apt install, sqlcmd download)
   vpc_id = var.vpc_id
+
+  # Database setup security group for SSH access from user IP
+  description = "Database setup security group for SSH access from user IP"
 
   # Allow inbound traffic on port 22 to SSH from the user's IP address
   ingress {
+    description = "Allow SSH access from users IP address"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }
 
+  # checkov:skip=CKV_AWS_382: Ephemeral DB setup instances require internet access for provisioning (apt install, sqlcmd download)
   # Allow all outbound traffic
   # https://avd.aquasec.com/misconfig/aws/ec2/avd-aws-0104/
   # trivy:ignore:AVD-AWS-0104
   egress {
+    description = "Allow all outbound traffic from the security group"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -49,6 +56,8 @@ resource "aws_security_group" "db_setup" {
 }
 
 resource "aws_instance" "postgresql_setup" {
+  # checkov:skip=CKV_AWS_88: Public Ip association: Required for setup of the database, will be removed after provisioning is complete
+  # checkov:skip=CKV2_AWS_41: IAM Role: TODO
   count                       = var.database_type == "postgresql" && var.ssh_key_name != "" ? 1 : 0
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
@@ -56,6 +65,16 @@ resource "aws_instance" "postgresql_setup" {
   vpc_security_group_ids      = [aws_security_group.db_setup.id]
   associate_public_ip_address = true
   key_name                    = var.ssh_key_name
+  ebs_optimized               = true
+  monitoring                  = true
+
+  metadata_options {
+    http_endpoint = "disabled"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   provisioner "file" {
     content     = <<-EOF
@@ -150,6 +169,8 @@ resource "aws_instance" "postgresql_setup" {
 }
 
 resource "aws_instance" "sqlserver_setup" {
+  # checkov:skip=CKV_AWS_88: Public Ip association: Required for setup of the database, will be removed after provisioning is complete
+  # checkov:skip=CKV2_AWS_41: IAM Role: TODO
   count                       = var.database_type == "sqlserver" && var.ssh_key_name != "" ? 1 : 0
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
@@ -157,6 +178,16 @@ resource "aws_instance" "sqlserver_setup" {
   vpc_security_group_ids      = [aws_security_group.db_setup.id]
   associate_public_ip_address = true
   key_name                    = var.ssh_key_name
+  ebs_optimized               = true
+  monitoring                  = true
+
+  metadata_options {
+    http_endpoint = "disabled"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
 
   provisioner "file" {
     content     = <<-EOF

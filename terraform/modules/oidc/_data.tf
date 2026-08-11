@@ -3,6 +3,7 @@ data "aws_caller_identity" "current" {}
 
 # # create a role that can be assumed to pull and push docker images from 
 data "aws_iam_policy_document" "github_assume_role" {
+  # checkov:skip=CKV_AWS_358: Deployment role needs GitHub OIDC without restrictive claims for flexible workflow access
   statement {
     principals {
       type        = "Federated"
@@ -46,9 +47,11 @@ data "aws_iam_policy_document" "storage" {
   }
 }
 
-# Wildcard policy
 # trivy:ignore:AVD-AWS-0057
 data "aws_iam_policy_document" "wildcard" {
+  # checkov:skip=CKV_AWS_111: Deployment role needs broad read permissions to discover and manage resources across the account
+  # checkov:skip=CKV_AWS_108: Deployment role needs broad read permissions to discover and manage resources across the account
+  # checkov:skip=CKV_AWS_356: Deployment role needs broad read permissions to discover and manage resources across the account
   statement {
     actions = [
       "acm:ListCertificates",
@@ -165,6 +168,7 @@ data "aws_iam_policy_document" "scoped_one" {
       "rds:DescribeDBParameters",
       "servicediscovery:GetService",
       "servicediscovery:GetNamespace",
+      "servicediscovery:GetService",
       "servicediscovery:GetOperation",
       "servicediscovery:ListTagsForResource",
       "SNS:GetTopicAttributes",
@@ -305,6 +309,7 @@ data "aws_iam_policy_document" "request_tags_create_actions" {
       "logs:UntagResource",
       "servicediscovery:CreateService",
       "servicediscovery:CreatePrivateDnsNamespace",
+      "servicediscovery:CreateService",
       "SNS:CreateTopic",
       "wafv2:CreateIPSet",
     ]
@@ -484,6 +489,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "rds:DeleteDBParameterGroup",
       "servicediscovery:DeleteService",
       "servicediscovery:DeleteNamespace",
+      "servicediscovery:DeleteService",
       "SNS:DeleteTopic",
       "wafv2:DeleteIPSet",
       "wafv2:DeleteWebACL",
@@ -518,6 +524,7 @@ data "aws_iam_policy_document" "resource_tags_delete_actions" {
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:service/*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:secret:*",
       "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:namespace/*",
+      "arn:aws:servicediscovery:${var.region}:${data.aws_caller_identity.current.account_id}:service/*",
       "arn:aws:sns:${var.region}:${data.aws_caller_identity.current.account_id}:*",
       "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/ipset/*",
       "arn:aws:wafv2:${var.region}:${data.aws_caller_identity.current.account_id}:regional/webacl/*/*",
