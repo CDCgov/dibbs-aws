@@ -1,6 +1,7 @@
 data "aws_rds_engine_version" "postgresql" {
-  engine             = local.postgresql_engine
-  preferred_versions = [local.postgresql_engine_version]
+  engine  = local.postgresql_engine
+  version = local.postgresql_engine_major_version
+  latest  = true
 }
 
 resource "aws_db_instance" "postgresql" {

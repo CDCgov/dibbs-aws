@@ -31,7 +31,7 @@ The current architectural design for dibbs-aws is as follows:
 This section will assist engineers with executing Infrastructure as Code (IaC) found in the _dibbs-aws_ repository utilizing Terraform.  
 
 **Engineers will need following tools installed on their local machine:**
-* Terraform version 1.0.0+  [Hashicorp installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+* Terraform version 1.9.0  [Hashicorp installation Guide](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 * AWS CLI version 2+ [AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/v1/userguide/cli-chap-install.html)
 * AWS Profile Access
 
