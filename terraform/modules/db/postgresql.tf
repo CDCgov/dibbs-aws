@@ -26,7 +26,7 @@ resource "aws_db_instance" "postgresql" {
   depends_on                          = [aws_secretsmanager_secret.postgresql_connection_string]
   copy_tags_to_snapshot               = true
   storage_encrypted                   = true
-  monitoring_interval                 = 60
+  monitoring_interval                 = 0
   performance_insights_enabled        = true
   auto_minor_version_upgrade          = true
 }
